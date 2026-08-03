@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1f3d2b" />
+<title>Good But Not Greedy</title>
+<style>
+  :root{
+    --green:#1f3d2b; --leaf:#3f8a5f; --cream:#f6f3ec; --card:#fff; --ink:#26251f; --muted:#7c7a70;
+    --line:#e7e2d6; --danger:#b8402f; --amber:#b07a12; --radius:14px;
+    --shadow:0 1px 2px rgba(31,61,43,.06),0 6px 20px rgba(31,61,43,.06);
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.45;padding-bottom:env(safe-area-inset-bottom)}
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px 72px}
+  .hidden{display:none!important}
+  a{color:var(--leaf)}
+
+  header.top{position:sticky;top:0;z-index:5;background:var(--green);color:#fff;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top))}
+  .top-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px}
+  .top h1{font-size:17px;margin:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top .leaf{width:26px;height:26px;flex:0 0 auto}
+  .top .right{margin-left:auto;font-size:13px;display:flex;align-items:center;gap:14px;flex:0 0 auto}
+  .top .right a,.top .right button{color:#fff;opacity:.85;text-decoration:none;background:none;border:none;font:inherit;cursor:pointer;padding:0}
+  .top .right a{border-bottom:1px solid rgba(255,255,255,.35)}
+
+  .btn{font:inherit;border:none;border-radius:10px;padding:12px 16px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:transform .05s,background .15s;min-height:46px}
+  .btn:active{transform:scale(.98)} .btn:disabled{opacity:.6;cursor:default}
+  .btn-primary{background:var(--leaf);color:#fff;width:100%} .btn-primary:hover{background:#357a52}
+  .btn-dark{background:var(--green);color:#fff;width:100%}
+  .btn-ghost{background:#fff;color:var(--green);border:1px solid var(--line)} .btn-ghost:hover{background:#faf8f2}
+  .btn-sm{padding:9px 12px;min-height:0;font-size:13px;border-radius:9px}
+  .btn-danger{color:var(--danger);background:#fff;border:1px solid #ecccc6} .btn-danger:hover{background:#fdf2f0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+  label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:0 0 6px}
+  input[type=text],input[type=number],input[type=tel],input[type=email],input[type=password],input[type=datetime-local],textarea{width:100%;font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fdfcf9;color:var(--ink)}
+  input:focus,textarea:focus{outline:none;border-color:var(--leaf);background:#fff}
+  textarea{resize:vertical;min-height:70px}
+  .field{margin-bottom:14px} .row2{display:flex;gap:12px}.row2 .field{flex:1}
+  .switch{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink);font-weight:600}.switch input{width:20px;height:20px}
+  .photo-drop{border:1.5px dashed var(--line);border-radius:12px;overflow:hidden;background:#fdfcf9;position:relative;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer}
+  .photo-drop:hover{border-color:var(--leaf)} .photo-drop img{width:100%;height:100%;object-fit:cover;display:none}
+  .photo-drop .ph-hint{color:var(--muted);font-size:14px;padding:16px}
+  .photo-drop.has-img .ph-hint{display:none} .photo-drop.has-img img{display:block}
+  .photo-clear{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;display:none}
+  .photo-drop.has-img .photo-clear{display:block} input[type=file]{display:none}
+
+  .adminnav{display:flex;gap:8px;margin:18px 0}
+  .adminnav button{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;font-weight:600;color:var(--muted);cursor:pointer;font-size:14px}
+  .adminnav button.on{background:var(--green);color:#fff;border-color:var(--green)}
+  .section-title{font-size:15px;font-weight:600;color:var(--green);margin:0 0 12px}
+  .panel{padding:16px;margin-bottom:22px}
+
+  .lib-head{display:flex;align-items:center;margin:0 2px 12px}
+  .lib-head h2{font-size:15px;margin:0;font-weight:600;color:var(--green)}
+  .lib-head .toggle{margin-left:auto;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;cursor:pointer}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:520px){.grid{grid-template-columns:1fr}}
+  .item{overflow:hidden;display:flex;flex-direction:column}
+  .item .thumb{aspect-ratio:16/10;background:#eee7d8;position:relative}
+  .item .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .item .thumb .noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#b7b09a;font-size:26px}
+  .item .price-tag{position:absolute;bottom:8px;left:8px;background:var(--green);color:#fff;font-weight:700;font-size:14px;padding:5px 10px;border-radius:9px}
+  .item .live-tag{position:absolute;top:8px;left:8px;background:var(--leaf);color:#fff;font-weight:600;font-size:11px;padding:4px 9px;border-radius:20px}
+  .item.archived{opacity:.55}
+  .item .body{padding:12px 13px 13px;display:flex;flex-direction:column;flex:1}
+  .item .name{font-weight:600;font-size:15px;margin:0 0 3px}
+  .item .desc{font-size:13px;color:var(--muted);margin:0 0 10px;flex:1}
+  .item .meta{font-size:12px;color:var(--muted);margin:0 0 10px}
+  .item .acts{display:flex;flex-wrap:wrap;gap:7px}
+  .empty{text-align:center;color:var(--muted);padding:36px 20px;font-size:14px}
+
+  .badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px}
+  .b-paid{background:#e4f2e9;color:#1f6b43}.b-reserved{background:#fbeecf;color:#875c07}.b-collected{background:#e7ecf5;color:#3a4b6b}.b-cancel{background:#f2e3e0;color:#933225}.b-payid{background:#e9edf6;color:#3a4b6b}.b-instore{background:#efeadd;color:#6d6549}
+  .sale{padding:13px 14px;display:flex;gap:12px;align-items:flex-start}.sale+.sale{border-top:1px solid var(--line)}
+  .sale .who{flex:1;min-width:0}.sale .who .n{font-weight:600;font-size:15px}.sale .who .sub{font-size:13px;color:var(--muted);margin-top:2px}
+  .sale .who .tags{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}.sale .code{font-family:ui-monospace,Menlo,monospace;font-weight:700;letter-spacing:.06em}
+  .sale .shot{width:54px;height:54px;border-radius:9px;object-fit:cover;border:1px solid var(--line);flex:0 0 auto;background:#eee7d8}
+  .sale .saleacts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+
+  /* share */
+  .share-link{display:flex;gap:8px;margin:0 0 16px}
+  .share-link input{font-family:ui-monospace,Menlo,monospace;font-size:13px}
+  .qrbox{display:flex;justify-content:center;padding:14px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:0 auto 14px;width:max-content}
+  .qrbox img,.qrbox canvas{display:block}
+  .steps{margin:0;padding-left:18px;color:var(--muted);font-size:14px}.steps li{margin:6px 0}
+
+  /* storefront */
+  .store-hero{text-align:center;padding:22px 16px 4px}
+  .store-hero .shop{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+  .store-hero h2{font-size:22px;margin:6px 0 2px;color:var(--green)}
+  .store-hero p{font-size:14px;color:var(--muted);margin:0}
+  .store-list{display:flex;flex-direction:column;gap:16px;margin-top:18px}
+  .offer{overflow:hidden}.offer .oimg{aspect-ratio:16/10;background:#eee7d8;position:relative}
+  .offer .oimg img{width:100%;height:100%;object-fit:cover;display:block}
+  .offer .oimg .noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#b7b09a;font-size:40px}
+  .offer .obody{padding:16px}.offer .orow{display:flex;align-items:baseline;gap:8px}
+  .offer .oname{font-size:19px;font-weight:600;margin:0}.offer .oprice{margin-left:auto;font-size:22px;font-weight:700;color:var(--green)}
+  .offer .odesc{font-size:14px;color:var(--muted);margin:6px 0 12px}.offer .ometa{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+  .chip{font-size:12px;padding:5px 10px;border-radius:20px;background:#efeadd;color:#6d6549;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+  .chip.left{background:#e4f2e9;color:#1f6b43}.chip.low{background:#fbeecf;color:#875c07}.chip.save{background:#e4f2e9;color:#1f6b43}
+  .owas{font-size:14px;color:var(--muted);text-decoration:line-through;font-weight:400;margin-left:7px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 0}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center}
+  .stat .v{font-size:22px;font-weight:700;color:var(--green)}.stat .k{font-size:12px;color:var(--muted);margin-top:2px}
+  .soldout{background:#f2e3e0;color:#933225;text-align:center;font-weight:700;padding:13px;border-radius:10px;font-size:15px}
+  .store-foot{text-align:center;color:var(--muted);font-size:12px;padding:26px 0 0}
+
+  .overlay{position:fixed;inset:0;background:rgba(20,30,24,.55);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+  @media(min-width:560px){.overlay{align-items:center;padding:20px}}
+  .sheet{background:#fff;width:100%;max-width:460px;border-radius:18px 18px 0 0;max-height:92vh;overflow:auto}
+  @media(min-width:560px){.sheet{border-radius:18px}}
+  .sheet-in{padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
+  .sheet h3{margin:0 0 4px;font-size:19px;color:var(--green)}.sheet .lead{font-size:14px;color:var(--muted);margin:0 0 16px}
+  .sheet .x{float:right;background:none;border:none;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;margin:-4px -4px 0 0}
+  .paychoice{display:flex;flex-direction:column;gap:10px}
+  .paychoice button{width:100%;text-align:left;background:#fdfcf9;border:1.5px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;font:inherit}
+  .paychoice button:hover{border-color:var(--leaf)}.paychoice .t{font-weight:600;font-size:15px}.paychoice .s{font-size:13px;color:var(--muted);margin-top:2px}
+  .paybox{background:#f4f6f2;border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 14px;font-size:14px}
+  .paybox .k{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}.paybox .v{font-size:16px;font-weight:600;margin:1px 0 10px;word-break:break-word}
+  .conf{text-align:center;padding:6px 0}.conf .tick{width:60px;height:60px;border-radius:50%;background:#e4f2e9;color:#1f6b43;display:flex;align-items:center;justify-content:center;font-size:32px;margin:6px auto 12px}
+  .conf .code{font-family:ui-monospace,Menlo,monospace;font-size:30px;font-weight:700;letter-spacing:.12em;margin:4px 0}
+  .stepnote{font-size:13px;color:var(--muted);margin:8px 0 0}
+
+  /* login / onboard */
+  .centered{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .authbox{background:#fff;border-radius:18px;padding:28px 24px;max-width:380px;width:100%;box-shadow:var(--shadow)}
+  .authbox .brand{display:flex;align-items:center;gap:9px;margin-bottom:18px}
+  .authbox .brand .leaf{width:30px;height:30px}.authbox .brand b{font-size:17px;color:var(--green)}
+  .authbox h2{margin:0 0 4px;font-size:20px;color:var(--green)}.authbox p{margin:0 0 18px;color:var(--muted);font-size:14px}
+  .authbox .note{font-size:12px;color:var(--muted);margin-top:14px;text-align:center}
+  .authdiv{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:16px 0}
+  .authdiv:before,.authdiv:after{content:"";flex:1;height:1px;background:var(--line)}
+  #googleBtn{width:100%;gap:9px;background:#fff;border:1px solid var(--line);color:var(--ink)}#googleBtn:hover{background:#faf8f2}
+
+  .previewbar{position:sticky;top:0;z-index:6;background:var(--amber);color:#fff;text-align:center;font-size:13px;font-weight:600;padding:9px 12px;display:flex;align-items:center;justify-content:center;gap:12px}
+  .previewbar button{background:rgba(255,255,255,.2);border:none;color:#fff;font:inherit;font-weight:600;padding:5px 11px;border-radius:8px;cursor:pointer}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--green);color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:.25s;z-index:120;pointer-events:none;max-width:90%}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading{min-height:60vh;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div id="bootView" class="loading">Loading…</div>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginView" class="centered hidden">
+  <div class="authbox">
+    <div class="brand"><svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M4 20C4 12 10 4 20 4C20 14 14 20 4 20Z" fill="#8fd6a8"/><path d="M4 20C8 14 13 9 18 6" stroke="#1f3d2b" stroke-width="1.6" stroke-linecap="round"/></svg><b>Good But Not Greedy</b></div>
+    <h2>Cafe sign in</h2>
+    <p>Sell your day's surplus without the middleman. No commission, keep your own customers.</p>
+    <button class="btn" id="googleBtn"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.02-3.7H.96v2.34A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.98 10.72a5.4 5.4 0 0 1 0-3.44V4.94H.96a9 9 0 0 0 0 8.12l3.02-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A9 9 0 0 0 .96 4.94l3.02 2.34C4.68 5.16 6.66 3.58 9 3.58z"/></svg> Continue with Google</button>
+    <div class="authdiv">or with email</div>
+    <div class="field"><label for="email">Email</label><input type="email" id="email" inputmode="email" autocomplete="email" placeholder="you@yourcafe.com.au" /></div>
+    <div class="field"><label for="password">Password</label><input type="password" id="password" autocomplete="current-password" placeholder="At least 6 characters" /></div>
+    <button class="btn btn-primary" id="loginBtn">Log in</button>
+    <button class="btn btn-ghost" id="signupBtn" style="margin-top:8px;width:100%">Create an account</button>
+    <div class="note" id="loginNote"></div>
+  </div>
+</div>
+
+<!-- ===== ONBOARD ===== -->
+<div id="onboardView" class="centered hidden">
+  <div class="authbox">
+    <div class="brand"><svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M4 20C4 12 10 4 20 4C20 14 14 20 4 20Z" fill="#8fd6a8"/><path d="M4 20C8 14 13 9 18 6" stroke="#1f3d2b" stroke-width="1.6" stroke-linecap="round"/></svg><b>Good But Not Greedy</b></div>
+    <h2>Name your cafe</h2>
+    <p>This is what customers see. You can change it and everything else later.</p>
+    <div class="field"><label for="obName">Cafe name</label><input type="text" id="obName" placeholder="Little Fern Cafe" /></div>
+    <button class="btn btn-primary" id="obBtn">Create my dashboard</button>
+  </div>
+</div>
+
+<!-- ===== RELEASE (customer frees a bag) ===== -->
+<div id="releaseView" class="centered hidden">
+  <div class="authbox" id="releaseBox"></div>
+</div>
+
+<!-- preview bar -->
+<div class="previewbar hidden" id="previewBar">Previewing what customers see <button id="backToAdmin">Back to dashboard</button></div>
+
+<!-- ===== CUSTOMER STOREFRONT ===== -->
+<div id="customerView" class="hidden">
+  <div class="store-hero">
+    <div class="shop" id="storeShop">OUR CAFE</div>
+    <h2>Today's bags</h2>
+    <p id="storeSub">Good food, not greedy prices. Grab what's left before it's gone.</p>
+  </div>
+  <div class="wrap"><div class="store-list" id="storeList"></div>
+    <div class="store-foot">Powered by Good But Not Greedy</div>
+  </div>
+</div>
+
+<!-- ===== OWNER DASHBOARD ===== -->
+<div id="adminView" class="hidden">
+  <header class="top">
+    <div class="top-inner">
+      <span id="topLogo"><svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M4 20C4 12 10 4 20 4C20 14 14 20 4 20Z" fill="#8fd6a8"/><path d="M4 20C8 14 13 9 18 6" stroke="#1f3d2b" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+      <h1 id="topTitle">Good But Not Greedy</h1>
+      <div class="right"><a id="previewLink" href="#">Preview ↗</a><button id="signOut">Sign out</button></div>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="stats" id="statsStrip"></div>
+    <div class="adminnav">
+      <button data-tab="share">Share</button>
+      <button data-tab="items" class="on">Items</button>
+      <button data-tab="sales">Sales</button>
+      <button data-tab="settings">Settings</button>
+    </div>
+
+    <!-- SHARE TAB -->
+    <div id="tab-share" class="hidden">
+      <div class="card panel">
+        <h2 class="section-title">Your customer link</h2>
+        <p style="margin:0 0 12px;color:var(--muted);font-size:14px">Post this on your Instagram story, or show the QR in-store. It opens in any phone browser, no app to install.</p>
+        <div class="share-link"><input type="text" id="shareUrl" readonly /><button class="btn btn-ghost" id="copyLink" style="width:auto">Copy</button></div>
+        <div class="qrbox" id="qrbox"></div>
+        <button class="btn btn-ghost" id="openStore">Open my customer page ↗</button>
+      </div>
+      <div class="card panel">
+        <h2 class="section-title">WhatsApp group</h2>
+        <p style="margin:0 0 12px;color:var(--muted);font-size:14px">Add your group's invite link in Settings. Customers who tap it join your group, then you drop the day's link in there when bags land.</p>
+        <div id="waState"></div>
+      </div>
+    </div>
+
+    <!-- ITEMS TAB -->
+    <div id="tab-items">
+      <div class="card panel">
+        <h2 class="section-title" id="formTitle">Add an item</h2>
+        <div class="field"><label for="fName">Item name</label><input type="text" id="fName" placeholder="Surprise bag" autocomplete="off" /></div>
+        <div class="row2">
+          <div class="field"><label for="fPrice">Price ($)</label><input type="number" id="fPrice" inputmode="decimal" step="0.50" placeholder="6.00" /></div>
+          <div class="field"><label for="fValue">Worth (optional)</label><input type="number" id="fValue" inputmode="decimal" step="0.50" placeholder="18.00" /></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="fQty">How many bags</label><input type="number" id="fQty" inputmode="numeric" step="1" placeholder="6" /></div>
+          <div class="field"><label for="fPickup">Pickup window</label><input type="text" id="fPickup" placeholder="3-4pm today" autocomplete="off" /></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="fFrom">Go live at (optional)</label><input type="datetime-local" id="fFrom" /></div>
+          <div class="field"><label for="fUntil">Close at (optional)</label><input type="datetime-local" id="fUntil" /></div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin:-4px 0 14px">Leave blank to show it the moment it's live. Or set these to auto-drop at (say) 2:45pm and close itself after pickup.</p>
+        <div class="field"><label for="fDesc">Description</label><textarea id="fDesc" placeholder="Mixed pastries and a loaf, whatever's left at close."></textarea></div>
+        <div class="field">
+          <label>Photo</label>
+          <div class="photo-drop" id="photoDrop"><span class="ph-hint" id="phHint">Tap to add a photo</span><img id="photoPreview" alt="" /><button type="button" class="photo-clear" id="photoClear">×</button></div>
+          <input type="file" id="fPhoto" accept="image/*" capture="environment" />
+        </div>
+        <div class="field"><label class="switch"><input type="checkbox" id="fAvailable" /> Available to customers now</label></div>
+        <div style="display:flex;gap:10px"><button class="btn btn-primary" id="saveBtn">Save item</button><button class="btn btn-ghost hidden" id="cancelBtn">Cancel</button></div>
+      </div>
+      <div class="lib-head"><h2>Saved items</h2><label class="toggle"><input type="checkbox" id="showArchived" /> Show archived</label></div>
+      <div id="library"></div>
+    </div>
+
+    <!-- SALES TAB -->
+    <div id="tab-sales" class="hidden"><div class="card panel" style="padding:0" id="salesWrap"></div></div>
+
+    <!-- SETTINGS TAB -->
+    <div id="tab-settings" class="hidden">
+      <div class="card panel">
+        <h2 class="section-title">Branding</h2>
+        <div class="field"><label for="sShop">Shop name</label><input type="text" id="sShop" placeholder="Little Fern Cafe" /></div>
+        <div class="row2">
+          <div class="field"><label for="sColor">Brand colour</label><input type="color" id="sColor" value="#1f3d2b" style="width:64px;height:46px;padding:4px;cursor:pointer" /></div>
+          <div class="field" style="flex:2">
+            <label>Logo (optional)</label>
+            <div class="photo-drop" id="logoDrop" style="aspect-ratio:auto;height:92px"><span class="ph-hint" id="logoHint">Tap to add a logo</span><img id="logoPreview" alt="" style="object-fit:contain;background:#fff"><button type="button" class="photo-clear" id="logoClear">×</button></div>
+            <input type="file" id="sLogoFile" accept="image/*" />
+          </div>
+        </div>
+        <div class="field"><label for="sSlug">Customer link name</label><input type="text" id="sSlug" placeholder="little-fern" /><div style="font-size:12px;color:var(--muted);margin-top:5px">Your link ends with this. Changing it changes your shared link.</div></div>
+        <h2 class="section-title" style="margin-top:8px">Pickup &amp; payment</h2>
+        <div class="field"><label for="sPickup">Default pickup window</label><input type="text" id="sPickup" placeholder="3-4pm today" /></div>
+        <div class="field"><label for="sPayid">PayID (email or phone)</label><input type="text" id="sPayid" placeholder="pay@littlefern.com.au" /></div>
+        <div class="field"><label for="sBank">Bank transfer details</label><textarea id="sBank" placeholder="Little Fern Cafe&#10;BSB 000-000  Acct 12345678"></textarea></div>
+        <div class="field"><label for="sWa">WhatsApp group link (optional)</label><input type="text" id="sWa" placeholder="https://chat.whatsapp.com/..." /></div>
+        <button class="btn btn-primary" id="saveSettings">Save settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modalMount"></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://hmihttoygvhhrjyudetn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_bYwuFbrR_zO-RKW6hIJRFw_55qbGc1h";
+const BUCKET = "rescue-photos";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $ = id => document.getElementById(id);
+
+let CAFE=null;   // owner's cafe (when signed in)
+let STORE=null;  // cafe currently shown on the storefront
+
+/* ---------- utils ---------- */
+let toastT;
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2400);}
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function money(v){return v==null?"":"$"+Number(v).toFixed(2);}
+function baseUrl(){return location.origin+location.pathname;}
+function storeUrlFor(slug){return baseUrl()+"?c="+encodeURIComponent(slug);}
+function slugify(s){return (s||"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40)||"cafe";}
+function toLocalInput(iso){if(!iso)return"";const d=new Date(iso),p=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;}
+function fromLocalInput(v){return v?new Date(v).toISOString():null;}
+function inWindow(it){const now=Date.now();return (!it.available_from||new Date(it.available_from).getTime()<=now)&&(!it.available_until||new Date(it.available_until).getTime()>=now);}
+function fmtTime(iso){if(!iso)return"";const d=new Date(iso);let h=d.getHours(),m=d.getMinutes();const ap=h<12?"am":"pm";h=h%12||12;return `${h}${m?":"+String(m).padStart(2,"0"):""}${ap}`;}
+function compress(file){return new Promise(res=>{const img=new Image();img.onload=()=>{const max=1200;let{width:w,height:h}=img;if(w>max||h>max){if(w>h){h=h*max/w;w=max;}else{w=w*max/h;h=max;}}const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);c.toBlob(b=>res(b),"image/jpeg",0.82);};img.src=URL.createObjectURL(file);});}
+async function uploadPhoto(blob,prefix){const path=`${prefix||""}${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;const{error}=await sb.storage.from(BUCKET).upload(path,blob,{contentType:"image/jpeg"});if(error)throw error;return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;}
+function lighten(hex,p){hex=(hex||"#1f3d2b").replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const n=parseInt(hex,16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;r=Math.round(r+(255-r)*p);g=Math.round(g+(255-g)*p);b=Math.round(b+(255-b)*p);return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
+function applyBrand(c){const col=(c&&c.brand_color)||"#1f3d2b";const rs=document.documentElement.style;rs.setProperty('--green',col);rs.setProperty('--leaf',lighten(col,0.16));const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content',col);const tt=$("topTitle");if(tt)tt.textContent=(c&&c.shop_name)||"Good But Not Greedy";const lg=$("topLogo");if(lg)lg.innerHTML=(c&&c.logo_url)?`<img src="${esc(c.logo_url)}" alt="" style="width:28px;height:28px;border-radius:7px;object-fit:cover;display:block">`:`<svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M4 20C4 12 10 4 20 4C20 14 14 20 4 20Z" fill="#8fd6a8"/><path d="M4 20C8 14 13 9 18 6" stroke="#1f3d2b" stroke-width="1.6" stroke-linecap="round"/></svg>`;}
+
+function showOnly(id){["bootView","loginView","onboardView","releaseView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id));}
+
+/* ================= ROUTING ================= */
+const params=new URLSearchParams(location.search);
+const custSlug=params.get("c");
+const releaseId=params.get("release");
+
+async function boot(){
+  if(releaseId){ return showRelease(releaseId); }
+  if(custSlug){ return showStoreBySlug(custSlug); }
+  const {data:{session}}=await sb.auth.getSession();
+  if(session) enterOwner(); else showLogin();
+}
+
+async function showRelease(id){
+  showOnly("releaseView");
+  const back=custSlug?`?c=${encodeURIComponent(custSlug)}`:baseUrl();
+  $("releaseBox").innerHTML=`<h2 style="margin:0 0 6px;color:var(--green)">Release your bag?</h2>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 16px">This frees your reserved bag for someone else. Only do this if you can't collect it.</p>
+    <button class="btn btn-primary" id="relBtn">Release my bag</button>
+    <div class="note" id="relNote" style="font-size:13px;color:var(--muted);margin-top:12px;text-align:center"></div>`;
+  $("relBtn").onclick=async()=>{
+    const b=$("relBtn");b.disabled=true;b.innerHTML='<span class="spinner"></span> Releasing';
+    const {data,error}=await sb.rpc("release_bag",{p_resv:id});
+    if(error){b.disabled=false;b.textContent="Release my bag";$("relNote").textContent="Something went wrong, try again.";return;}
+    const msg={released:"Done, your bag is back up for grabs. Thanks for letting someone else enjoy it!",already_released:"This bag was already released.",collected:"This bag was already collected.",paid:"You've already paid for this one. Please contact the cafe directly.",not_found:"We couldn't find that reservation."}[data]||"Done.";
+    $("releaseBox").innerHTML=`<h2 style="margin:0 0 6px;color:var(--green)">${data==="released"?"Released":"Heads up"}</h2>
+      <p style="color:var(--muted);font-size:14px;margin:0 0 16px">${msg}</p>
+      <a class="btn btn-ghost" style="text-decoration:none" href="${back}">Back to the shop</a>`;
+  };
+}
+sb.auth.onAuthStateChange((_e,session)=>{
+  if(custSlug) return;
+  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; showLogin(); }
+});
+
+/* ---------- login (Google + email/password) ---------- */
+function showLogin(){ showOnly("loginView"); }
+$("googleBtn").onclick=async()=>{
+  const {error}=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:baseUrl()}});
+  if(error) $("loginNote").textContent=error.message.toLowerCase().includes("provider")?"Google isn't switched on yet in Supabase.":error.message;
+};
+$("loginBtn").onclick=async()=>{
+  const email=$("email").value.trim(), password=$("password").value;
+  if(!email||!password){toast("Enter your email and password");return;}
+  const b=$("loginBtn");b.disabled=true;b.innerHTML='<span class="spinner"></span> Logging in';
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  b.disabled=false;b.textContent="Log in";
+  if(error){$("loginNote").textContent=(error.message||"").toLowerCase().includes("invalid")?"Wrong email or password. New here? Create an account below.":error.message;return;}
+  $("loginNote").textContent="";  // onAuthStateChange takes over
+};
+$("signupBtn").onclick=async()=>{
+  const email=$("email").value.trim(), password=$("password").value;
+  if(!email||!email.includes("@")){toast("Enter a valid email");return;}
+  if((password||"").length<6){toast("Password needs at least 6 characters");return;}
+  const b=$("signupBtn");b.disabled=true;b.innerHTML='<span class="spinner"></span> Creating';
+  const {data,error}=await sb.auth.signUp({email,password});
+  b.disabled=false;b.textContent="Create an account";
+  if(error){$("loginNote").textContent=error.message;return;}
+  if(!data.session){$("loginNote").textContent="Account made. If it doesn't log you in, email confirmation is still on in Supabase (turn it off).";return;}
+  $("loginNote").textContent="";  // session set -> onAuthStateChange -> enterOwner
+};
+
+/* ---------- owner entry / onboarding ---------- */
+async function enterOwner(){
+  showOnly("bootView");
+  const {data,error}=await sb.from("cafes").select("*").eq("owner_id",(await sb.auth.getUser()).data.user.id).maybeSingle();
+  if(error){toast("Load failed: "+error.message);return;}
+  if(!data){ showOnly("onboardView"); return; }
+  CAFE=data; applyBrand(CAFE); showAdmin();
+}
+$("obBtn").onclick=async()=>{
+  const name=$("obName").value.trim(); if(!name){toast("Give your cafe a name");return;}
+  const b=$("obBtn");b.disabled=true;b.innerHTML='<span class="spinner"></span> Creating';
+  const uid=(await sb.auth.getUser()).data.user.id;
+  let slug=slugify(name), row=null;
+  for(let i=0;i<3;i++){
+    const trySlug=i===0?slug:`${slug}-${Math.random().toString(36).slice(2,6)}`;
+    const {data,error}=await sb.from("cafes").insert({owner_id:uid,slug:trySlug,shop_name:name}).select().maybeSingle();
+    if(!error){row=data;break;}
+    if(!(error.message||"").toLowerCase().includes("duplicate")){toast("Couldn't create: "+error.message);b.disabled=false;b.textContent="Create my dashboard";return;}
+  }
+  b.disabled=false;b.textContent="Create my dashboard";
+  if(!row){toast("Couldn't pick a unique link, try a different name");return;}
+  CAFE=row; applyBrand(CAFE); showAdmin();
+};
+$("signOut").onclick=async()=>{ await sb.auth.signOut(); CAFE=null; showLogin(); };
+
+/* ================= DASHBOARD ================= */
+function showAdmin(){
+  showOnly("adminView"); $("previewBar").classList.add("hidden");
+  fillSettings(); loadLibrary(); fillShare(); loadStats();
+}
+async function loadStats(){
+  const {data}=await sb.from("rescue_reservations").select("price,status,created_at").eq("cafe_id",CAFE.id);
+  const rows=data||[];
+  const active=rows.filter(r=>r.status!=="cancelled");
+  const weekAgo=Date.now()-7*864e5;
+  const week=active.filter(r=>new Date(r.created_at).getTime()>=weekAgo).length;
+  const earned=rows.filter(r=>r.status==="paid"||r.status==="collected").reduce((s,r)=>s+(Number(r.price)||0),0);
+  $("statsStrip").innerHTML=`
+    <div class="stat"><div class="v">${active.length}</div><div class="k">bags saved</div></div>
+    <div class="stat"><div class="v">${week}</div><div class="k">this week</div></div>
+    <div class="stat"><div class="v">$${Math.round(earned)}</div><div class="k">collected</div></div>`;
+}
+$("previewLink").onclick=e=>{e.preventDefault(); STORE=CAFE; renderStore(true);};
+$("backToAdmin").onclick=()=>{ showAdmin(); };
+
+document.querySelectorAll(".adminnav button").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".adminnav button").forEach(b=>b.classList.remove("on"));btn.classList.add("on");
+    const t=btn.dataset.tab;
+    ["share","items","sales","settings"].forEach(x=>$("tab-"+x).classList.toggle("hidden",x!==t));
+    if(t==="sales")loadSales(); if(t==="settings")fillSettings(); if(t==="share")fillShare();
+  };
+});
+
+/* ---------- share tab ---------- */
+let qrDrawn=false;
+function fillShare(){
+  const url=storeUrlFor(CAFE.slug);
+  $("shareUrl").value=url;
+  $("openStore").onclick=()=>window.open(url,"_blank");
+  const box=$("qrbox"); box.innerHTML=""; qrDrawn=false;
+  try{ new QRCode(box,{text:url,width:168,height:168,colorDark:getComputedStyle(document.documentElement).getPropertyValue('--green').trim()||"#1f3d2b",colorLight:"#ffffff"}); qrDrawn=true; }
+  catch(e){ box.innerHTML='<span style="color:var(--muted);font-size:13px">QR unavailable offline</span>'; }
+  $("waState").innerHTML=CAFE.whatsapp_url
+    ? `<a href="${esc(CAFE.whatsapp_url)}" target="_blank" class="btn btn-ghost" style="text-decoration:none">Open your WhatsApp group ↗</a>`
+    : `<p style="color:var(--muted);font-size:14px;margin:0">No group link yet. Add one in <b>Settings</b>.</p>`;
+}
+$("copyLink").onclick=()=>{navigator.clipboard.writeText($("shareUrl").value).then(()=>toast("Link copied"),()=>toast("Copy failed"));};
+
+/* ---------- settings ---------- */
+let pendingLogoBlob=null,currentLogoUrl=null;
+function fillSettings(){
+  $("sShop").value=CAFE.shop_name||"";$("sPickup").value=CAFE.pickup_window||"";
+  $("sPayid").value=CAFE.payid||"";$("sBank").value=CAFE.bank_details||"";$("sWa").value=CAFE.whatsapp_url||"";
+  $("sColor").value=CAFE.brand_color||"#1f3d2b";$("sSlug").value=CAFE.slug||"";
+  pendingLogoBlob=null;currentLogoUrl=CAFE.logo_url||null;
+  if(CAFE.logo_url){$("logoPreview").src=CAFE.logo_url;$("logoDrop").classList.add("has-img");}else{$("logoPreview").src="";$("logoDrop").classList.remove("has-img");}
+}
+$("sColor").oninput=()=>{CAFE.brand_color=$("sColor").value;applyBrand(CAFE);};
+$("logoDrop").onclick=e=>{if(e.target.id!=="logoClear")$("sLogoFile").click();};
+$("logoClear").onclick=()=>{pendingLogoBlob=null;currentLogoUrl=null;$("sLogoFile").value="";$("logoPreview").src="";$("logoDrop").classList.remove("has-img");};
+$("sLogoFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;pendingLogoBlob=await compress(f);$("logoPreview").src=URL.createObjectURL(pendingLogoBlob);$("logoDrop").classList.add("has-img");};
+$("saveSettings").onclick=async()=>{
+  const b=$("saveSettings");b.disabled=true;b.innerHTML='<span class="spinner"></span> Saving';
+  try{
+    let logo_url=currentLogoUrl;
+    if(pendingLogoBlob) logo_url=await uploadPhoto(pendingLogoBlob,"logos/");
+    const newSlug=slugify($("sSlug").value)||CAFE.slug;
+    const row={shop_name:$("sShop").value.trim()||"Our cafe",pickup_window:$("sPickup").value.trim()||null,payid:$("sPayid").value.trim()||null,
+      bank_details:$("sBank").value.trim()||null,whatsapp_url:$("sWa").value.trim()||null,brand_color:$("sColor").value||"#1f3d2b",
+      logo_url:logo_url,slug:newSlug,updated_at:new Date().toISOString()};
+    const {data,error}=await sb.from("cafes").update(row).eq("id",CAFE.id).select().maybeSingle();
+    if(error){ if((error.message||"").toLowerCase().includes("duplicate")){toast("That link name is taken, try another");} else {toast("Couldn't save: "+error.message);} return; }
+    CAFE=data; pendingLogoBlob=null; currentLogoUrl=CAFE.logo_url; applyBrand(CAFE); fillShare(); toast("Settings saved");
+  }catch(err){console.error(err);toast("Couldn't save settings");}
+  finally{b.disabled=false;b.textContent="Save settings";}
+};
+
+/* ---------- items ---------- */
+let pendingPhotoBlob=null,currentPhotoUrl=null,editingId=null;
+$("photoDrop").onclick=e=>{if(e.target.id!=="photoClear")$("fPhoto").click();};
+$("photoClear").onclick=clearPhoto;
+$("fPhoto").onchange=async e=>{const f=e.target.files[0];if(!f)return;pendingPhotoBlob=await compress(f);$("photoPreview").src=URL.createObjectURL(pendingPhotoBlob);$("photoDrop").classList.add("has-img");};
+function clearPhoto(){pendingPhotoBlob=null;currentPhotoUrl=null;$("fPhoto").value="";$("photoPreview").src="";$("photoDrop").classList.remove("has-img");}
+$("saveBtn").onclick=async()=>{
+  const name=$("fName").value.trim();if(!name){toast("Give it a name first");return;}
+  const price=$("fPrice").value.trim()===""?null:parseFloat($("fPrice").value);
+  const original_value=$("fValue").value.trim()===""?null:parseFloat($("fValue").value);
+  const quantity=$("fQty").value.trim()===""?0:parseInt($("fQty").value,10);
+  const description=$("fDesc").value.trim()||null;const pickup_window=$("fPickup").value.trim()||null;const available=$("fAvailable").checked;
+  const available_from=fromLocalInput($("fFrom").value);const available_until=fromLocalInput($("fUntil").value);
+  const btn=$("saveBtn");btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving';
+  try{
+    let photo_url=currentPhotoUrl;
+    if(pendingPhotoBlob)photo_url=await uploadPhoto(pendingPhotoBlob,"items/");
+    const row={cafe_id:CAFE.id,name,price,original_value,quantity,description,pickup_window,available,available_from,available_until,photo_url,updated_at:new Date().toISOString()};
+    if(editingId){const{error}=await sb.from("rescue_items").update(row).eq("id",editingId);if(error)throw error;toast("Item updated");}
+    else{const{error}=await sb.from("rescue_items").insert(row);if(error)throw error;toast("Item saved");}
+    resetForm();loadLibrary();
+  }catch(err){console.error(err);toast("Couldn't save: "+(err.message||err));}
+  finally{btn.disabled=false;btn.textContent=editingId?"Update item":"Save item";}
+};
+$("cancelBtn").onclick=resetForm;
+function resetForm(){editingId=null;$("fName").value="";$("fPrice").value="";$("fValue").value="";$("fQty").value="";$("fPickup").value="";$("fFrom").value="";$("fUntil").value="";$("fDesc").value="";$("fAvailable").checked=false;clearPhoto();$("formTitle").textContent="Add an item";$("saveBtn").textContent="Save item";$("cancelBtn").classList.add("hidden");}
+function editItem(it){editingId=it.id;$("fName").value=it.name||"";$("fPrice").value=it.price??"";$("fValue").value=it.original_value??"";$("fQty").value=it.quantity??"";$("fPickup").value=it.pickup_window||"";$("fFrom").value=toLocalInput(it.available_from);$("fUntil").value=toLocalInput(it.available_until);$("fDesc").value=it.description||"";$("fAvailable").checked=!!it.available;pendingPhotoBlob=null;currentPhotoUrl=it.photo_url||null;if(it.photo_url){$("photoPreview").src=it.photo_url;$("photoDrop").classList.add("has-img");}else clearPhoto();$("formTitle").textContent="Edit item";$("saveBtn").textContent="Update item";$("cancelBtn").classList.remove("hidden");document.querySelector('.adminnav button[data-tab=items]').click();window.scrollTo({top:0,behavior:"smooth"});}
+async function duplicateItem(it){const{error}=await sb.from("rescue_items").insert({cafe_id:CAFE.id,name:it.name,price:it.price,original_value:it.original_value,quantity:it.quantity,description:it.description,pickup_window:it.pickup_window,photo_url:it.photo_url,available:false});if(error){toast("Couldn't copy");return;}toast("Copied to a new item");loadLibrary();}
+async function toggleAvailable(it){const{error}=await sb.from("rescue_items").update({available:!it.available,updated_at:new Date().toISOString()}).eq("id",it.id);if(error){toast("Failed");return;}toast(it.available?"Hidden from customers":"Now live for customers");loadLibrary();}
+async function toggleArchive(it){const{error}=await sb.from("rescue_items").update({archived:!it.archived,available:false,updated_at:new Date().toISOString()}).eq("id",it.id);if(error){toast("Failed");return;}toast(it.archived?"Restored":"Archived");loadLibrary();}
+async function deleteItem(it){if(!confirm(`Delete "${it.name}"?`))return;const{error}=await sb.from("rescue_items").delete().eq("id",it.id);if(error){toast("Couldn't delete");return;}if(editingId===it.id)resetForm();toast("Deleted");loadLibrary();}
+async function loadLibrary(){
+  const showArch=$("showArchived").checked;
+  let q=sb.from("rescue_items").select("*").eq("cafe_id",CAFE.id).order("created_at",{ascending:false});
+  if(!showArch)q=q.eq("archived",false);
+  const {data:items,error}=await q;
+  if(error){$("library").innerHTML=`<div class="empty">Couldn't load items.<br>${esc(error.message)}</div>`;return;}
+  renderLibrary(items||[]);
+}
+$("showArchived").onchange=loadLibrary;
+function renderLibrary(items){
+  const lib=$("library");
+  if(!items.length){lib.innerHTML=`<div class="empty">No saved items yet.<br>Add your first one above.</div>`;return;}
+  lib.innerHTML=`<div class="grid">`+items.map(it=>{
+    const left=Math.max(0,(it.quantity||0)-(it.reserved_count||0));
+    const thumb=it.photo_url?`<img src="${esc(it.photo_url)}" alt="" loading="lazy">`:`<div class="noimg">🥐</div>`;
+    let statusTag="";
+    if(it.available){
+      const now=Date.now();
+      const from=it.available_from?new Date(it.available_from).getTime():null;
+      const until=it.available_until?new Date(it.available_until).getTime():null;
+      if(from&&now<from) statusTag=`<span class="live-tag" style="background:var(--amber)">Drops ${fmtTime(it.available_from)}</span>`;
+      else if(until&&now>until) statusTag=`<span class="live-tag" style="background:#8a8a82">Closed</span>`;
+      else statusTag=`<span class="live-tag">Live · ${left} left</span>`;
+    }
+    const sched=(it.available_from||it.available_until)?` · ${it.available_from?fmtTime(it.available_from):"now"}–${it.available_until?fmtTime(it.available_until):"close"}`:"";
+    return `<div class="item card ${it.archived?"archived":""}">
+      <div class="thumb">${thumb}${statusTag}${it.price!=null?`<span class="price-tag">${money(it.price)}</span>`:""}</div>
+      <div class="body"><p class="name">${esc(it.name)}</p><p class="desc">${esc(it.description)||"&nbsp;"}</p>
+      <p class="meta">${it.quantity||0} bags · sold ${it.reserved_count||0}${it.pickup_window?` · ${esc(it.pickup_window)}`:""}${sched}</p>
+      <div class="acts">
+        <button class="btn btn-ghost btn-sm" data-act="avail" data-id="${it.id}">${it.available?"Take offline":"Make live"}</button>
+        <button class="btn btn-ghost btn-sm" data-act="edit" data-id="${it.id}">Edit</button>
+        <button class="btn btn-ghost btn-sm" data-act="dup" data-id="${it.id}">Duplicate</button>
+        <button class="btn btn-ghost btn-sm" data-act="arch" data-id="${it.id}">${it.archived?"Restore":"Archive"}</button>
+        <button class="btn btn-danger btn-sm" data-act="del" data-id="${it.id}">Delete</button>
+      </div></div></div>`;
+  }).join("")+`</div>`;
+  lib.querySelectorAll("button[data-act]").forEach(b=>{const it=items.find(x=>x.id===b.dataset.id);b.onclick=()=>({avail:toggleAvailable,edit:editItem,dup:duplicateItem,arch:toggleArchive,del:deleteItem})[b.dataset.act](it);});
+}
+
+/* ---------- sales ---------- */
+async function loadSales(){
+  const {data,error}=await sb.from("rescue_reservations").select("*").eq("cafe_id",CAFE.id).order("created_at",{ascending:false});
+  const wrap=$("salesWrap");
+  if(error){wrap.innerHTML=`<div class="empty">Couldn't load sales.</div>`;return;}
+  if(!data||!data.length){wrap.innerHTML=`<div class="empty">No reservations yet.<br>They show up here the moment someone reserves a bag.</div>`;return;}
+  wrap.innerHTML=data.map(r=>{
+    const sb_={reserved:'<span class="badge b-reserved">Reserved</span>',paid:'<span class="badge b-paid">Paid</span>',collected:'<span class="badge b-collected">Collected</span>',cancelled:'<span class="badge b-cancel">Cancelled</span>'}[r.status]||"";
+    const mb=r.payment_method==="payid"?'<span class="badge b-payid">PayID</span>':'<span class="badge b-instore">In store</span>';
+    const shot=r.payment_screenshot_url?`<a href="${esc(r.payment_screenshot_url)}" target="_blank"><img class="shot" src="${esc(r.payment_screenshot_url)}" alt="payment"></a>`:"";
+    const a=[];
+    if(r.status!=="paid"&&r.status!=="collected"&&r.status!=="cancelled")a.push(`<button class="btn btn-ghost btn-sm" data-r="${r.id}" data-do="paid">Mark paid</button>`);
+    if(r.status!=="collected"&&r.status!=="cancelled")a.push(`<button class="btn btn-ghost btn-sm" data-r="${r.id}" data-do="collected">Mark collected</button>`);
+    if(r.status!=="cancelled")a.push(`<button class="btn btn-danger btn-sm" data-r="${r.id}" data-do="cancelled">Cancel</button>`);
+    return `<div class="sale">${shot}<div class="who"><div class="n">${esc(r.name)} · <span class="code">${esc(r.pickup_code||"")}</span></div>
+      <div class="sub">${esc(r.item_name||"")} ${r.price!=null?"· "+money(r.price):""} ${r.phone?"· "+esc(r.phone):""}</div>
+      <div class="tags">${sb_}${mb}</div><div class="saleacts">${a.join("")}</div></div></div>`;
+  }).join("");
+  wrap.querySelectorAll("button[data-do]").forEach(b=>{b.onclick=async()=>{const{error}=await sb.from("rescue_reservations").update({status:b.dataset.do,updated_at:new Date().toISOString()}).eq("id",b.dataset.r);if(error){toast("Failed");return;}toast("Updated");loadSales();loadLibrary();};});
+}
+
+/* ================= CUSTOMER STOREFRONT ================= */
+async function showStoreBySlug(slug){
+  showOnly("bootView");
+  const {data,error}=await sb.from("cafes").select("*").eq("slug",slug).maybeSingle();
+  if(error||!data){ showOnly("customerView"); $("storeShop").textContent=""; $("storeList").innerHTML=`<div class="card"><div class="empty">This cafe page wasn't found.</div></div>`; return; }
+  STORE=data; renderStore(false);
+}
+let storePoll=null;
+function ensureStorePoll(){
+  if(storePoll)return;
+  storePoll=setInterval(()=>{
+    if($("customerView").classList.contains("hidden"))return;
+    if($("modalMount").innerHTML.trim()!=="")return; // don't disrupt an open reserve flow
+    renderStore(!$("previewBar").classList.contains("hidden"));
+  },30000);
+}
+async function renderStore(preview){
+  applyBrand(STORE);
+  showOnly("customerView");
+  $("previewBar").classList.toggle("hidden",!preview);
+  $("storeShop").textContent=(STORE.shop_name||"Our cafe").toUpperCase();
+  ensureStorePoll();
+  const {data:items}=await sb.from("rescue_items").select("*").eq("cafe_id",STORE.id).eq("available",true).eq("archived",false).order("created_at",{ascending:false});
+  const list=$("storeList");const live=(items||[]).filter(inWindow);
+  if(!live.length){list.innerHTML=`<div class="card"><div class="empty">Nothing available right now.<br>Check back when today's bags drop.</div></div>`;return;}
+  list.innerHTML=live.map(it=>{
+    const left=Math.max(0,(it.quantity||0)-(it.reserved_count||0));
+    const img=it.photo_url?`<img src="${esc(it.photo_url)}" alt="">`:`<div class="noimg">🥐</div>`;
+    const pickup=it.pickup_window||STORE.pickup_window||"";
+    const ov=(it.original_value!=null&&it.price!=null&&Number(it.original_value)>Number(it.price))?Number(it.original_value):null;
+    const save=ov?Math.round((1-Number(it.price)/ov)*100):0;
+    const cta=left<=0?`<div class="soldout">Sold out</div>`:`<button class="btn btn-dark" data-reserve="${it.id}">Reserve a bag</button>`;
+    const chip=left<=0?"":`<span class="chip ${left<=2?'low':'left'}">${left} left</span>`;
+    return `<div class="offer card"><div class="oimg">${img}</div><div class="obody">
+      <div class="orow"><p class="oname">${esc(it.name)}</p><span class="oprice">${money(it.price)}${ov?`<span class="owas">${money(ov)}</span>`:""}</span></div>
+      <p class="odesc">${esc(it.description)||""}</p>
+      <div class="ometa">${ov?`<span class="chip save">Save ${save}%</span>`:""}${pickup?`<span class="chip">🕒 ${esc(pickup)}</span>`:""}<span class="chip">📍 Pickup in store</span>${chip}</div>${cta}</div></div>`;
+  }).join("");
+  list.querySelectorAll("button[data-reserve]").forEach(b=>{b.onclick=()=>openReserve(live.find(x=>x.id===b.dataset.reserve));});
+}
+
+/* ---------- reserve flow ---------- */
+function closeModal(){$("modalMount").innerHTML="";}
+function openReserve(item){
+  $("modalMount").innerHTML=`<div class="overlay"><div class="sheet"><div class="sheet-in">
+    <button class="x" id="mX">×</button><h3>Reserve ${esc(item.name)}</h3><p class="lead">${money(item.price)} · pay by PayID or in store</p>
+    <div class="field"><label for="rName">Your name</label><input type="text" id="rName" autocomplete="name"></div>
+    <div class="field"><label for="rPhone">Mobile</label><input type="tel" id="rPhone" inputmode="tel" autocomplete="tel" placeholder="04..."></div>
+    <button class="btn btn-primary" id="rNext">Continue</button></div></div></div>`;
+  $("mX").onclick=closeModal;
+  $("rNext").onclick=()=>{const name=$("rName").value.trim();if(!name){toast("Pop your name in");return;}stepPayment(item,name,$("rPhone").value.trim());};
+}
+function stepPayment(item,name,phone){
+  const hasPayid=STORE.payid||STORE.bank_details;
+  $("modalMount").innerHTML=`<div class="overlay"><div class="sheet"><div class="sheet-in">
+    <button class="x" id="mX">×</button><h3>How do you want to pay?</h3><p class="lead">${esc(item.name)} · ${money(item.price)}</p>
+    <div class="paychoice">${hasPayid?`<button id="payPayid"><div class="t">PayID / bank transfer</div><div class="s">Pay now, drop in a screenshot to confirm</div></button>`:""}
+    <button id="payStore"><div class="t">Pay in store</div><div class="s">Reserve now, pay when you collect</div></button></div></div></div></div>`;
+  $("mX").onclick=closeModal;
+  if(hasPayid)$("payPayid").onclick=()=>doReserve(item,name,phone,"payid");
+  $("payStore").onclick=()=>doReserve(item,name,phone,"instore");
+}
+async function doReserve(item,name,phone,method){
+  const {data,error}=await sb.rpc("reserve_bag",{p_item:item.id,p_name:name,p_phone:phone||null,p_method:method});
+  if(error){const m=(error.message||"");const msg=m.includes("sold out")?"Just sold out, sorry!":m.includes("unavailable")?"That bag isn't available anymore.":"Couldn't reserve, try again.";toast(msg);closeModal();renderStore(!$("previewBar").classList.contains("hidden"));return;}
+  const r=Array.isArray(data)?data[0]:data;
+  if(method==="payid")stepPayid(item,r);else stepDone(item,r,"instore");
+}
+function stepPayid(item,r){
+  const pay=[];
+  if(STORE.payid)pay.push(`<div class="k">PayID</div><div class="v">${esc(STORE.payid)}</div>`);
+  if(STORE.bank_details)pay.push(`<div class="k">Bank transfer</div><div class="v">${esc(STORE.bank_details).replace(/\n/g,"<br>")}</div>`);
+  $("modalMount").innerHTML=`<div class="overlay"><div class="sheet"><div class="sheet-in">
+    <button class="x" id="mX">×</button><h3>Pay ${money(item.price)}</h3><p class="lead">Send it, then drop in a screenshot to confirm your bag.</p>
+    <div class="paybox">${pay.join("")}<div class="k">Reference</div><div class="v">${esc(r.pickup_code)}</div></div>
+    <div class="field"><label>Screenshot of your payment</label>
+      <div class="photo-drop" id="pDrop"><span class="ph-hint" id="pHint">Tap to add your payment screenshot</span><img id="pPrev" alt=""><button type="button" class="photo-clear" id="pClr">×</button></div>
+      <input type="file" id="pFile" accept="image/*"></div>
+    <button class="btn btn-primary" id="pConfirm" disabled>Confirm my bag</button>
+    <p class="stepnote">Prefer to pay in store? <a href="#" id="toStore">Switch to pay in store</a></p></div></div></div>`;
+  $("mX").onclick=closeModal;
+  let blob=null;
+  $("pDrop").onclick=e=>{if(e.target.id!=="pClr")$("pFile").click();};
+  $("pClr").onclick=()=>{blob=null;$("pFile").value="";$("pPrev").src="";$("pDrop").classList.remove("has-img");$("pConfirm").disabled=true;};
+  $("pFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;blob=await compress(f);$("pPrev").src=URL.createObjectURL(blob);$("pDrop").classList.add("has-img");$("pConfirm").disabled=false;};
+  $("toStore").onclick=e=>{e.preventDefault();stepDone(item,r,"instore");};
+  $("pConfirm").onclick=async()=>{
+    if(!blob){toast("Add your screenshot first");return;}
+    const b=$("pConfirm");b.disabled=true;b.innerHTML='<span class="spinner"></span> Confirming';
+    try{const url=await uploadPhoto(blob,"payments/");const{error}=await sb.rpc("attach_payment",{p_resv:r.id,p_url:url});if(error)throw error;stepDone(item,r,"paid");}
+    catch(err){console.error(err);toast("Upload failed, try again");b.disabled=false;b.textContent="Confirm my bag";}
+  };
+}
+function stepDone(item,r,mode){
+  const line=mode==="paid"?"Paid and reserved. See you at pickup!":"Reserved! Pay when you collect.";
+  const pw=item.pickup_window||STORE.pickup_window;
+  const wa=STORE.whatsapp_url?`<p class="stepnote"><a href="${esc(STORE.whatsapp_url)}" target="_blank">Join our WhatsApp for the next drop ↗</a></p>`:"";
+  const rel=mode!=="paid"?`<p class="stepnote">Can't make it after all? <a href="${baseUrl()}?c=${encodeURIComponent(STORE.slug)}&release=${r.id}">Release my bag for someone else</a></p>`:"";
+  $("modalMount").innerHTML=`<div class="overlay"><div class="sheet"><div class="sheet-in"><div class="conf">
+    <div class="tick">✓</div><h3>${line}</h3>
+    <p class="lead">Show this code at ${esc(STORE.shop_name||"the cafe")}${pw?` before ${esc(pw)}`:""}.</p>
+    <div class="code">${esc(r.pickup_code)}</div>
+    <div style="margin-top:16px"><button class="btn btn-primary" id="doneBtn">Done</button></div>${rel}${wa}</div></div></div></div>`;
+  $("doneBtn").onclick=()=>{closeModal();renderStore(!$("previewBar").classList.contains("hidden"));};
+}
+
+boot();
+</script>
+</body>
+</html>
