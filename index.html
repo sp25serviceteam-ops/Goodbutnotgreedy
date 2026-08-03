@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#1f3d2b" />
 <title>Good But Not Greedy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --green:#1f3d2b; --leaf:#3f8a5f; --cream:#f6f3ec; --card:#fff; --ink:#26251f; --muted:#7c7a70;
@@ -12,8 +15,10 @@
     --shadow:0 1px 2px rgba(31,61,43,.06),0 6px 20px rgba(31,61,43,.06);
   }
   *{box-sizing:border-box} html,body{margin:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  body{font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.45;padding-bottom:env(safe-area-inset-bottom)}
+  h1,h2,h3,.section-title,.top h1,.store-hero h2,.authbox h2,.authbox .brand b,.sheet h3,.oname{font-family:'Fraunces','Iowan Old Style',Georgia,serif;letter-spacing:-.01em}
+  .ic{width:14px;height:14px;vertical-align:-2px;flex:0 0 auto}
   .wrap{max-width:720px;margin:0 auto;padding:0 16px 72px}
   .hidden{display:none!important}
   a{color:var(--leaf)}
@@ -299,6 +304,12 @@ const SUPABASE_KEY = "sb_publishable_bYwuFbrR_zO-RKW6hIJRFw_55qbGc1h";
 const BUCKET = "rescue-photos";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $ = id => document.getElementById(id);
+const IC={
+  bag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:42px;height:42px;opacity:.4"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>',
+  clock:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></svg>',
+  pin:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21c4.4-4.2 7-7.6 7-11a7 7 0 1 0-14 0c0 3.4 2.6 6.8 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px"><path d="M5 13l4 4L19 7"/></svg>'
+};
 
 let CAFE=null;   // owner's cafe (when signed in)
 let STORE=null;  // cafe currently shown on the storefront
@@ -526,7 +537,7 @@ function renderLibrary(items){
   if(!items.length){lib.innerHTML=`<div class="empty">No saved items yet.<br>Add your first one above.</div>`;return;}
   lib.innerHTML=`<div class="grid">`+items.map(it=>{
     const left=Math.max(0,(it.quantity||0)-(it.reserved_count||0));
-    const thumb=it.photo_url?`<img src="${esc(it.photo_url)}" alt="" loading="lazy">`:`<div class="noimg">🥐</div>`;
+    const thumb=it.photo_url?`<img src="${esc(it.photo_url)}" alt="" loading="lazy">`:`<div class="noimg">${IC.bag}</div>`;
     let statusTag="";
     if(it.available){
       const now=Date.now();
@@ -600,7 +611,7 @@ async function renderStore(preview){
   if(!live.length){list.innerHTML=`<div class="card"><div class="empty">Nothing available right now.<br>Check back when today's bags drop.</div></div>`;return;}
   list.innerHTML=live.map(it=>{
     const left=Math.max(0,(it.quantity||0)-(it.reserved_count||0));
-    const img=it.photo_url?`<img src="${esc(it.photo_url)}" alt="">`:`<div class="noimg">🥐</div>`;
+    const img=it.photo_url?`<img src="${esc(it.photo_url)}" alt="">`:`<div class="noimg">${IC.bag}</div>`;
     const pickup=it.pickup_window||STORE.pickup_window||"";
     const ov=(it.original_value!=null&&it.price!=null&&Number(it.original_value)>Number(it.price))?Number(it.original_value):null;
     const save=ov?Math.round((1-Number(it.price)/ov)*100):0;
@@ -609,7 +620,7 @@ async function renderStore(preview){
     return `<div class="offer card"><div class="oimg">${img}</div><div class="obody">
       <div class="orow"><p class="oname">${esc(it.name)}</p><span class="oprice">${money(it.price)}${ov?`<span class="owas">${money(ov)}</span>`:""}</span></div>
       <p class="odesc">${esc(it.description)||""}</p>
-      <div class="ometa">${ov?`<span class="chip save">Save ${save}%</span>`:""}${pickup?`<span class="chip">🕒 ${esc(pickup)}</span>`:""}<span class="chip">📍 Pickup in store</span>${chip}</div>${cta}</div></div>`;
+      <div class="ometa">${ov?`<span class="chip save">Save ${save}%</span>`:""}${pickup?`<span class="chip">${IC.clock}${esc(pickup)}</span>`:""}<span class="chip">${IC.pin}Pickup in store</span>${chip}</div>${cta}</div></div>`;
   }).join("");
   list.querySelectorAll("button[data-reserve]").forEach(b=>{b.onclick=()=>openReserve(live.find(x=>x.id===b.dataset.reserve));});
 }
@@ -672,7 +683,7 @@ function stepDone(item,r,mode){
   const wa=STORE.whatsapp_url?`<p class="stepnote"><a href="${esc(STORE.whatsapp_url)}" target="_blank">Join our WhatsApp for the next drop ↗</a></p>`:"";
   const rel=mode!=="paid"?`<p class="stepnote">Can't make it after all? <a href="${baseUrl()}?c=${encodeURIComponent(STORE.slug)}&release=${r.id}">Release my bag for someone else</a></p>`:"";
   $("modalMount").innerHTML=`<div class="overlay"><div class="sheet"><div class="sheet-in"><div class="conf">
-    <div class="tick">✓</div><h3>${line}</h3>
+    <div class="tick">${IC.check}</div><h3>${line}</h3>
     <p class="lead">Show this code at ${esc(STORE.shop_name||"the cafe")}${pw?` before ${esc(pw)}`:""}.</p>
     <div class="code">${esc(r.pickup_code)}</div>
     <div style="margin-top:16px"><button class="btn btn-primary" id="doneBtn">Done</button></div>${rel}${wa}</div></div></div></div>`;
