@@ -8,7 +8,7 @@
 <title>Cafe Care Package — free tools for cafes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..700&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --green:#0b0b0c; --leaf:#0b0b0c; --leaf-hover:#2a2a2e; --accent:#16a34a; --bg:#ffffff; --cream:#ffffff; --card:#fff; --ink:#0b0b0c; --muted:#6b6b72;
@@ -16,9 +16,10 @@
     --shadow:0 1px 2px rgba(0,0,0,.04),0 10px 26px rgba(0,0,0,.06);
   }
   *{box-sizing:border-box} html,body{margin:0;overflow-x:clip}
-  body{font-family:'Archivo',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  body{font-family:'Schibsted Grotesk',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.45;padding-bottom:env(safe-area-inset-bottom)}
-  h1,h2,h3,.section-title,.top h1,.store-hero h2,.authbox h2,.authbox .brand b,.sheet h3,.oname{font-family:'Archivo',sans-serif;font-weight:700;letter-spacing:-.01em}
+  h1,h2,h3,.section-title,.top h1,.authbox .brand b,.sheet h3,.oname{font-family:'Schibsted Grotesk',sans-serif;font-weight:700;letter-spacing:-.01em}
+  .landing-h1,.toolcard-name,.idea-h,.store-hero h2,.authbox h2{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto}
   .ic{width:14px;height:14px;vertical-align:-2px;flex:0 0 auto}
   .wrap{max-width:720px;margin:0 auto;padding:0 16px 72px}
   .hidden{display:none!important}
@@ -146,17 +147,17 @@
   .wordmark .wm-e{color:var(--accent)}
   .landing-logo{width:230px;max-width:64%;height:auto;margin-bottom:24px}
   .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}
-  .landing-h1{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(29px,7vw,40px);line-height:1.05;letter-spacing:-.025em;margin:0 0 16px;color:var(--ink)}
+  .landing-h1{font-family:'Fraunces',Georgia,serif;font-weight:640;font-size:clamp(32px,7.6vw,45px);line-height:1.02;letter-spacing:-.015em;margin:0 0 16px;color:var(--ink)}
   .landing-lead{font-size:16.5px;color:var(--muted);line-height:1.6;margin:0 0 26px;max-width:420px}
   .toolcard{width:100%;max-width:430px;text-align:left;border:1.5px solid var(--ink);border-radius:18px;padding:22px 20px;margin:0 0 22px;background:var(--bg)}
   .toolcard-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 11px}
   .toolcard-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.18)}
-  .toolcard-name{font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.02em;margin:0 0 7px;color:var(--ink)}
+  .toolcard-name{font-family:'Fraunces',Georgia,serif;font-weight:620;font-size:25px;letter-spacing:-.01em;margin:0 0 8px;color:var(--ink)}
   .toolcard-desc{font-size:14.5px;color:var(--muted);line-height:1.55;margin:0 0 16px}
   .soon{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;color:var(--muted);margin:0 0 40px}
   .soon-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(22,163,74,.16)}
   .idea{width:100%;max-width:430px;border-radius:18px;padding:26px 22px;background:var(--ink);color:#fff;text-align:left}
-  .idea-h{font-family:'Archivo',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.01em;margin:0 0 7px;color:#fff}
+  .idea-h{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:22px;letter-spacing:-.005em;margin:0 0 8px;color:#fff}
   .idea-p{font-size:14.5px;line-height:1.55;color:rgba(255,255,255,.72);margin:0 0 18px}
   .idea .btn-primary{background:#fff;color:var(--ink)}
   .idea .btn-primary:hover{background:#ededed}
@@ -193,7 +194,7 @@
       <div class="toolcard-tag">Live now</div>
       <div class="toolcard-name">Sell your surplus</div>
       <div class="toolcard-desc">Put your day's leftover food up before you close. Customers reserve it, you keep every cent. No middleman, no commission.</div>
-      <button class="btn btn-primary" id="openWaste">Open the tool</button>
+      <button class="btn btn-primary" id="openWaste">Start making money on your daily surplus</button>
     </div>
 
     <div class="soon"><span class="soon-dot"></span> More tools dropping soon</div>
