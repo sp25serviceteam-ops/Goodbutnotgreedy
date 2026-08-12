@@ -4,9 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Wholesale Care Package: ordering tools for coffee roasters</title>
-<meta name="description" content="Our cafes ordered by text and we retyped everything into Xero by hand, so we built an ordering portal. It runs our whole book. Opening it to a handful of roasters." />
+<meta name="description" content="I retyped wholesale orders into Xero by hand for a Melbourne roaster, so I built a portal. It still runs their whole book. Opening it to a few more roasters." />
 <meta property="og:title" content="Wholesale Care Package" />
-<meta property="og:description" content="Wholesale orders shouldn't live in your text messages. Built by a roaster, runs our whole book, opening to a handful of others." />
+<meta property="og:description" content="Wholesale orders shouldn't live in your text messages. Built inside a Melbourne roastery, still running their whole book, opening to a few more roasters." />
 <meta property="og:image" content="https://cafecarepackage.com/carepack.png" />
 <meta property="og:url" content="https://cafecarepackage.com/wholesale/" />
 <meta property="og:type" content="website" />
@@ -74,6 +74,24 @@
   /* Demo call to action. Sits above the form deliberately: a roaster who
      has never seen this can't picture it from a paragraph, and playing
      with it is what sells it. */
+  /* Then/now: the story told as pictures. Deliberately a bit uneven,
+     that is the point. */
+  .thennow{width:100%;max-width:430px;margin:0 0 34px;text-align:left}
+  .tn-cap{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 9px;text-align:center}
+  .thread{display:flex;flex-direction:column;gap:6px;align-items:flex-start;background:#f7f7f8;border-radius:16px;padding:14px 13px}
+  .bub{background:#e9e9eb;color:#111;font-size:14.5px;line-height:1.4;padding:8px 12px;border-radius:16px;border-bottom-left-radius:5px;max-width:85%}
+  .bub.short{max-width:70%}
+  .bub-time{font-size:11px;color:var(--muted);padding-left:4px}
+  .tn-arrow{text-align:center;font-size:20px;color:var(--muted);margin:10px 0}
+  .ordercard{border:1.5px solid var(--ink);border-radius:15px;overflow:hidden;background:var(--bg)}
+  .oc-head{display:flex;justify-content:space-between;align-items:baseline;padding:11px 14px;border-bottom:1px solid var(--line);font-weight:700;font-size:15px}
+  .oc-when{font-weight:400;font-size:12.5px;color:var(--muted)}
+  .oc-line{display:flex;justify-content:space-between;padding:8px 14px;font-size:14px;border-bottom:1px solid #f0f0f2}
+  .oc-line span:last-child{color:var(--muted)}
+  .oc-foot{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f7f7f8}
+  .oc-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:#e8f5ec;padding:4px 9px;border-radius:7px}
+  .oc-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
   .demo-cta{width:100%;max-width:430px;margin:0 0 30px}
   .demo-cta-k{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 11px;text-align:center}
   .demo-cta-btns{display:flex;flex-direction:column;gap:10px}
@@ -103,8 +121,27 @@
   <img class="landing-logo" src="../carepack.png" alt="carepack, Wholesale Care Package" />
   <p class="eyebrow">Wholesale Care Package</p>
   <h1 class="landing-h1">Wholesale orders shouldn't live in your text messages.</h1>
-  <p class="landing-lead" style="margin-bottom:14px">I run wholesale for a coffee roaster in Melbourne. Just under 200 cafes. They ordered by text, by phone, by whatever was handy, and every one of those orders got retyped into Xero by hand. Usually by me, usually at night.</p>
-  <p class="landing-lead">So we built our own ordering portal. It's been running our whole book for months, and now I'm opening it up to a handful of other roasters.</p>
+  <p class="landing-lead" style="margin-bottom:14px">I ran wholesale for a coffee roaster in Melbourne. Just under 200 cafes. They ordered by text, by phone, by whatever was handy, and every one of those orders got retyped into Xero by hand. Usually by me, usually at night.</p>
+  <p class="landing-lead">So I built this portal. It still runs that roaster's whole book today, and now I'm opening it up to a handful of other roasters.</p>
+
+  <div class="thennow">
+    <p class="tn-cap">How orders used to arrive.</p>
+    <div class="thread">
+      <div class="bub">morning mate can we get 8kg house blend for thurs</div>
+      <div class="bub short">also 2 boxes of the 8oz cups if theyre in</div>
+      <div class="bub">sorry one more. 1x decaf ground &#128591;</div>
+      <div class="bub-time">5:47 am</div>
+    </div>
+    <div class="tn-arrow" aria-hidden="true">&darr;</div>
+    <p class="tn-cap">How they arrive now.</p>
+    <div class="ordercard">
+      <div class="oc-head"><span>Ruby J Cafe</span><span class="oc-when">for Thursday</span></div>
+      <div class="oc-line"><span>House Blend 1kg</span><span>&times;8</span></div>
+      <div class="oc-line"><span>8oz Cups, 1000 pieces</span><span>&times;2</span></div>
+      <div class="oc-line"><span>Decaf Ground 250g</span><span>&times;1</span></div>
+      <div class="oc-foot"><span class="oc-pill">Draft in your Xero</span><span class="oc-when">nothing retyped</span></div>
+    </div>
+  </div>
 
   <div class="demo-cta">
     <p class="demo-cta-k">See it working</p>
@@ -126,7 +163,7 @@
     <div class="toolcard">
       <div class="toolcard-tag">Opening soon</div>
       <div class="toolcard-name">Wholesale ordering</div>
-      <div class="toolcard-desc">Runs our whole book today. Looking for a handful of roasters to try it next.</div>
+      <div class="toolcard-desc">Proven on just under 200 cafes' worth of daily orders. Looking for a few roasters to try it next.</div>
       <ul class="points">
         <li><span class="tick">&check;</span><span><b>Each cafe gets one link.</b> It opens with your name and logo on it, they tap what they need, done. Saved to a phone's home screen it opens like an app, so nobody goes digging through old texts to find it.</span></li>
         <li><span class="tick">&check;</span><span><b>Set up from your Xero.</b> Connect it and we read the products, customers and per-cafe codes you already have in there. You confirm them. You don't retype a catalogue you already own once.</span></li>
