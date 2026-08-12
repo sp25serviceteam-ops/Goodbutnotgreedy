@@ -61,6 +61,21 @@
   .btn-primary{background:var(--leaf);color:#fff;width:100%}
   .btn-primary:hover{background:#2a2a2e}
   .btn-primary:active{transform:scale(.995)}
+  .btn-ghost{background:var(--bg);color:var(--ink);width:100%;border:1.5px solid var(--ink)}
+  .btn-ghost:hover{background:#f7f7f8}
+  .btn-ghost:active{transform:scale(.995)}
+
+  /* Demo call to action. Sits above the form deliberately: a roaster who
+     has never seen this can't picture it from a paragraph, and playing
+     with it is what sells it. */
+  .demo-cta{width:100%;max-width:430px;margin:0 0 30px}
+  .demo-cta-k{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 11px;text-align:center}
+  .demo-cta-btns{display:flex;flex-direction:column;gap:10px}
+  .demo-cta .btn{justify-content:space-between;text-align:left;padding:14px 17px;min-height:60px}
+  .demo-btn-txt{display:flex;flex-direction:column;min-width:0}
+  .demo-btn-sub{font-weight:400;font-size:13px;opacity:.72;margin-top:1px}
+  .demo-btn-go{font-weight:400;opacity:.5;flex:none}
+  .demo-cta-note{font-size:13px;color:var(--muted);text-align:center;margin:11px 0 0}
   .fineprint{font-size:13px;color:var(--muted);text-align:center;margin:12px 0 0}
 
   .note-from{max-width:430px;width:100%;text-align:center;padding:2px 6px;margin:0 0 34px}
@@ -84,6 +99,21 @@
   <h1 class="landing-h1">Your own ordering portal. Nobody clipping your money.</h1>
   <p class="landing-lead" style="margin-bottom:14px">Your cafes order from a page with your name and your logo on it.</p>
   <p class="landing-lead">The order lands in your Xero as a draft invoice, coded and priced exactly how you already have it set up. No commission, no processing fees, no middleman between you and your customers. Your accounts stay yours, never listed on a shared marketplace.</p>
+
+  <div class="demo-cta">
+    <p class="demo-cta-k">See it working</p>
+    <div class="demo-cta-btns">
+      <a class="btn btn-primary" href="try/customer.html">
+        <span class="demo-btn-txt">Try me as a customer<span class="demo-btn-sub">What your cafes see</span></span>
+        <span class="demo-btn-go" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="btn btn-ghost" href="try/wholesaler.html">
+        <span class="demo-btn-txt">Try me as a wholesaler<span class="demo-btn-sub">What you see</span></span>
+        <span class="demo-btn-go" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+    <p class="demo-cta-note">Working demos, nothing to sign up for. Everything in them is made up.</p>
+  </div>
 
   <div class="pre-done" style="width:100%;display:flex;flex-direction:column;align-items:center">
 

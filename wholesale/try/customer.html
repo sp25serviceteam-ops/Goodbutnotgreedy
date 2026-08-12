@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Demo: what your cafes see</title>
+<meta name="robots" content="noindex" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* ------------------------------------------------------------------
+     Demo skin.
+
+     styles.css carries the real portal's mechanics (accordions, qty
+     steppers, modals, the cart footer) and we want all of that. What we
+     do not want is San Pedro's brand, because a prospect is meant to
+     picture their own roastery here.
+
+     Every brand value in styles.css is a :root custom property, so
+     re-pointing those repaints the whole thing. Fonts are the exception:
+     Archivo is hardcoded on a handful of selectors, hence the override
+     block below.
+     ------------------------------------------------------------------ */
+  :root{
+    --cream:#ffffff; --cream-2:#f7f7f8; --paper:#ffffff;
+    --ink:#0b0b0c; --ink-soft:#4a4a52; --ink-mute:#8b8b93;
+    --line:#e6e6e9; --line-soft:#f0f0f2;
+    --red:#16a34a; --red-soft:#e8f5ec;
+    --green:#16a34a; --green-soft:#e8f5ec;
+    --accent:#16a34a; --accent-soft:#e8f5ec;
+  }
+  body, button, input, textarea, select,
+  .acc-title, .display, .success-mark, .modal-title, .submit-btn,
+  .btn-confirm, .btn-cancel-order, .btn-back, .cart-count, .cart-label{
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif !important;
+  }
+  .acc-title{letter-spacing:-.02em}
+
+  /* --- demo bar ------------------------------------------------------ */
+  .try-bar{
+    background:#0b0b0c;color:#fff;font-size:12.5px;font-weight:600;
+    padding:10px 16px calc(10px + env(safe-area-inset-top));
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    position:sticky;top:0;z-index:300;
+  }
+  .try-bar a{color:#fff;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+  .try-bar span{opacity:.82;font-weight:400}
+
+  /* --- logo placeholder ---------------------------------------------- */
+  .ph-logo{
+    width:200px;max-width:74%;height:76px;margin:0 auto;
+    border:1.5px dashed #c8c8ce;border-radius:12px;background:var(--cream-2);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--ink-mute);line-height:1.4;padding:8px;
+  }
+
+  /* --- "your photo here" thumbnails ----------------------------------
+     On every section header and every product row, so a prospect can see
+     exactly where their own product shots would sit.                    */
+  .ph-thumb{
+    width:44px;height:44px;flex:none;border-radius:8px;
+    border:1px dashed #c8c8ce;background:var(--cream-2);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-size:7.5px;line-height:1.2;font-weight:600;color:var(--ink-mute);
+    letter-spacing:.02em;padding:3px;
+  }
+  .ph-thumb.sec{width:38px;height:38px;font-size:7px}
+  .accordion-left{align-items:center !important}
+  .product-row{align-items:center}
+
+  @media (max-width:420px){
+    .ph-thumb{width:38px;height:38px;font-size:7px}
+    .ph-thumb.sec{width:34px;height:34px}
+    .product-row{padding-left:14px;padding-right:14px;gap:9px}
+    .accordion-trigger{padding-left:14px;padding-right:14px}
+    .product-name{font-size:13px}
+  }
+
+  .try-note{
+    max-width:560px;margin:0 auto;padding:0 20px 4px;
+    font-size:12.5px;color:var(--ink-mute);text-align:center;line-height:1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="try-bar">
+  <span>Demo &middot; nothing here is real</span>
+  <a href="/wholesale/">&larr; Back</a>
+</div>
+
+<header>
+  <div class="ph-logo">Your roaster logo</div>
+</header>
+
+<div id="orderForm">
+  <div class="intro">
+    <div class="display">Hello, Ruby Lane Cafe</div>
+    <p>Tap a section, add what you need, then send it over. We deliver Tuesdays and Fridays.</p>
+  </div>
+
+  <p class="try-note">The grey squares are where your product photos go. Try adding a few items, then hit Review Order.</p>
+
+  <div id="categories" class="categories"></div>
+
+  <div class="anything-else-wrap">
+    <div class="anything-else-label">Anything else?</div>
+    <textarea class="anything-else-input" id="anythingElse" rows="2" placeholder="Something we don't stock yet, a question, anything at all"></textarea>
+  </div>
+</div>
+
+<div class="cart-footer" id="cartFooter">
+  <div class="cart-row">
+    <div>
+      <div class="cart-label">Your order</div>
+      <div class="cart-count" id="itemCount">Nothing selected yet</div>
+    </div>
+  </div>
+  <button class="submit-btn" id="reviewBtn" onclick="openReview()">Review Order</button>
+</div>
+
+<!-- Review -->
+<div id="reviewModal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-title">Review your order</div>
+    <div id="reviewItems"></div>
+    <div class="order-notes-wrap">
+      <div class="order-notes-label">Notes for this order</div>
+      <textarea class="order-notes-input" id="orderNotes" rows="3" placeholder="Any special instructions or notes for this order…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-back" onclick="closeReview()">Back</button>
+      <button class="btn-confirm" id="confirmBtn" onclick="openFinalConfirm()">Confirm Order</button>
+    </div>
+    <div id="emptyOrderError" class="empty-order-error">Your order is empty, please add items before confirming.</div>
+  </div>
+</div>
+
+<!-- Is that everything? -->
+<div id="finalConfirmModal" class="modal-overlay modal-overlay-center">
+  <div class="modal modal-center">
+    <div class="modal-title">Is that everything?</div>
+    <div class="final-confirm-msg" id="finalConfirmMsg"></div>
+    <div class="modal-actions">
+      <button class="btn-back" onclick="closeFinalConfirm()">Let me check</button>
+      <button class="btn-confirm btn-confirm-green" onclick="confirmAndSubmit()">Yes, I have everything</button>
+    </div>
+  </div>
+</div>
+
+<!-- Success -->
+<div id="successScreen" class="success-screen">
+  <div class="success-mark">Order sent</div>
+  <p id="successSummary" style="max-width:420px;color:var(--ink-soft);font-size:15px;line-height:1.6"></p>
+  <p style="max-width:420px;color:var(--ink-mute);font-size:13px;line-height:1.6;margin-top:6px">
+    In the real thing your roaster gets this instantly, and it lands in their Xero as a draft invoice.
+  </p>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:26px;width:100%;max-width:320px">
+    <a class="submit-btn" style="text-decoration:none;text-align:center;display:block" href="wholesaler.html">See what the roaster sees &rarr;</a>
+    <button class="btn-back" onclick="location.reload()">Run the demo again</button>
+  </div>
+</div>
+
+<script>
+/* ---------------------------------------------------------------------
+   Deliberately standalone. app.js is not imported: it posts to the live
+   Make webhook and hard-blocks without a valid Xero customer UUID, so a
+   demo built on it would either fail closed or fire real traffic.
+   Nothing below leaves the page.
+   --------------------------------------------------------------------- */
+
+var CATALOGUE = [
+  { id:'blends', label:'House Blends', unit:'kg', note:'Roasted to order, Mondays and Thursdays.', items:[
+    { id:'b-house',   name:'The House Blend',      meta:'Chocolate, hazelnut, brown sugar' },
+    { id:'b-dark',    name:'Dark Roast',           meta:'Heavier, holds up in milk' },
+    { id:'b-seasonal',name:'Seasonal Blend',       meta:'Rotates every eight weeks' }
+  ]},
+  { id:'origins', label:'Single Origins', unit:'kg', note:'Filter roast unless you ask otherwise.', items:[
+    { id:'o-eth', name:'Ethiopia, Guji',      meta:'Peach, jasmine, black tea' },
+    { id:'o-col', name:'Colombia, Huila',     meta:'Red apple, caramel' },
+    { id:'o-ken', name:'Kenya, Nyeri',        meta:'Blackcurrant, big acidity' }
+  ]},
+  { id:'retail', label:'Retail Bags', unit:'×250g', note:'Your logo or ours, your call.', items:[
+    { id:'r-house', name:'House Blend 250g',    meta:'Beans' },
+    { id:'r-house-g',name:'House Blend 250g',   meta:'Ground' },
+    { id:'r-eth',   name:'Ethiopia Guji 250g',  meta:'Beans' }
+  ]},
+  { id:'decaf', label:'Decaf', unit:'kg', note:'', items:[
+    { id:'d-1kg', name:'Decaf, Swiss Water',  meta:'1kg' },
+    { id:'d-250', name:'Decaf 250g',          meta:'Retail bag' }
+  ]},
+  { id:'choc', label:'Chocolate & Chai', unit:'×', note:'', items:[
+    { id:'c-drink', name:'Drinking Chocolate', meta:'1.5kg tub' },
+    { id:'c-dark',  name:'Dark Chocolate 70%', meta:'1.5kg tub' },
+    { id:'c-chai',  name:'Spiced Chai',        meta:'1kg' }
+  ]},
+  { id:'syrups', label:'Syrups', unit:'×', note:'', items:[
+    { id:'s-van', name:'Vanilla',   meta:'750ml' },
+    { id:'s-car', name:'Caramel',   meta:'750ml' },
+    { id:'s-haz', name:'Hazelnut',  meta:'750ml' }
+  ]},
+  { id:'cups', label:'Cups & Lids', unit:'×', note:'Sold by the sleeve.', items:[
+    { id:'cu-8',  name:'8oz Cups',   meta:'1000 pieces' },
+    { id:'cu-12', name:'12oz Cups',  meta:'1000 pieces' },
+    { id:'cu-lid',name:'Lids',       meta:'Fits 12oz and 16oz' }
+  ]}
+];
+
+var qty = {};
+var THUMB = '<div class="ph-thumb" aria-hidden="true">your photo here</div>';
+var THUMB_SEC = '<div class="ph-thumb sec" aria-hidden="true">your photo here</div>';
+
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+function build(){
+  var wrap = document.getElementById('categories');
+  CATALOGUE.forEach(function(sec){
+    var rows = sec.items.map(function(it){
+      qty[it.id] = 0;
+      return '<div class="product-row" id="row-'+it.id+'">'
+        + THUMB
+        + '<div class="product-info"><div class="product-name">'+esc(it.name)
+        + (it.meta ? ' <span class="meta">'+esc(it.meta)+'</span>' : '')
+        + '</div></div>'
+        + '<div class="qty-control">'
+        +   '<button class="qty-btn" aria-label="Remove one" onclick="changeQty(\''+it.id+'\',-1)">&#8722;</button>'
+        +   '<input class="qty-display" type="number" id="qty-'+it.id+'" value="0" min="0" max="99" inputmode="numeric" aria-label="'+esc(it.name)+' quantity" oninput="setQty(\''+it.id+'\',this.value)">'
+        +   '<button class="qty-btn" aria-label="Add one" onclick="changeQty(\''+it.id+'\',1)">+</button>'
+        +   '<span class="qty-unit">'+esc(sec.unit)+'</span>'
+        + '</div></div>';
+    }).join('');
+
+    var acc = document.createElement('div');
+    acc.className = 'accordion';
+    acc.id = 'acc-' + sec.id;
+    acc.innerHTML =
+        '<button class="accordion-trigger" onclick="toggleAccordion(\''+sec.id+'\')">'
+      +   '<div class="accordion-left">'
+      +     THUMB_SEC
+      +     '<div class="acc-title">'+esc(sec.label)+'</div>'
+      +     '<span class="acc-badge" id="badge-'+sec.id+'"></span>'
+      +   '</div>'
+      +   '<div class="acc-chevron">&#8964;</div>'
+      + '</button>'
+      + '<div class="accordion-panel" id="panel-'+sec.id+'">'
+      +   '<div class="panel-inner">'
+      +     (sec.note ? '<div class="section-note">'+esc(sec.note)+'</div>' : '')
+      +     rows
+      +   '</div>'
+      + '</div>';
+    wrap.appendChild(acc);
+  });
+}
+
+function toggleAccordion(id){
+  document.getElementById('acc-'+id).classList.toggle('open');
+}
+
+function changeQty(id, d){
+  setQty(id, (qty[id] || 0) + d);
+  document.getElementById('qty-'+id).value = qty[id];
+}
+
+function setQty(id, v){
+  var n = parseInt(v, 10);
+  if (isNaN(n) || n < 0) n = 0;
+  if (n > 99) n = 99;
+  qty[id] = n;
+  var row = document.getElementById('row-'+id);
+  if (row) row.classList.toggle('active', n > 0);
+  refresh();
+}
+
+function lines(){
+  var out = [];
+  CATALOGUE.forEach(function(sec){
+    sec.items.forEach(function(it){
+      if (qty[it.id] > 0) out.push({ name:it.name, meta:it.meta, unit:sec.unit, n:qty[it.id] });
+    });
+  });
+  return out;
+}
+
+function refresh(){
+  CATALOGUE.forEach(function(sec){
+    var n = sec.items.reduce(function(a,it){ return a + (qty[it.id]||0); }, 0);
+    var badge = document.getElementById('badge-'+sec.id);
+    badge.textContent = n ? n + ' added' : '';
+    badge.style.display = n ? 'inline-block' : 'none';
+    document.getElementById('acc-'+sec.id).classList.toggle('has-items', n > 0);
+  });
+
+  var l = lines();
+  var total = l.reduce(function(a,x){ return a + x.n; }, 0);
+  var el = document.getElementById('itemCount');
+  el.textContent = total
+    ? total + (total === 1 ? ' item' : ' items') + ' across ' + l.length + (l.length === 1 ? ' line' : ' lines')
+    : 'Nothing selected yet';
+}
+
+function openReview(){
+  var l = lines();
+  var box = document.getElementById('reviewItems');
+  document.getElementById('emptyOrderError').style.display = l.length ? 'none' : 'block';
+  box.innerHTML = l.length
+    ? l.map(function(x){
+        return '<div class="review-item"><span>'+esc(x.name)
+          + (x.meta ? ' <span style="color:var(--ink-mute)">'+esc(x.meta)+'</span>' : '')
+          + '</span><strong>'+x.n+' '+esc(x.unit)+'</strong></div>';
+      }).join('')
+    : '<p style="color:var(--ink-mute);font-size:14px;margin:0">Add a few things first, then come back.</p>';
+  document.getElementById('reviewModal').classList.add('open');
+}
+function closeReview(){ document.getElementById('reviewModal').classList.remove('open'); }
+
+function openFinalConfirm(){
+  var l = lines();
+  if (!l.length){ document.getElementById('emptyOrderError').style.display = 'block'; return; }
+  var total = l.reduce(function(a,x){ return a + x.n; }, 0);
+  document.getElementById('finalConfirmMsg').textContent =
+    'That’s ' + total + (total === 1 ? ' item' : ' items') + ' on its way. Once it’s sent we start roasting, so have a quick look before you confirm.';
+  document.getElementById('reviewModal').classList.remove('open');
+  document.getElementById('finalConfirmModal').classList.add('open');
+}
+function closeFinalConfirm(){
+  document.getElementById('finalConfirmModal').classList.remove('open');
+  document.getElementById('reviewModal').classList.add('open');
+}
+
+function confirmAndSubmit(){
+  var l = lines();
+  var total = l.reduce(function(a,x){ return a + x.n; }, 0);
+  document.getElementById('finalConfirmModal').classList.remove('open');
+  document.getElementById('orderForm').style.display = 'none';
+  document.getElementById('cartFooter').style.display = 'none';
+  document.querySelector('header').style.display = 'none';
+  document.getElementById('successSummary').textContent =
+    total + (total === 1 ? ' item' : ' items') + ' across ' + l.length
+    + (l.length === 1 ? ' line' : ' lines') + ', off to the roastery. No email to chase, no order form to fill in twice.';
+  var s = document.getElementById('successScreen');
+  s.style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+
+build();
+refresh();
+document.getElementById('acc-blends').classList.add('open');
+</script>
+</body>
+</html>

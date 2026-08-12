@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Demo: what you see</title>
+<meta name="robots" content="noindex" />
+<style>
+  /* Care Pack house style. Self-contained: admin.html carries a lot of
+     San Pedro-specific chrome we deliberately are not showing here. */
+  :root{
+    --ink:#0b0b0c; --soft:#4a4a52; --muted:#6b6b72; --faint:#9a9aa2;
+    --line:#e6e6e9; --line-2:#f0f0f2; --bg:#ffffff; --wash:#f7f7f8;
+    --accent:#16a34a; --accent-wash:#e8f5ec;
+    --amber:#8a6116; --amber-wash:#f5eddc;
+    --face:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--face);font-size:16px;line-height:1.55;color-scheme:light;-webkit-font-smoothing:antialiased}
+  button{font:inherit}
+
+  .try-bar{background:#0b0b0c;color:#fff;font-size:12.5px;font-weight:600;padding:10px 16px calc(10px + env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:40}
+  .try-bar a{color:#fff;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+  .try-bar span{opacity:.82;font-weight:400}
+
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px calc(60px + env(safe-area-inset-bottom))}
+
+  header{padding:26px 0 18px;display:flex;align-items:center;gap:14px}
+  .ph-logo{width:104px;height:52px;flex:none;border:1.5px dashed #c8c8ce;border-radius:11px;background:var(--wash);display:flex;align-items:center;justify-content:center;text-align:center;font-size:8.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);line-height:1.3;padding:5px}
+  header h1{font-size:20px;font-weight:700;letter-spacing:-.02em;margin:0}
+  header p{margin:1px 0 0;font-size:13px;color:var(--muted)}
+
+  /* tabs */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);position:sticky;top:38px;background:var(--bg);z-index:30}
+  .tab{background:none;border:none;padding:12px 4px;margin-right:18px;font-size:15px;font-weight:700;color:var(--faint);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px}
+  .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+  .tab:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
+  .panel{display:none;padding-top:20px}
+  .panel.on{display:block}
+
+  /* callouts */
+  .callout{border:1.5px solid var(--ink);border-radius:15px;padding:16px 17px;margin:0 0 20px}
+  .callout.soft{border:1px solid var(--line);background:var(--wash)}
+  .kicker{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .callout h3{font-size:15.5px;font-weight:700;margin:0 0 5px;letter-spacing:-.01em}
+  .callout p{margin:0;font-size:14px;color:var(--muted);line-height:1.55}
+  .callout p + p{margin-top:8px}
+
+  /* order feed */
+  .feed{display:flex;flex-direction:column;gap:10px}
+  .order{border:1px solid var(--line);border-radius:14px;padding:14px 15px}
+  .order-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px}
+  .order-cafe{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+  .order-when{font-size:12.5px;color:var(--faint);white-space:nowrap}
+  .order-items{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0 0 10px}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:7px}
+  .pill.draft{color:var(--accent);background:var(--accent-wash)}
+  .pill.wait{color:var(--amber);background:var(--amber-wash)}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+
+  /* catalogue */
+  .cat-sec{border:1px solid var(--line);border-radius:14px;margin:0 0 12px;overflow:hidden}
+  .cat-sec-head{display:flex;align-items:center;gap:10px;padding:12px 13px;background:var(--wash);border-bottom:1px solid var(--line)}
+  .cat-sec-name{flex:1;min-width:0;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .cat-item{display:flex;align-items:center;gap:10px;padding:11px 13px;border-bottom:1px solid var(--line-2)}
+  .cat-item:last-child{border-bottom:none}
+  .cat-item-name{flex:1;min-width:0;font-size:14px}
+  .cat-item-name .meta{color:var(--faint);font-size:12.5px}
+  .mini{border:1px solid var(--line);background:var(--bg);color:var(--soft);border-radius:8px;width:30px;height:30px;flex:none;cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center}
+  .mini:hover:not(:disabled){background:var(--wash);color:var(--ink)}
+  .mini:disabled{opacity:.3;cursor:default}
+  .mini.del:hover{background:#fdecea;border-color:#f0c4bd;color:#8e3320}
+  .mini:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .addrow{display:flex;gap:8px;padding:11px 13px;background:var(--wash);border-top:1px solid var(--line)}
+  .addrow input{flex:1;min-width:0;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--bg);color:var(--ink)}
+  .addrow input:focus-visible{outline:2px solid var(--ink);outline-offset:-1px}
+  .btn-sm{border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:9px;padding:9px 14px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .btn-sm.ghost{background:var(--bg);color:var(--ink)}
+  .btn-sm:hover{opacity:.88}
+
+  /* cafes */
+  .cafe{border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin:0 0 10px}
+  .cafe-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .cafe-name{font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .cafe-meta{font-size:12.5px;color:var(--faint)}
+  .linkrow{display:flex;align-items:center;gap:8px;margin-top:10px}
+  .linkbox{flex:1;min-width:0;font-size:12.5px;color:var(--muted);background:var(--wash);border:1px solid var(--line);border-radius:9px;padding:8px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  .hint{font-size:13px;color:var(--faint);margin:0 0 16px;line-height:1.5}
+  .foot{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);text-align:center;font-size:13.5px;color:var(--muted)}
+  .foot a{color:var(--ink);font-weight:700;text-underline-offset:3px}
+
+  @media (max-width:400px){
+    .tab{font-size:14px;margin-right:13px}
+    header{gap:11px}
+  }
+</style>
+</head>
+<body>
+
+<div class="try-bar">
+  <span>Demo &middot; nothing here is real</span>
+  <a href="/wholesale/">&larr; Back</a>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <div class="ph-logo">Your roaster logo</div>
+    <div>
+      <h1>Your roastery</h1>
+      <p>Wholesale dashboard</p>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true"  aria-controls="p-activity"  id="t-activity"  onclick="show('activity')">Activity</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-catalogue" id="t-catalogue" onclick="show('catalogue')">Catalogue</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-cafes"     id="t-cafes"     onclick="show('cafes')">Cafes</button>
+  </div>
+
+  <!-- ================= ACTIVITY ================= -->
+  <section class="panel on" id="p-activity" role="tabpanel" aria-labelledby="t-activity">
+
+    <div class="callout">
+      <p class="kicker">Invoicing</p>
+      <h3>Every order lands as a draft invoice in your own Xero.</h3>
+      <p>Nothing goes to your customer until you approve it. You review the draft exactly like any other, and send it when you're happy. We never send anything on your behalf.</p>
+    </div>
+
+    <p class="hint">Orders as they come in. In the real thing this updates itself, so you can leave it open on the bench.</p>
+
+    <div class="feed" id="feed"></div>
+  </section>
+
+  <!-- ================= CATALOGUE ================= -->
+  <section class="panel" id="p-catalogue" role="tabpanel" aria-labelledby="t-catalogue">
+    <p class="hint">Add, remove and reorder. Whatever you do here is what your cafes see next time they open their link. Have a go, it's your demo.</p>
+    <div id="cat"></div>
+    <div style="display:flex;gap:8px;margin-top:6px">
+      <input id="newSecName" placeholder="New section name" style="flex:1;min-width:0;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:9px;padding:10px 12px" />
+      <button class="btn-sm ghost" onclick="addSection()">Add section</button>
+    </div>
+  </section>
+
+  <!-- ================= CAFES ================= -->
+  <section class="panel" id="p-cafes" role="tabpanel" aria-labelledby="t-cafes">
+
+    <div class="callout soft">
+      <p class="kicker">Payments</p>
+      <h3>You choose how payments are handled.</h3>
+      <p>Pinch, Stripe, or whatever you already use. We never touch your money and we don't take a cut of it.</p>
+      <p>We do recommend Pinch. It's the only option that gives you the automatic payment gate, so you can set it to collect direct debits from the moment you switch your customers over, and the fees are the best of the lot.</p>
+    </div>
+
+    <p class="hint">Every cafe gets its own link. No app, no password. Send it once and they use it forever.</p>
+
+    <div id="cafes"></div>
+  </section>
+
+  <div class="foot">
+    Want this pointed at your own Xero?<br />
+    <a href="mailto:lukas@kiness.com.au">lukas@kiness.com.au</a>
+  </div>
+
+</div>
+
+<script>
+/* Nothing here talks to a server. All state is in the page. */
+
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+function show(which){
+  ['activity','catalogue','cafes'].forEach(function(k){
+    document.getElementById('p-'+k).classList.toggle('on', k === which);
+    document.getElementById('t-'+k).setAttribute('aria-selected', k === which ? 'true' : 'false');
+  });
+}
+
+/* ---------------- Activity ---------------- */
+var ORDERS = [
+  { cafe:'Ruby Lane Cafe',      when:'8 minutes ago', items:'12 × House Blend 1kg, 2 × Ethiopia Guji 1kg, 4 × Drinking Chocolate', status:'draft' },
+  { cafe:'The Corner Store',    when:'40 minutes ago',items:'8 × House Blend 1kg, 6 × Retail 250g Beans', status:'draft' },
+  { cafe:'Norfolk & Sons',      when:'2 hours ago',   items:'20 × House Blend 1kg, 3 × Decaf 1kg, 2 × Vanilla syrup', status:'draft' },
+  { cafe:'Baker Street Bakery', when:'Yesterday, 4:12pm', items:'6 × Dark Roast 1kg, 1000 × 12oz Cups', status:'approved' },
+  { cafe:'Wren Coffee House',   when:'Yesterday, 11:03am', items:'14 × House Blend 1kg, 4 × Colombia Huila 1kg', status:'approved' },
+  { cafe:'Pike & Co',           when:'Monday, 8:47am', items:'10 × Seasonal Blend 1kg, 3 × Spiced Chai', status:'approved' }
+];
+
+document.getElementById('feed').innerHTML = ORDERS.map(function(o){
+  var pill = o.status === 'draft'
+    ? '<span class="pill draft"><span class="dot"></span>Draft in Xero</span>'
+    : '<span class="pill wait"><span class="dot"></span>Approved &amp; sent</span>';
+  return '<div class="order">'
+    + '<div class="order-top"><div class="order-cafe">'+esc(o.cafe)+'</div>'
+    + '<div class="order-when">'+esc(o.when)+'</div></div>'
+    + '<p class="order-items">'+esc(o.items)+'</p>'
+    + pill + '</div>';
+}).join('');
+
+/* ---------------- Catalogue ---------------- */
+var CAT = [
+  { name:'House Blends', items:[
+    {n:'The House Blend', m:'1kg'}, {n:'Dark Roast', m:'1kg'}, {n:'Seasonal Blend', m:'1kg'} ]},
+  { name:'Single Origins', items:[
+    {n:'Ethiopia, Guji', m:'1kg'}, {n:'Colombia, Huila', m:'1kg'}, {n:'Kenya, Nyeri', m:'1kg'} ]},
+  { name:'Retail Bags', items:[
+    {n:'House Blend 250g', m:'Beans'}, {n:'House Blend 250g', m:'Ground'}, {n:'Ethiopia Guji 250g', m:'Beans'} ]},
+  { name:'Chocolate & Chai', items:[
+    {n:'Drinking Chocolate', m:'1.5kg'}, {n:'Dark Chocolate 70%', m:'1.5kg'}, {n:'Spiced Chai', m:'1kg'} ]},
+  { name:'Cups & Lids', items:[
+    {n:'8oz Cups', m:'1000 pieces'}, {n:'12oz Cups', m:'1000 pieces'}, {n:'Lids', m:'12oz / 16oz'} ]}
+];
+
+function renderCat(){
+  document.getElementById('cat').innerHTML = CAT.map(function(sec, si){
+    var items = sec.items.map(function(it, ii){
+      return '<div class="cat-item">'
+        + '<div class="cat-item-name">'+esc(it.n)+' <span class="meta">'+esc(it.m)+'</span></div>'
+        + '<button class="mini" title="Move up"   aria-label="Move '+esc(it.n)+' up"   onclick="moveItem('+si+','+ii+',-1)" '+(ii===0?'disabled':'')+'>&uarr;</button>'
+        + '<button class="mini" title="Move down" aria-label="Move '+esc(it.n)+' down" onclick="moveItem('+si+','+ii+',1)" '+(ii===sec.items.length-1?'disabled':'')+'>&darr;</button>'
+        + '<button class="mini del" title="Remove" aria-label="Remove '+esc(it.n)+'" onclick="delItem('+si+','+ii+')">&times;</button>'
+        + '</div>';
+    }).join('');
+
+    return '<div class="cat-sec">'
+      + '<div class="cat-sec-head">'
+      +   '<div class="cat-sec-name">'+esc(sec.name)+'</div>'
+      +   '<button class="mini" title="Move section up"   aria-label="Move '+esc(sec.name)+' up"   onclick="moveSec('+si+',-1)" '+(si===0?'disabled':'')+'>&uarr;</button>'
+      +   '<button class="mini" title="Move section down" aria-label="Move '+esc(sec.name)+' down" onclick="moveSec('+si+',1)" '+(si===CAT.length-1?'disabled':'')+'>&darr;</button>'
+      +   '<button class="mini del" title="Remove section" aria-label="Remove '+esc(sec.name)+'" onclick="delSec('+si+')">&times;</button>'
+      + '</div>'
+      + items
+      + '<div class="addrow">'
+      +   '<input id="add-'+si+'" placeholder="Add a product to '+esc(sec.name)+'" onkeydown="if(event.key===\'Enter\')addItem('+si+')" />'
+      +   '<button class="btn-sm" onclick="addItem('+si+')">Add</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+function moveItem(si,ii,d){ var a=CAT[si].items,t=a[ii]; a[ii]=a[ii+d]; a[ii+d]=t; renderCat(); }
+function delItem(si,ii){ CAT[si].items.splice(ii,1); renderCat(); }
+function moveSec(si,d){ var t=CAT[si]; CAT[si]=CAT[si+d]; CAT[si+d]=t; renderCat(); }
+function delSec(si){ CAT.splice(si,1); renderCat(); }
+function addItem(si){
+  var el=document.getElementById('add-'+si), v=el.value.trim();
+  if(!v) return;
+  CAT[si].items.push({n:v,m:''});
+  renderCat();
+  var next=document.getElementById('add-'+si); if(next) next.focus();
+}
+function addSection(){
+  var el=document.getElementById('newSecName'), v=el.value.trim();
+  if(!v) return;
+  CAT.push({name:v,items:[]});
+  el.value='';
+  renderCat();
+}
+renderCat();
+
+/* ---------------- Cafes ---------------- */
+var CAFES = [
+  { name:'Ruby Lane Cafe',      slug:'ruby-lane',      note:'Orders weekly · Direct debit set up' },
+  { name:'The Corner Store',    slug:'corner-store',   note:'Orders weekly · Direct debit set up' },
+  { name:'Norfolk & Sons',      slug:'norfolk-sons',   note:'Orders fortnightly · Direct debit set up' },
+  { name:'Baker Street Bakery', slug:'baker-street',   note:'Orders weekly · No payment method yet' },
+  { name:'Wren Coffee House',   slug:'wren-coffee',    note:'Orders weekly · Direct debit set up' },
+  { name:'Pike & Co',           slug:'pike-co',        note:'Orders monthly · Direct debit set up' }
+];
+
+document.getElementById('cafes').innerHTML = CAFES.map(function(c,i){
+  return '<div class="cafe">'
+    + '<div class="cafe-top"><div class="cafe-name">'+esc(c.name)+'</div></div>'
+    + '<div class="cafe-meta">'+esc(c.note)+'</div>'
+    + '<div class="linkrow">'
+    +   '<div class="linkbox">yourroastery.orders/'+esc(c.slug)+'</div>'
+    +   '<button class="btn-sm ghost" id="cp-'+i+'" onclick="copyLink('+i+')">Copy</button>'
+    + '</div></div>';
+}).join('');
+
+function copyLink(i){
+  var btn = document.getElementById('cp-'+i);
+  var url = 'https://yourroastery.orders/' + CAFES[i].slug;
+  var done = function(){ btn.textContent='Copied'; setTimeout(function(){ btn.textContent='Copy'; }, 1400); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done).catch(done);
+  } else { done(); }
+}
+</script>
+</body>
+</html>
