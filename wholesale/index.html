@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Wholesale Care Package — ordering tools for coffee roasters</title>
+<meta name="description" content="A branded ordering portal for your wholesale cafes. Orders land in your Xero as drafts. No commission, no processing fees, no clip on your money." />
+<link rel="icon" href="../logo.png" />
+<style>
+  :root{
+    --accent:#16a34a; --bg:#ffffff; --ink:#0b0b0c; --muted:#6b6b72;
+    --line:#e6e6e9; --leaf:#0b0b0c; --radius:15px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-size:16px; line-height:1.5;
+    -webkit-font-smoothing:antialiased; color-scheme:light;
+  }
+
+  .landing{
+    min-height:100vh; min-height:100dvh; background:var(--bg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:60px 22px calc(48px + env(safe-area-inset-bottom));
+    max-width:560px; margin:0 auto;
+  }
+  .landing-logo{width:230px;max-width:64%;height:auto;margin-bottom:24px}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}
+  .landing-h1{font-weight:700;font-size:clamp(30px,7vw,42px);line-height:1.04;letter-spacing:-.03em;margin:0 0 16px;color:var(--ink)}
+  .landing-lead{font-size:16.5px;color:var(--muted);line-height:1.6;margin:0 0 26px;max-width:420px}
+
+  .toolcard{width:100%;max-width:430px;text-align:left;border:1.5px solid var(--ink);border-radius:18px;padding:22px 20px;margin:0 0 22px;background:var(--bg)}
+  .toolcard-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 11px}
+  .toolcard-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.18)}
+  .toolcard-name{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:0 0 8px;color:var(--ink)}
+  .toolcard-desc{font-size:14.5px;color:var(--muted);line-height:1.55;margin:0 0 16px}
+
+  .points{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px}
+  .points li{display:grid;grid-template-columns:16px 1fr;gap:9px;align-items:start;font-size:14.5px;line-height:1.55;color:var(--muted)}
+  .points .tick{color:var(--accent);font-weight:700}
+  .points b{color:var(--ink);font-weight:700}
+
+  form{width:100%;max-width:430px;text-align:left;margin:0 0 34px}
+  .field{margin-bottom:14px}
+  .row{display:flex;gap:11px}
+  .row .field{flex:1;min-width:0}
+  label{display:block;font-size:13px;font-weight:700;margin:0 0 6px;color:var(--ink)}
+  .hint{font-weight:400;color:var(--muted)}
+  input,select{
+    font:inherit; font-size:16px; color:var(--ink); background:#fff;
+    border:1px solid var(--line); border-radius:12px;
+    padding:12px 13px; width:100%; min-height:48px;
+  }
+  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:right 17px center,right 12px center;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px}
+  input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .hp{position:absolute;left:-9999px}
+
+  .btn{font:inherit;border:none;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:transform .05s,background .15s;min-height:48px}
+  .btn-primary{background:var(--leaf);color:#fff;width:100%}
+  .btn-primary:hover{background:#2a2a2e}
+  .btn-primary:active{transform:scale(.995)}
+  .fineprint{font-size:13px;color:var(--muted);text-align:center;margin:12px 0 0}
+
+  .note-from{max-width:430px;width:100%;text-align:center;padding:2px 6px;margin:0 0 34px}
+  .note-from p{font-size:15px;line-height:1.6;color:var(--muted);margin:0 0 10px}
+  .note-from .sig{margin-top:9px;font-weight:700;color:var(--ink)}
+
+  .backlink{font-size:14px;color:var(--muted);max-width:430px}
+  .backlink a{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+  .done{display:none}
+  body.is-done .done{display:flex;flex-direction:column;align-items:center;width:100%}
+  body.is-done .pre-done{display:none}
+</style>
+</head>
+<body>
+
+<div class="landing">
+
+  <img class="landing-logo" src="../carepack.png" alt="carepack — Wholesale Care Package" />
+  <p class="eyebrow">Wholesale Care Package</p>
+  <h1 class="landing-h1">Your own ordering portal. Nobody clipping your money.</h1>
+  <p class="landing-lead">Your cafes order from a page with your name and your logo on it. The order lands in your Xero as a draft invoice, coded and priced exactly how you already have it set up. No commission, no processing fees, no middleman between you and your customers.</p>
+
+  <div class="pre-done" style="width:100%;display:flex;flex-direction:column;align-items:center">
+
+    <div class="toolcard">
+      <div class="toolcard-tag">Opening soon</div>
+      <div class="toolcard-name">Wholesale ordering</div>
+      <div class="toolcard-desc">Built and running for a Melbourne roaster with just under 200 wholesale cafes. Opening it to a small number of others first.</div>
+      <ul class="points">
+        <li><span class="tick">&check;</span><span><b>Set up from your Xero.</b> Connect it and we read your products, your customers and your per-cafe codes. You confirm them, you don't type them.</span></li>
+        <li><span class="tick">&check;</span><span><b>Orders arrive as drafts.</b> Nothing reaches your customer until you approve it.</span></li>
+        <li><span class="tick">&check;</span><span><b>Keep your payment setup.</b> Whatever you use now keeps working, and we never touch your money.</span></li>
+        <li><span class="tick">&check;</span><span><b>Optional payment gate.</b> Require direct debit before a cafe can order, if that's what you want.</span></li>
+      </ul>
+    </div>
+
+    <form name="wholesale-waitlist" method="POST" data-netlify="true" netlify-honeypot="company-website" action="/wholesale/?ok=1">
+      <input type="hidden" name="form-name" value="wholesale-waitlist" />
+      <p class="hp"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
+
+      <div class="field">
+        <label for="roaster">Roastery name</label>
+        <input id="roaster" name="roaster" required autocomplete="organization" />
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" name="name" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="cafes">How many wholesale cafes?</label>
+        <select id="cafes" name="cafes" required>
+          <option value="">Choose one</option>
+          <option>Under 10</option>
+          <option>10 to 30</option>
+          <option>30 to 75</option>
+          <option>75 to 150</option>
+          <option>More than 150</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="accounting">What do you invoice with? <span class="hint">Xero first, others on the way</span></label>
+        <select id="accounting" name="accounting" required>
+          <option value="">Choose one</option>
+          <option>Xero</option>
+          <option>MYOB</option>
+          <option>QuickBooks</option>
+          <option>Something else</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="current">How do your cafes order now? <span class="hint">Optional</span></label>
+        <input id="current" name="current" placeholder="Texts, phone calls, Ordermentum…" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Join the waitlist</button>
+      <p class="fineprint">No spam. I'll email you when there's a spot, and nothing in between.</p>
+    </form>
+
+    <div class="note-from">
+      <p>Hi. I run wholesale for a coffee roaster, and I built this because our cafes were ordering by text message and I was retyping every order into Xero by hand.</p>
+      <p>It's been running our whole book for months. If it would help yours, put your name down and I'll be in touch.</p>
+      <p class="sig">— Lukas</p>
+    </div>
+
+  </div>
+
+  <div class="done">
+    <div class="toolcard">
+      <div class="toolcard-tag">You're on the list</div>
+      <div class="toolcard-name">Thanks, got it.</div>
+      <div class="toolcard-desc" style="margin:0">I'll email you when there's a spot. If you want to tell me more about how your wholesale runs, just reply to that email, or reach me any time at <a href="mailto:lukas@kiness.com.au" style="color:var(--ink);font-weight:700">lukas@kiness.com.au</a>.</div>
+    </div>
+  </div>
+
+  <p class="backlink">Run a cafe rather than a roastery? <a href="/">Cafe Care Package</a> has free tools for you.</p>
+
+</div>
+
+<script>
+  if (new URLSearchParams(location.search).get('ok') === '1') {
+    document.body.classList.add('is-done');
+  }
+</script>
+</body>
+</html>

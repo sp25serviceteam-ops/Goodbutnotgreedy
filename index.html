@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#0b0b0c" />
 <link rel="icon" href="carepack.png" />
-<title>Cafe Care Package — free tools for cafes</title>
+<title>Care Pack — free tools for cafes and coffee roasters</title>
+<meta name="description" content="Free tools for hospo. Cafes sell their daily surplus and keep every cent. Roasters get their own wholesale ordering portal with orders landing straight in Xero." />
 <!-- system font stack, no webfonts -->
 <style>
   :root{
@@ -146,6 +147,16 @@
   .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}
   .landing-h1{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:clamp(30px,7vw,42px);line-height:1.04;letter-spacing:-.03em;margin:0 0 16px;color:var(--ink)}
   .landing-lead{font-size:16.5px;color:var(--muted);line-height:1.6;margin:0 0 26px;max-width:420px}
+  .door{width:100%;max-width:430px;text-align:left;border:1.5px solid var(--ink);border-radius:18px;padding:20px;margin:0 0 14px;background:var(--bg);text-decoration:none;color:inherit;display:flex;align-items:center;gap:16px;cursor:pointer;font:inherit;transition:background .15s}
+  .door:hover{background:#f7f7f8}
+  .door:active{transform:scale(.995)}
+  .door-body{flex:1;min-width:0}
+  .door-k{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .door-n{font-weight:700;font-size:21px;letter-spacing:-.02em;margin:0 0 5px;color:var(--ink)}
+  .door-d{font-size:14px;color:var(--muted);line-height:1.5;margin:0}
+  .door-go{font-size:20px;color:var(--muted);flex:none;line-height:1}
+  .chooser-back{background:none;border:none;font:inherit;color:var(--muted);font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:12px;margin-bottom:18px}
+  .chooser-back:hover{color:var(--ink)}
   .toolcard{width:100%;max-width:430px;text-align:left;border:1.5px solid var(--ink);border-radius:18px;padding:22px 20px;margin:0 0 22px;background:var(--bg)}
   .toolcard-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 11px}
   .toolcard-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.18)}
@@ -185,12 +196,46 @@
 
 <div id="bootView" class="loading">Loading…</div>
 
+<!-- ===== CHOOSER (front door) ===== -->
+<div id="chooserView" class="hidden">
+  <div class="landing">
+    <img class="landing-logo" src="carepack.png" alt="carepack" />
+    <p class="eyebrow">Care Pack</p>
+    <h1 class="landing-h1">We make tools to help.</h1>
+    <p class="landing-lead">Built by someone who works in hospo. Pick your side of the counter.</p>
+
+    <a class="door" href="/wholesale/">
+      <span class="door-body">
+        <span class="door-k" style="display:block">For roasters</span>
+        <span class="door-n" style="display:block">Wholesale tools</span>
+        <span class="door-d" style="display:block">Your own ordering portal for your wholesale cafes. Orders land in your Xero. No commission.</span>
+      </span>
+      <span class="door-go" aria-hidden="true">&rarr;</span>
+    </a>
+
+    <button class="door" id="chooseCafe">
+      <span class="door-body">
+        <span class="door-k" style="display:block">For cafes</span>
+        <span class="door-n" style="display:block">Cafe tools</span>
+        <span class="door-d" style="display:block">Sell your daily surplus food, keep every cent. Free, and more tools on the way.</span>
+      </span>
+      <span class="door-go" aria-hidden="true">&rarr;</span>
+    </button>
+
+    <div class="note-from" style="margin-top:24px">
+      <p>Hi. Hospo is tough at the moment. I'm making tools to make it easier for cafes and wholesalers, and I hope you enjoy them.</p>
+      <p class="sig">— Lukas</p>
+    </div>
+  </div>
+</div>
+
 <!-- ===== LANDING ===== -->
 <div id="landingView" class="hidden">
   <div class="landing">
+    <button class="chooser-back" id="backToChooser">&larr; All tools</button>
     <img class="landing-logo" src="carepack.png" alt="carepack — Cafe Care Package" />
     <p class="eyebrow">Cafe Care Package</p>
-    <h1 class="landing-h1">Free tools for cafes, for the hard months.</h1>
+    <h1 class="landing-h1">Free tools for cafes.</h1>
     <p class="landing-lead">Running a cafe right now is tough. We build simple tools that actually help, no cost and no catch. Think of it as a care package for your cafe, and more are on the way.</p>
 
     <div class="toolcard">
@@ -401,7 +446,7 @@ async function uploadPhoto(blob,prefix){const path=`${prefix||""}${Date.now()}-$
 function lighten(hex,p){hex=(hex||"#0b0b0c").replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const n=parseInt(hex,16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;r=Math.round(r+(255-r)*p);g=Math.round(g+(255-g)*p);b=Math.round(b+(255-b)*p);return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function applyBrand(c){const col=(c&&c.brand_color)||"#0b0b0c";const rs=document.documentElement.style;rs.setProperty('--green',col);rs.setProperty('--leaf',lighten(col,0.16));const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content',col);const tt=$("topTitle");if(tt)tt.textContent=(c&&c.shop_name)||"Cafe Care Package";const lg=$("topLogo");if(lg)lg.innerHTML=(c&&c.logo_url)?`<img src="${esc(c.logo_url)}" alt="" style="width:28px;height:28px;border-radius:7px;object-fit:cover;display:block">`:`<svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M4 20C4 12 10 4 20 4C20 14 14 20 4 20Z" fill="#ffffff"/><path d="M4 20C8 14 13 9 18 6" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round"/></svg>`;}
 
-function showOnly(id){["bootView","landingView","loginView","onboardView","releaseView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id));}
+function showOnly(id){["bootView","chooserView","landingView","loginView","onboardView","releaseView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id));window.scrollTo(0,0);}
 
 /* ================= ROUTING ================= */
 const params=new URLSearchParams(location.search);
@@ -412,7 +457,7 @@ async function boot(){
   if(releaseId){ return showRelease(releaseId); }
   if(custSlug){ return showStoreBySlug(custSlug); }
   const {data:{session}}=await sb.auth.getSession();
-  if(session) enterOwner(); else showLanding();
+  if(session) enterOwner(); else showChooser();
 }
 
 async function showRelease(id){
@@ -434,12 +479,15 @@ async function showRelease(id){
 }
 sb.auth.onAuthStateChange((_e,session)=>{
   if(custSlug) return;
-  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; showLanding(); }
+  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; showChooser(); }
 });
 
 /* ---------- login (Google + email/password) ---------- */
 function showLogin(){ showOnly("loginView"); }
+function showChooser(){ showOnly("chooserView"); }
 function showLanding(){ showOnly("landingView"); }
+$("chooseCafe").onclick=()=>showLanding();
+$("backToChooser").onclick=()=>showChooser();
 $("landingLogin").onclick=()=>showLogin();
 $("openWaste").onclick=()=>{ showLogin(); setTimeout(()=>$("email")&&$("email").focus(),60); };
 $("authBack").onclick=()=>showLanding();
