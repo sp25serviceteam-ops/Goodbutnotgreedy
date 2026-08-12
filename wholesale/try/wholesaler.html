@@ -14,6 +14,7 @@
     --accent:#16a34a; --accent-wash:#e8f5ec;
     --amber:#8a6116; --amber-wash:#f5eddc;
     --face:'Helvetica Neue',Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -31,7 +32,6 @@
   header h1{font-size:20px;font-weight:700;letter-spacing:-.02em;margin:0}
   header p{margin:1px 0 0;font-size:13px;color:var(--muted)}
 
-  /* tabs */
   .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);position:sticky;top:38px;background:var(--bg);z-index:30}
   .tab{background:none;border:none;padding:12px 4px;margin-right:18px;font-size:15px;font-weight:700;color:var(--faint);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px}
   .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
@@ -39,7 +39,6 @@
   .panel{display:none;padding-top:20px}
   .panel.on{display:block}
 
-  /* callouts */
   .callout{border:1.5px solid var(--ink);border-radius:15px;padding:16px 17px;margin:0 0 20px}
   .callout.soft{border:1px solid var(--line);background:var(--wash)}
   .kicker{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
@@ -47,41 +46,69 @@
   .callout p{margin:0;font-size:14px;color:var(--muted);line-height:1.55}
   .callout p + p{margin-top:8px}
 
-  /* order feed */
+  /* ---- hover / tap explainers ---- */
+  .tip{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:17px;height:17px;flex:none;border-radius:50%;
+    border:1px solid var(--faint);background:var(--bg);color:var(--faint);
+    font-size:10.5px;font-weight:700;line-height:1;cursor:help;padding:0;
+    vertical-align:1px;margin-left:5px;
+  }
+  .tip:hover,.tip[aria-expanded="true"]{border-color:var(--ink);color:var(--ink)}
+  .tip:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  #tipPop{
+    position:absolute;z-index:60;max-width:270px;
+    background:var(--ink);color:#fff;font-size:13px;line-height:1.5;
+    padding:10px 12px;border-radius:11px;box-shadow:0 8px 26px rgba(0,0,0,.18);
+    display:none;
+  }
+  #tipPop.on{display:block}
+
+  /* ---- order feed ---- */
   .feed{display:flex;flex-direction:column;gap:10px}
   .order{border:1px solid var(--line);border-radius:14px;padding:14px 15px}
+  .order.done{background:var(--wash)}
   .order-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px}
   .order-cafe{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
   .order-when{font-size:12.5px;color:var(--faint);white-space:nowrap}
-  .order-items{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0 0 10px}
+  .order-items{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0 0 11px}
+  .order-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
   .pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:7px}
-  .pill.draft{color:var(--accent);background:var(--accent-wash)}
-  .pill.wait{color:var(--amber);background:var(--amber-wash)}
+  .pill.draft{color:var(--amber);background:var(--amber-wash)}
+  .pill.sent{color:var(--accent);background:var(--accent-wash)}
   .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
 
-  /* catalogue */
+  .btn-sm{border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:9px;padding:9px 14px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .btn-sm.ghost{background:var(--bg);color:var(--ink)}
+  .btn-sm:hover{opacity:.88}
+  .btn-sm:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+  /* ---- catalogue ---- */
   .cat-sec{border:1px solid var(--line);border-radius:14px;margin:0 0 12px;overflow:hidden}
-  .cat-sec-head{display:flex;align-items:center;gap:10px;padding:12px 13px;background:var(--wash);border-bottom:1px solid var(--line)}
-  .cat-sec-name{flex:1;min-width:0;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
-  .cat-item{display:flex;align-items:center;gap:10px;padding:11px 13px;border-bottom:1px solid var(--line-2)}
-  .cat-item:last-child{border-bottom:none}
-  .cat-item-name{flex:1;min-width:0;font-size:14px}
-  .cat-item-name .meta{color:var(--faint);font-size:12.5px}
+  .cat-sec-head{display:flex;align-items:center;gap:8px;padding:11px 12px;background:var(--wash);border-bottom:1px solid var(--line)}
+  .cat-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line-2);flex-wrap:wrap}
+  .cat-item:last-of-type{border-bottom:none}
+  .f-name{flex:1;min-width:120px;font:inherit;font-size:14px;font-weight:600;color:var(--ink);border:1px solid transparent;border-radius:8px;padding:7px 9px;background:transparent}
+  .f-name.sec{font-size:14.5px;font-weight:700}
+  .f-code{width:132px;flex:none;font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--soft);border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:var(--bg);text-transform:uppercase}
+  .f-name:hover,.f-code:hover{border-color:var(--line)}
+  .f-name:focus,.f-code:focus{outline:none;border-color:var(--ink);background:var(--bg)}
   .mini{border:1px solid var(--line);background:var(--bg);color:var(--soft);border-radius:8px;width:30px;height:30px;flex:none;cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center}
   .mini:hover:not(:disabled){background:var(--wash);color:var(--ink)}
   .mini:disabled{opacity:.3;cursor:default}
   .mini.del:hover{background:#fdecea;border-color:#f0c4bd;color:#8e3320}
   .mini:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-  .addrow{display:flex;gap:8px;padding:11px 13px;background:var(--wash);border-top:1px solid var(--line)}
-  .addrow input{flex:1;min-width:0;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--bg);color:var(--ink)}
+  .addrow{display:flex;gap:8px;padding:11px 12px;background:var(--wash);border-top:1px solid var(--line);flex-wrap:wrap}
+  .addrow input{flex:1;min-width:110px;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--bg);color:var(--ink)}
+  .addrow input.code{font-family:var(--mono);font-size:12px;flex:none;width:132px;text-transform:uppercase}
   .addrow input:focus-visible{outline:2px solid var(--ink);outline-offset:-1px}
-  .btn-sm{border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:9px;padding:9px 14px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap}
-  .btn-sm.ghost{background:var(--bg);color:var(--ink)}
-  .btn-sm:hover{opacity:.88}
 
-  /* cafes */
+  .colhead{display:flex;gap:8px;padding:0 12px 7px;font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--faint)}
+  .colhead .a{flex:1}
+  .colhead .b{width:132px;flex:none;display:flex;align-items:center}
+
+  /* ---- cafes ---- */
   .cafe{border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin:0 0 10px}
-  .cafe-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
   .cafe-name{font-size:15px;font-weight:700;letter-spacing:-.01em}
   .cafe-meta{font-size:12.5px;color:var(--faint)}
   .linkrow{display:flex;align-items:center;gap:8px;margin-top:10px}
@@ -91,9 +118,11 @@
   .foot{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);text-align:center;font-size:13.5px;color:var(--muted)}
   .foot a{color:var(--ink);font-weight:700;text-underline-offset:3px}
 
-  @media (max-width:400px){
+  @media (max-width:440px){
     .tab{font-size:14px;margin-right:13px}
-    header{gap:11px}
+    .f-code{width:110px}
+    .colhead .b{width:110px}
+    .addrow input.code{width:110px}
   }
 </style>
 </head>
@@ -103,6 +132,8 @@
   <span>Demo &middot; nothing here is real</span>
   <a href="/wholesale/">&larr; Back</a>
 </div>
+
+<div id="tipPop" role="tooltip"></div>
 
 <div class="wrap">
 
@@ -126,20 +157,33 @@
     <div class="callout">
       <p class="kicker">Invoicing</p>
       <h3>Every order lands as a draft invoice in your own Xero.</h3>
-      <p>Nothing goes to your customer until you approve it. You review the draft exactly like any other, and send it when you're happy. We never send anything on your behalf.</p>
+      <p>Nothing goes to your customer until you approve it. Hit approve here and it's marked off, or do it in Xero like you always have. We never send anything on your behalf.</p>
     </div>
 
-    <p class="hint">Orders as they come in. In the real thing this updates itself, so you can leave it open on the bench.</p>
+    <p class="hint">Orders as they come in. Try approving one.</p>
 
     <div class="feed" id="feed"></div>
   </section>
 
   <!-- ================= CATALOGUE ================= -->
   <section class="panel" id="p-catalogue" role="tabpanel" aria-labelledby="t-catalogue">
-    <p class="hint">Add, remove and reorder. Whatever you do here is what your cafes see next time they open their link. Have a go, it's your demo.</p>
+    <p class="hint">
+      Rename anything, change a code, add, remove, reorder. Whatever you do here is what your cafes see next time they open their link.
+    </p>
+
+    <div class="colhead">
+      <span class="a">Product</span>
+      <span class="b">Xero item code
+        <button class="tip" type="button" aria-expanded="false"
+          data-tip="This is the item code from your own Xero. It carries the price, the description and the tax rate, so you never type a price in here. Change the code and the invoice changes with it.">?</button>
+      </span>
+      <span style="width:104px;flex:none"></span>
+    </div>
+
     <div id="cat"></div>
-    <div style="display:flex;gap:8px;margin-top:6px">
-      <input id="newSecName" placeholder="New section name" style="flex:1;min-width:0;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:9px;padding:10px 12px" />
+
+    <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+      <input id="newSecName" placeholder="New section name" style="flex:1;min-width:140px;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:9px;padding:10px 12px" />
       <button class="btn-sm ghost" onclick="addSection()">Add section</button>
     </div>
   </section>
@@ -154,7 +198,11 @@
       <p>We do recommend Pinch. It's the only option that gives you the automatic payment gate, so you can set it to collect direct debits from the moment you switch your customers over, and the fees are the best of the lot.</p>
     </div>
 
-    <p class="hint">Every cafe gets its own link. No app, no password. Send it once and they use it forever.</p>
+    <p class="hint">
+      Every cafe gets its own link. No app, no password. Send it once and they use it forever.
+      <button class="tip" type="button" aria-expanded="false"
+        data-tip="A cafe can have its own code for the same coffee, which is how most roasters price per account. We read those out of your Xero at setup, so your pricing carries over exactly as it is.">?</button>
+    </p>
 
     <div id="cafes"></div>
   </section>
@@ -177,77 +225,141 @@ function show(which){
     document.getElementById('p-'+k).classList.toggle('on', k === which);
     document.getElementById('t-'+k).setAttribute('aria-selected', k === which ? 'true' : 'false');
   });
+  hideTip();
 }
+
+/* ---------------- tooltips (hover on desktop, tap on phones) ------- */
+var pop = document.getElementById('tipPop'), openTip = null;
+
+function placeTip(btn){
+  var r = btn.getBoundingClientRect();
+  pop.classList.add('on');
+  var w = pop.offsetWidth;
+  var left = r.left + window.scrollX + r.width/2 - w/2;
+  left = Math.max(10, Math.min(left, document.documentElement.clientWidth - w - 10));
+  pop.style.left = left + 'px';
+  pop.style.top  = (r.bottom + window.scrollY + 8) + 'px';
+}
+function showTip(btn){
+  pop.textContent = btn.getAttribute('data-tip');
+  placeTip(btn);
+  btn.setAttribute('aria-expanded','true');
+  openTip = btn;
+}
+function hideTip(){
+  pop.classList.remove('on');
+  if (openTip) openTip.setAttribute('aria-expanded','false');
+  openTip = null;
+}
+/* Mice hover, phones tap. Doing both on the same device fights itself:
+   hover opens the tip and the click that follows closes it again. */
+var HAS_HOVER = window.matchMedia && matchMedia('(hover: hover)').matches;
+
+if (HAS_HOVER){
+  document.addEventListener('mouseover', function(e){
+    var btn = e.target.closest && e.target.closest('.tip');
+    if (btn && openTip !== btn) showTip(btn);
+  });
+  document.addEventListener('mouseout', function(e){
+    var btn = e.target.closest && e.target.closest('.tip');
+    if (btn) hideTip();
+  });
+  /* Keyboard users still need a way in. */
+  document.addEventListener('focusin', function(e){
+    if (e.target.classList && e.target.classList.contains('tip')) showTip(e.target);
+  });
+  document.addEventListener('focusout', function(e){
+    if (e.target.classList && e.target.classList.contains('tip')) hideTip();
+  });
+} else {
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest && e.target.closest('.tip');
+    if (btn){ e.stopPropagation(); (openTip === btn) ? hideTip() : showTip(btn); return; }
+    if (!e.target.closest || !e.target.closest('#tipPop')) hideTip();
+  });
+}
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') hideTip(); });
+window.addEventListener('scroll', hideTip, {passive:true});
 
 /* ---------------- Activity ---------------- */
 var ORDERS = [
-  { cafe:'Ruby Lane Cafe',      when:'8 minutes ago', items:'12 × House Blend 1kg, 2 × Ethiopia Guji 1kg, 4 × Drinking Chocolate', status:'draft' },
-  { cafe:'The Corner Store',    when:'40 minutes ago',items:'8 × House Blend 1kg, 6 × Retail 250g Beans', status:'draft' },
-  { cafe:'Norfolk & Sons',      when:'2 hours ago',   items:'20 × House Blend 1kg, 3 × Decaf 1kg, 2 × Vanilla syrup', status:'draft' },
-  { cafe:'Baker Street Bakery', when:'Yesterday, 4:12pm', items:'6 × Dark Roast 1kg, 1000 × 12oz Cups', status:'approved' },
-  { cafe:'Wren Coffee House',   when:'Yesterday, 11:03am', items:'14 × House Blend 1kg, 4 × Colombia Huila 1kg', status:'approved' },
-  { cafe:'Pike & Co',           when:'Monday, 8:47am', items:'10 × Seasonal Blend 1kg, 3 × Spiced Chai', status:'approved' }
+  { cafe:'Ruby Lane Cafe',      when:'8 minutes ago',      items:'12 × House Blend 1kg, 2 × Ethiopia Guji 1kg, 4 × Drinking Chocolate', sent:false },
+  { cafe:'The Corner Store',    when:'40 minutes ago',     items:'8 × House Blend 1kg, 6 × Retail 250g Beans',                          sent:false },
+  { cafe:'Norfolk & Sons',      when:'2 hours ago',        items:'20 × House Blend 1kg, 3 × Decaf 1kg, 2 × Vanilla syrup',              sent:false },
+  { cafe:'Baker Street Bakery', when:'Yesterday, 4:12pm',  items:'6 × Dark Roast 1kg, 1000 × 12oz Cups',                                sent:true  },
+  { cafe:'Wren Coffee House',   when:'Yesterday, 11:03am', items:'14 × House Blend 1kg, 4 × Colombia Huila 1kg',                        sent:true  },
+  { cafe:'Pike & Co',           when:'Monday, 8:47am',     items:'10 × Seasonal Blend 1kg, 3 × Spiced Chai',                            sent:true  }
 ];
 
-document.getElementById('feed').innerHTML = ORDERS.map(function(o){
-  var pill = o.status === 'draft'
-    ? '<span class="pill draft"><span class="dot"></span>Draft in Xero</span>'
-    : '<span class="pill wait"><span class="dot"></span>Approved &amp; sent</span>';
-  return '<div class="order">'
-    + '<div class="order-top"><div class="order-cafe">'+esc(o.cafe)+'</div>'
-    + '<div class="order-when">'+esc(o.when)+'</div></div>'
-    + '<p class="order-items">'+esc(o.items)+'</p>'
-    + pill + '</div>';
-}).join('');
+function renderFeed(){
+  document.getElementById('feed').innerHTML = ORDERS.map(function(o, i){
+    var foot = o.sent
+      ? '<span class="pill sent"><span class="dot"></span>Approved &amp; sent</span>'
+      : '<span class="pill draft"><span class="dot"></span>Draft in Xero</span>'
+        + '<button class="btn-sm" onclick="approve('+i+')">Approve &amp; send</button>';
+    return '<div class="order'+(o.sent?' done':'')+'">'
+      + '<div class="order-top"><div class="order-cafe">'+esc(o.cafe)+'</div>'
+      + '<div class="order-when">'+esc(o.when)+'</div></div>'
+      + '<p class="order-items">'+esc(o.items)+'</p>'
+      + '<div class="order-foot">' + foot + '</div></div>';
+  }).join('');
+}
+function approve(i){ ORDERS[i].sent = true; renderFeed(); }
+renderFeed();
 
 /* ---------------- Catalogue ---------------- */
 var CAT = [
   { name:'House Blends', items:[
-    {n:'The House Blend', m:'1kg'}, {n:'Dark Roast', m:'1kg'}, {n:'Seasonal Blend', m:'1kg'} ]},
+    {n:'The House Blend', c:'HOUSE1KG'}, {n:'Dark Roast', c:'DARK1KG'}, {n:'Seasonal Blend', c:'SEASONAL1KG'} ]},
   { name:'Single Origins', items:[
-    {n:'Ethiopia, Guji', m:'1kg'}, {n:'Colombia, Huila', m:'1kg'}, {n:'Kenya, Nyeri', m:'1kg'} ]},
+    {n:'Ethiopia, Guji', c:'ETHGUJI1KG'}, {n:'Colombia, Huila', c:'COLHUILA1KG'}, {n:'Kenya, Nyeri', c:'KENNYERI1KG'} ]},
   { name:'Retail Bags', items:[
-    {n:'House Blend 250g', m:'Beans'}, {n:'House Blend 250g', m:'Ground'}, {n:'Ethiopia Guji 250g', m:'Beans'} ]},
+    {n:'House Blend 250g', c:'RETHOUSE250'}, {n:'Ethiopia Guji 250g', c:'RETETH250'}, {n:'Dark Roast 250g', c:'RETDARK250'} ]},
   { name:'Chocolate & Chai', items:[
-    {n:'Drinking Chocolate', m:'1.5kg'}, {n:'Dark Chocolate 70%', m:'1.5kg'}, {n:'Spiced Chai', m:'1kg'} ]},
+    {n:'Drinking Chocolate', c:'CHOC15'}, {n:'Dark Chocolate 70%', c:'CHOC70'}, {n:'Spiced Chai', c:'CHAISPICE'} ]},
   { name:'Cups & Lids', items:[
-    {n:'8oz Cups', m:'1000 pieces'}, {n:'12oz Cups', m:'1000 pieces'}, {n:'Lids', m:'12oz / 16oz'} ]}
+    {n:'8oz Cups', c:'CUP8OZ'}, {n:'12oz Cups', c:'CUP12OZ'}, {n:'Lids', c:'LID1216'} ]}
 ];
 
 function renderCat(){
   document.getElementById('cat').innerHTML = CAT.map(function(sec, si){
     var items = sec.items.map(function(it, ii){
       return '<div class="cat-item">'
-        + '<div class="cat-item-name">'+esc(it.n)+' <span class="meta">'+esc(it.m)+'</span></div>'
-        + '<button class="mini" title="Move up"   aria-label="Move '+esc(it.n)+' up"   onclick="moveItem('+si+','+ii+',-1)" '+(ii===0?'disabled':'')+'>&uarr;</button>'
-        + '<button class="mini" title="Move down" aria-label="Move '+esc(it.n)+' down" onclick="moveItem('+si+','+ii+',1)" '+(ii===sec.items.length-1?'disabled':'')+'>&darr;</button>'
-        + '<button class="mini del" title="Remove" aria-label="Remove '+esc(it.n)+'" onclick="delItem('+si+','+ii+')">&times;</button>'
+        + '<input class="f-name" value="'+esc(it.n)+'" aria-label="Product name" onchange="setName('+si+','+ii+',this.value)">'
+        + '<input class="f-code" value="'+esc(it.c)+'" aria-label="Xero item code" onchange="setCode('+si+','+ii+',this.value)">'
+        + '<button class="mini" title="Move up"   aria-label="Move up"   onclick="moveItem('+si+','+ii+',-1)" '+(ii===0?'disabled':'')+'>&uarr;</button>'
+        + '<button class="mini" title="Move down" aria-label="Move down" onclick="moveItem('+si+','+ii+',1)" '+(ii===sec.items.length-1?'disabled':'')+'>&darr;</button>'
+        + '<button class="mini del" title="Remove" aria-label="Remove" onclick="delItem('+si+','+ii+')">&times;</button>'
         + '</div>';
     }).join('');
 
     return '<div class="cat-sec">'
       + '<div class="cat-sec-head">'
-      +   '<div class="cat-sec-name">'+esc(sec.name)+'</div>'
-      +   '<button class="mini" title="Move section up"   aria-label="Move '+esc(sec.name)+' up"   onclick="moveSec('+si+',-1)" '+(si===0?'disabled':'')+'>&uarr;</button>'
-      +   '<button class="mini" title="Move section down" aria-label="Move '+esc(sec.name)+' down" onclick="moveSec('+si+',1)" '+(si===CAT.length-1?'disabled':'')+'>&darr;</button>'
-      +   '<button class="mini del" title="Remove section" aria-label="Remove '+esc(sec.name)+'" onclick="delSec('+si+')">&times;</button>'
+      +   '<input class="f-name sec" value="'+esc(sec.name)+'" aria-label="Section name" onchange="setSecName('+si+',this.value)">'
+      +   '<button class="mini" title="Move section up"   aria-label="Move section up"   onclick="moveSec('+si+',-1)" '+(si===0?'disabled':'')+'>&uarr;</button>'
+      +   '<button class="mini" title="Move section down" aria-label="Move section down" onclick="moveSec('+si+',1)" '+(si===CAT.length-1?'disabled':'')+'>&darr;</button>'
+      +   '<button class="mini del" title="Remove section" aria-label="Remove section" onclick="delSec('+si+')">&times;</button>'
       + '</div>'
       + items
       + '<div class="addrow">'
-      +   '<input id="add-'+si+'" placeholder="Add a product to '+esc(sec.name)+'" onkeydown="if(event.key===\'Enter\')addItem('+si+')" />'
+      +   '<input id="add-'+si+'" placeholder="Add a product" onkeydown="if(event.key===\'Enter\')addItem('+si+')" />'
+      +   '<input id="addc-'+si+'" class="code" placeholder="ITEM CODE" onkeydown="if(event.key===\'Enter\')addItem('+si+')" />'
       +   '<button class="btn-sm" onclick="addItem('+si+')">Add</button>'
       + '</div>'
       + '</div>';
   }).join('');
 }
+function setName(si,ii,v){ CAT[si].items[ii].n = v.trim() || CAT[si].items[ii].n; }
+function setCode(si,ii,v){ CAT[si].items[ii].c = v.trim().toUpperCase() || CAT[si].items[ii].c; }
+function setSecName(si,v){ CAT[si].name = v.trim() || CAT[si].name; }
 function moveItem(si,ii,d){ var a=CAT[si].items,t=a[ii]; a[ii]=a[ii+d]; a[ii+d]=t; renderCat(); }
 function delItem(si,ii){ CAT[si].items.splice(ii,1); renderCat(); }
 function moveSec(si,d){ var t=CAT[si]; CAT[si]=CAT[si+d]; CAT[si+d]=t; renderCat(); }
 function delSec(si){ CAT.splice(si,1); renderCat(); }
 function addItem(si){
-  var el=document.getElementById('add-'+si), v=el.value.trim();
-  if(!v) return;
-  CAT[si].items.push({n:v,m:''});
+  var el=document.getElementById('add-'+si), ec=document.getElementById('addc-'+si);
+  var v=el.value.trim(); if(!v) return;
+  CAT[si].items.push({ n:v, c:(ec.value.trim().toUpperCase() || 'NEWCODE') });
   renderCat();
   var next=document.getElementById('add-'+si); if(next) next.focus();
 }
@@ -262,17 +374,17 @@ renderCat();
 
 /* ---------------- Cafes ---------------- */
 var CAFES = [
-  { name:'Ruby Lane Cafe',      slug:'ruby-lane',      note:'Orders weekly · Direct debit set up' },
-  { name:'The Corner Store',    slug:'corner-store',   note:'Orders weekly · Direct debit set up' },
-  { name:'Norfolk & Sons',      slug:'norfolk-sons',   note:'Orders fortnightly · Direct debit set up' },
-  { name:'Baker Street Bakery', slug:'baker-street',   note:'Orders weekly · No payment method yet' },
-  { name:'Wren Coffee House',   slug:'wren-coffee',    note:'Orders weekly · Direct debit set up' },
-  { name:'Pike & Co',           slug:'pike-co',        note:'Orders monthly · Direct debit set up' }
+  { name:'Ruby Lane Cafe',      slug:'ruby-lane',    note:'Orders weekly · Direct debit set up' },
+  { name:'The Corner Store',    slug:'corner-store', note:'Orders weekly · Direct debit set up' },
+  { name:'Norfolk & Sons',      slug:'norfolk-sons', note:'Orders fortnightly · Direct debit set up' },
+  { name:'Baker Street Bakery', slug:'baker-street', note:'Orders weekly · No payment method yet' },
+  { name:'Wren Coffee House',   slug:'wren-coffee',  note:'Orders weekly · Direct debit set up' },
+  { name:'Pike & Co',           slug:'pike-co',      note:'Orders monthly · Direct debit set up' }
 ];
 
 document.getElementById('cafes').innerHTML = CAFES.map(function(c,i){
   return '<div class="cafe">'
-    + '<div class="cafe-top"><div class="cafe-name">'+esc(c.name)+'</div></div>'
+    + '<div class="cafe-name">'+esc(c.name)+'</div>'
     + '<div class="cafe-meta">'+esc(c.note)+'</div>'
     + '<div class="linkrow">'
     +   '<div class="linkbox">yourroastery.orders/'+esc(c.slug)+'</div>'
