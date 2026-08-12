@@ -224,7 +224,7 @@
 
     <div class="note-from" style="margin-top:24px">
       <p>Hi. Hospo is tough at the moment. I'm making tools to make it easier for cafes and wholesalers, and I hope you enjoy them.</p>
-      <p class="sig">Lukas</p>
+      <p class="sig">love, Lukas</p>
     </div>
   </div>
 </div>
@@ -233,7 +233,7 @@
 <div id="landingView" class="hidden">
   <div class="landing">
     <button class="chooser-back" id="backToChooser">&larr; All tools</button>
-    <img class="landing-logo" src="carepack.png" alt="carepack — Cafe Care Package" />
+    <img class="landing-logo" src="carepack.png" alt="carepack, Cafe Care Package" />
     <p class="eyebrow">Cafe Care Package</p>
     <h1 class="landing-h1">Free tools for cafes.</h1>
     <p class="landing-lead">Running a cafe right now is tough. We build simple tools that actually help, no cost and no catch. Think of it as a care package for your cafe, and more are on the way.</p>
@@ -249,7 +249,7 @@
 
     <div class="note-from">
       <p>Hi. Hospo is tough at the moment. I'm making tools to make it easier for cafes and wholesalers, and I hope you enjoy them.</p>
-      <p class="sig">— Lukas</p>
+      <p class="sig">love, Lukas</p>
     </div>
 
     <div class="idea">
@@ -669,7 +669,7 @@ function renderLibrary(items){
       else if(until&&now>until) statusTag=`<span class="live-tag" style="background:#8a8a82">Closed</span>`;
       else statusTag=`<span class="live-tag">Live · ${left} left</span>`;
     }
-    const sched=(it.available_from||it.available_until)?` · ${it.available_from?fmtTime(it.available_from):"now"}–${it.available_until?fmtTime(it.available_until):"close"}`:"";
+    const sched=(it.available_from||it.available_until)?` · ${it.available_from?fmtTime(it.available_from):"now"} to ${it.available_until?fmtTime(it.available_until):"close"}`:"";
     return `<div class="item card ${it.archived?"archived":""}">
       <div class="thumb">${thumb}${statusTag}${it.price!=null?`<span class="price-tag">${money(it.price)}</span>`:""}</div>
       <div class="body"><p class="name">${esc(it.name)}</p><p class="desc">${esc(it.description)||"&nbsp;"}</p>
