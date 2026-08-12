@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Demo: how cafes sign themselves up</title>
+<meta name="robots" content="noindex" />
+<style>
+  /* Care Pack house style, same family as the other demo pages. */
+  :root{
+    --ink:#0b0b0c; --soft:#4a4a52; --muted:#6b6b72; --faint:#9a9aa2;
+    --line:#e6e6e9; --bg:#ffffff; --wash:#f7f7f8;
+    --accent:#16a34a; --accent-wash:#e8f5ec;
+    --face:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--face);font-size:16px;line-height:1.55;color-scheme:light;-webkit-font-smoothing:antialiased}
+
+  .try-bar{background:#0b0b0c;color:#fff;font-size:12.5px;font-weight:600;padding:10px 16px calc(10px + env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:40}
+  .try-bar a{color:#fff;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+  .try-bar span{opacity:.82;font-weight:400}
+
+  .wrap{max-width:520px;margin:0 auto;padding:26px 20px calc(56px + env(safe-area-inset-bottom))}
+
+  .ph-logo{width:180px;max-width:70%;height:64px;margin:0 auto 20px;border:1.5px dashed #c8c8ce;border-radius:12px;background:var(--wash);display:flex;align-items:center;justify-content:center;text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);line-height:1.4;padding:8px}
+
+  h1{font-size:clamp(24px,6vw,30px);font-weight:700;letter-spacing:-.025em;line-height:1.1;margin:0 0 8px;text-align:center}
+  .sub{font-size:15px;color:var(--muted);margin:0 0 8px;text-align:center}
+  .try-note{font-size:12.5px;color:var(--faint);text-align:center;margin:0 0 24px;line-height:1.5}
+
+  label{display:block;font-size:13.5px;font-weight:700;margin:0 0 14px}
+  input,textarea{display:block;width:100%;font:inherit;font-size:16px;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin-top:5px}
+  input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .small{font-size:12.5px;font-weight:400;color:var(--faint);margin-top:4px;line-height:1.45}
+  .row2{display:flex;gap:11px}
+  .row2 label{flex:1;min-width:0}
+  .hp{position:absolute;left:-9999px}
+
+  .submit{font:inherit;font-size:16px;font-weight:700;color:#fff;background:var(--ink);border:none;border-radius:14px;padding:14px 18px;width:100%;min-height:52px;cursor:pointer;margin-top:6px}
+  .submit:hover{background:#2a2a2e}
+
+  /* success */
+  .done{display:none;text-align:center;padding-top:14px}
+  body.is-done form,body.is-done .sub,body.is-done .try-note,body.is-done h1{display:none}
+  body.is-done .done{display:block}
+  .done h2{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:0 0 10px;color:var(--accent)}
+  .done p{font-size:15px;color:var(--muted);margin:0 0 6px;line-height:1.6}
+  .url{display:inline-block;font-size:15px;font-weight:700;color:var(--ink);background:var(--wash);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;word-break:break-all;text-decoration:none}
+  .real{max-width:420px;margin:22px auto 0;background:var(--accent-wash);border-radius:14px;padding:15px 16px;text-align:left}
+  .real .k{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .real p{font-size:13.5px;color:var(--soft);margin:0}
+  .cta{display:inline-block;font-size:15px;font-weight:700;color:#fff;background:var(--ink);border-radius:13px;padding:13px 20px;text-decoration:none;margin-top:20px}
+</style>
+</head>
+<body>
+
+<div class="try-bar">
+  <span>Demo &middot; nothing here is real</span>
+  <a href="wholesaler.html">&larr; Back</a>
+</div>
+
+<div class="wrap">
+
+  <div class="ph-logo">Your roaster logo</div>
+
+  <h1>Join Your Roastery</h1>
+  <p class="sub">Fill this in once. We'll set up your ordering portal and text you the link.</p>
+  <p class="try-note">This is the form your cafes get, wearing your branding. Send one link, they fill it in themselves, no typing on your end. Try it, nothing is saved.</p>
+
+  <form id="joinForm">
+    <label>Cafe / business name *
+      <input name="cafe_name" id="cafeName" required>
+      <span class="small">The name people know your cafe by. Shows on your portal.</span>
+    </label>
+
+    <label>Registered business name
+      <input name="legal_name" placeholder="e.g. Ruby J Pty Ltd">
+      <span class="small">Only if it's different from the cafe name. Used on invoices so it matches your ABN.</span>
+    </label>
+
+    <label>ABN *
+      <input name="abn" required inputmode="numeric" placeholder="11 digits">
+      <span class="small">Used for invoicing through Xero.</span>
+    </label>
+
+    <div class="row2">
+      <label>Owner first name *
+        <input name="owner_first_name" required>
+      </label>
+      <label>Owner last name *
+        <input name="owner_last_name" required>
+      </label>
+    </div>
+
+    <label>Owner email *
+      <input name="owner_email" type="email" required>
+    </label>
+
+    <label>Owner mobile *
+      <input name="owner_mobile" type="tel" required>
+    </label>
+
+    <label>Who should we text orders to? *
+      <input name="sms_contact_name" required placeholder="Name">
+      <span class="small">Can be the owner, or whoever does the ordering.</span>
+    </label>
+
+    <label>Their mobile *
+      <input name="sms_contact_mobile" type="tel" required>
+    </label>
+
+    <label>Delivery address *
+      <input name="delivery_address" required placeholder="e.g. 12 Smith St">
+    </label>
+
+    <div class="row2">
+      <label>Suburb *
+        <input name="delivery_suburb" required placeholder="e.g. Brunswick">
+      </label>
+      <label>Postcode *
+        <input name="delivery_postcode" required inputmode="numeric" maxlength="4" placeholder="3056">
+      </label>
+    </div>
+
+    <label>Billing email *
+      <input name="billing_email" type="email" required>
+      <span class="small">Xero invoices go here.</span>
+    </label>
+
+    <label>Delivery notes
+      <textarea name="delivery_notes" rows="2" placeholder="Gate code, leave-at-side-door, that sort of thing"></textarea>
+    </label>
+
+    <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off">
+
+    <button type="submit" class="submit">Set up my portal</button>
+  </form>
+
+  <div class="done">
+    <h2>You're in.</h2>
+    <p>Your ordering portal:</p>
+    <a class="url" id="portalUrl" href="customer.html">yourroastery.orders/your-cafe</a>
+    <p class="small" style="font-size:12.5px;color:var(--faint)">Save it to your phone's home screen and it opens like an app.</p>
+
+    <div class="real">
+      <p class="k">What just happened in the real thing</p>
+      <p>The cafe was created as a contact in your Xero, matched by ABN so there are no doubles. Their portal link was generated and texted to the owner. You did nothing.</p>
+    </div>
+
+    <a class="cta" href="customer.html">See the portal they get &rarr;</a>
+  </div>
+
+</div>
+
+<script>
+/* Demo only. Nothing is stored, nothing is sent anywhere. */
+function slugify(s){
+  return (s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40) || 'your-cafe';
+}
+document.getElementById('joinForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var slug = slugify(document.getElementById('cafeName').value);
+  var u = document.getElementById('portalUrl');
+  u.textContent = 'yourroastery.orders/' + slug;
+  document.body.classList.add('is-done');
+  window.scrollTo(0,0);
+});
+</script>
+</body>
+</html>
