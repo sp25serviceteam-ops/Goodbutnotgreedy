@@ -9,3 +9,31 @@
   to = "https://orders.cafecarepackage.com/hq.html"
   status = 302
   force = true
+
+# Roasters sign in on the platform, not here. These are the addresses a roaster
+# would guess after losing the link we emailed them.
+[[redirects]]
+  from = "/login"
+  to = "https://orders.cafecarepackage.com/admin.html"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/signin"
+  to = "https://orders.cafecarepackage.com/admin.html"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/dashboard"
+  to = "https://orders.cafecarepackage.com/admin.html"
+  status = 302
+  force = true
+
+# Setup links we email out: cafecarepackage.com/i/CODE works as well as the
+# orders host, since that is the domain roasters actually know.
+[[redirects]]
+  from = "/i/:code"
+  to = "https://orders.cafecarepackage.com/i/:code"
+  status = 302
+  force = true
