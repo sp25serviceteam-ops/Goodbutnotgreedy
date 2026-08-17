@@ -161,6 +161,18 @@
   .door-n{font-weight:700;font-size:21px;letter-spacing:-.02em;margin:0 0 5px;color:var(--ink)}
   .door-d{font-size:14px;color:var(--muted);line-height:1.5;margin:0}
   .door-go{font-size:20px;color:var(--muted);flex:none;line-height:1}
+  /* The one door that matters now: filled, so it reads as the action rather
+     than one of two equal options. */
+  .door-lead{background:var(--ink);border-color:var(--ink);color:#fff;padding:22px 20px}
+  .door-lead:hover{background:#2A2A2E}
+  .door-lead .door-n{color:#fff;font-size:22px}
+  .door-lead .door-k{color:var(--accent)}
+  .door-lead .door-d{color:rgba(255,255,255,.72)}
+  .door-lead .door-go{color:#fff}
+  /* Cafe tools, still here, just no longer half the page. */
+  .aside-door{max-width:430px;width:100%;font-size:14.5px;line-height:1.6;color:var(--muted);margin:22px 0 0;text-align:center}
+  .linkish{background:none;border:0;padding:0;font:inherit;color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  .linkish:hover{color:var(--accent)}
   .chooser-back{background:none;border:none;font:inherit;color:var(--muted);font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:12px;margin-bottom:18px}
   .chooser-back:hover{color:var(--ink)}
   .toolcard{width:100%;max-width:430px;text-align:left;border:1.5px solid var(--ink);border-radius:18px;padding:22px 20px;margin:0 0 22px;background:var(--bg)}
@@ -207,30 +219,25 @@
   <div class="landing">
     <img class="landing-logo" src="carepack.png" alt="carepack" />
     <p class="eyebrow">Care Pack</p>
-    <h1 class="landing-h1">We make tools to help.</h1>
-    <p class="landing-lead">Built by someone who works in hospo. Pick your side of the counter.</p>
+    <h1 class="landing-h1">Your cafes order.<br />It lands in your Xero.</h1>
+    <p class="landing-lead">A wholesale ordering page with your name on it. Every order arrives in your accounts as a draft invoice, priced from your own item codes. No commission, no app for your cafes to download.</p>
 
-    <a class="door" href="/wholesale/">
+    <a class="door door-lead" href="/wholesale/">
       <span class="door-body">
         <span class="door-k" style="display:block">For roasters</span>
-        <span class="door-n" style="display:block">Wholesale tools</span>
-        <span class="door-d" style="display:block">Your own ordering portal for your wholesale cafes. Orders land in your Xero. No commission.</span>
+        <span class="door-n" style="display:block">Wholesale ordering</span>
+        <span class="door-d" style="display:block">See it working, then set yours up. About fifteen minutes.</span>
       </span>
       <span class="door-go" aria-hidden="true">&rarr;</span>
     </a>
 
-    <button class="door" id="chooseCafe">
-      <span class="door-body">
-        <span class="door-k" style="display:block">For cafes</span>
-        <span class="door-n" style="display:block">Cafe tools</span>
-        <span class="door-d" style="display:block">Sell your daily surplus food, keep every cent. Free, and more tools on the way.</span>
-      </span>
-      <span class="door-go" aria-hidden="true">&rarr;</span>
-    </button>
-
     <!-- Roasters who already have a portal shouldn't have to go through a door
          built for people who don't. Straight to the dashboard sign-in. -->
-    <a class="btn landing-login" href="/login" style="display:inline-block">Roaster? Sign in to your dashboard</a>
+    <a class="btn landing-login" href="/login" style="display:inline-block;margin-top:16px">Already set up? Sign in to your dashboard</a>
+
+    <!-- The cafe surplus tool is real and still free, it just isn't what this
+         page is for any more. Kept a click away rather than at equal weight. -->
+    <p class="aside-door">Run a cafe? <button type="button" id="chooseCafe" class="linkish">Free cafe tools</button>, including selling your daily surplus food.</p>
 
     <div class="note-from" style="margin-top:24px">
       <p>Hi. Hospo is tough at the moment. I'm making tools to make it easier for cafes and wholesalers, and I hope you enjoy them.</p>
