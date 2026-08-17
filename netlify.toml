@@ -1,2 +1,11 @@
 [build]
   publish = "."
+
+# HQ lives on the portal site (it needs Supabase and the operator login, which
+# this static site has no access to). This just makes the URL Lukas remembers
+# work: cafecarepackage.com/hq -> the real page.
+[[redirects]]
+  from = "/hq"
+  to = "https://orders.cafecarepackage.com/hq.html"
+  status = 302
+  force = true
