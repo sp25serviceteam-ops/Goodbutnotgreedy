@@ -1,8 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- Care Pack mark: the green e from the wordmark. Fallback tab icon for every
-       platform page; a roaster with logo_url set has it swapped for their own at
-       runtime (see setFavicon in index.html / admin.html / look.html). -->
-  <rect width="32" height="32" rx="7" fill="#FFFFFF"/>
-  <rect x=".5" y=".5" width="31" height="31" rx="6.5" fill="none" stroke="#E6E6E9"/>
-  <text x="16" y="24.5" text-anchor="middle" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="700" font-size="25" fill="#0A9B4B">e</text>
+  <!-- Care Pack tab mark: the green e from the carepack wordmark, knocked out of
+       a solid tile. Green #00A04D is sampled from the wordmark itself.
+       Drawn as shapes, not <text>, so it does not depend on a font being
+       installed on the viewer's machine. Solid tile because a white one
+       disappears into Chrome's light tab strip. -->
+  <rect width="32" height="32" rx="7" fill="#00A04D"/>
+  <circle cx="16.0" cy="16.0" r="9.0" fill="none" stroke="#FFFFFF" stroke-width="5.2"/>
+  <rect x="7.0" y="13.4" width="18.0" height="5.2" fill="#FFFFFF"/>
+  <polygon points="16.0,18.6 34,18.6 34,34 26.0,34" fill="#00A04D"/>
 </svg>
