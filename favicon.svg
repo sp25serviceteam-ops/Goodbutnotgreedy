@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Care Pack mark: the green e from the wordmark. Fallback tab icon for every
+       platform page; a roaster with logo_url set has it swapped for their own at
+       runtime (see setFavicon in index.html / admin.html / look.html). -->
+  <rect width="32" height="32" rx="7" fill="#FFFFFF"/>
+  <rect x=".5" y=".5" width="31" height="31" rx="6.5" fill="none" stroke="#E6E6E9"/>
+  <text x="16" y="24.5" text-anchor="middle" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-weight="700" font-size="25" fill="#0A9B4B">e</text>
+</svg>
