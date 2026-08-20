@@ -5,7 +5,7 @@
        installed on the viewer's machine. Solid tile because a white one
        disappears into Chrome's light tab strip. -->
   <rect width="32" height="32" rx="7" fill="#00A04D"/>
-  <circle cx="16.0" cy="16.0" r="9.0" fill="none" stroke="#FFFFFF" stroke-width="5.2"/>
-  <rect x="7.0" y="13.4" width="18.0" height="5.2" fill="#FFFFFF"/>
-  <polygon points="16.0,18.6 34,18.6 34,34 26.0,34" fill="#00A04D"/>
+  <circle cx="16" cy="16" r="9" fill="none" stroke="#FFFFFF" stroke-width="5.2"/>
+  <rect x="7" y="13.4" width="18" height="5.2" fill="#FFFFFF"/>
+  <polygon points="16,18.6 32,18.6 32,32 24.7,32" fill="#00A04D"/>
 </svg>
