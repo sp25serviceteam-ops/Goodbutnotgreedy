@@ -37,3 +37,12 @@
   to = "https://orders.cafecarepackage.com/i/:code"
   status = 302
   force = true
+
+# The pitch page moved from /wholesale/compare/ to /wholesale/ itself; the
+# waitlist page it used to sit behind is gone. Old links (decks, emails, the
+# "see how we stack up" link that used to be on the waitlist page) still land.
+[[redirects]]
+  from = "/wholesale/compare/*"
+  to = "/wholesale/"
+  status = 301
+  force = true

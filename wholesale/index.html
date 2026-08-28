@@ -1,239 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-AU">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Wholesale Care Package: ordering tools for coffee roasters</title>
-<meta name="description" content="I retyped wholesale orders into Xero by hand for a Melbourne roaster, so I built a portal. It still runs their whole book. Opening it to a few more roasters." />
-<meta property="og:title" content="Wholesale Care Package" />
-<meta property="og:description" content="Wholesale orders shouldn't live in your text messages. Built inside a Melbourne roastery, still running their whole book, opening to a few more roasters." />
-<meta property="og:image" content="https://cafecarepackage.com/carepack.png" />
-<meta property="og:url" content="https://cafecarepackage.com/wholesale/" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary" />
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<style>
-  :root{
-    --accent:#16a34a; --bg:#ffffff; --ink:#0b0b0c; --muted:#6b6b72;
-    --line:#e6e6e9; --leaf:#0b0b0c; --radius:15px;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
-  body{
-    background:var(--bg); color:var(--ink);
-    font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
-    font-size:16px; line-height:1.5;
-    -webkit-font-smoothing:antialiased; color-scheme:light;
-  }
-
-  .landing{
-    min-height:100vh; min-height:100dvh; background:var(--bg);
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; padding:60px 22px calc(48px + env(safe-area-inset-bottom));
-    max-width:560px; margin:0 auto;
-  }
-  .landing-logo{width:230px;max-width:64%;height:auto;margin-bottom:24px}
-  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}
-  .landing-h1{font-weight:700;font-size:clamp(30px,7vw,42px);line-height:1.04;letter-spacing:-.03em;margin:0 0 16px;color:var(--ink)}
-  .landing-lead{font-size:16.5px;color:var(--muted);line-height:1.6;margin:0 0 26px;max-width:420px}
-
-  .toolcard{width:100%;max-width:430px;text-align:left;border:1.5px solid var(--ink);border-radius:18px;padding:22px 20px;margin:0 0 22px;background:var(--bg)}
-  .toolcard-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 11px}
-  .toolcard-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.18)}
-  .toolcard-name{font-weight:700;font-size:22px;letter-spacing:-.02em;margin:0 0 8px;color:var(--ink)}
-  .toolcard-desc{font-size:14.5px;color:var(--muted);line-height:1.55;margin:0 0 16px}
-
-  .points{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px}
-  .points li{display:grid;grid-template-columns:16px 1fr;gap:9px;align-items:start;font-size:14.5px;line-height:1.55;color:var(--muted)}
-  .points .tick{color:var(--accent);font-weight:700}
-  .points b{color:var(--ink);font-weight:700}
-
-  form{width:100%;max-width:430px;text-align:left;margin:0 0 34px}
-  .field{margin-bottom:14px}
-  .row{display:flex;gap:11px}
-  .row .field{flex:1;min-width:0}
-  label{display:block;font-size:13px;font-weight:700;margin:0 0 6px;color:var(--ink)}
-  .hint{font-weight:400;color:var(--muted)}
-  input,select{
-    font:inherit; font-size:16px; color:var(--ink); background:#fff;
-    border:1px solid var(--line); border-radius:12px;
-    padding:12px 13px; width:100%; min-height:48px;
-  }
-  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:right 17px center,right 12px center;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px}
-  input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-  .hp{position:absolute;left:-9999px}
-
-  .btn{font:inherit;border:none;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:transform .05s,background .15s;min-height:48px}
-  .btn-primary{background:var(--leaf);color:#fff;width:100%}
-  .btn-primary:hover{background:#2a2a2e}
-  .btn-primary:active{transform:scale(.995)}
-  .btn-ghost{background:var(--bg);color:var(--ink);width:100%;border:1.5px solid var(--ink)}
-  .btn-ghost:hover{background:#f7f7f8}
-  .btn-ghost:active{transform:scale(.995)}
-
-  /* Demo call to action. Sits above the form deliberately: a roaster who
-     has never seen this can't picture it from a paragraph, and playing
-     with it is what sells it. */
-  /* Then/now: the story told as pictures. Deliberately a bit uneven,
-     that is the point. */
-  .wewont{font-size:30px;font-weight:700;letter-spacing:-.02em;color:var(--accent);margin:0 0 18px}
-  .tn-cap{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 9px;text-align:center}
-
-  .demo-cta{width:100%;max-width:430px;margin:0 0 30px}
-  .demo-cta-k{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 11px;text-align:center}
-  .demo-cta-btns{display:flex;flex-direction:column;gap:10px}
-  .demo-cta .btn{justify-content:space-between;text-align:left;padding:14px 17px;min-height:60px}
-  .demo-btn-txt{display:flex;flex-direction:column;min-width:0}
-  .demo-btn-sub{font-weight:400;font-size:13px;opacity:.72;margin-top:1px}
-  .demo-btn-go{font-weight:400;opacity:.5;flex:none}
-  .demo-cta-note{font-size:13px;color:var(--muted);text-align:center;margin:11px 0 0}
-  .fineprint{font-size:13px;color:var(--muted);text-align:center;margin:12px 0 0}
-
-  .note-from{max-width:430px;width:100%;text-align:center;padding:2px 6px;margin:0 0 34px}
-  .note-from p{font-size:15px;line-height:1.6;color:var(--muted);margin:0 0 10px}
-  .note-from .sig{margin-top:9px;font-weight:700;color:var(--ink)}
-
-  .meet{width:100%;max-width:430px;text-align:left;margin:0 0 34px}
-  .meet img{width:100%;height:auto;border-radius:15px;display:block}
-  .meet-photonote{font-size:12.5px;color:var(--muted);margin:7px 0 16px;text-align:right;font-style:italic}
-  .meet p{font-size:15px;line-height:1.6;color:var(--muted);margin:0 0 12px}
-  .meet p:last-child{margin-bottom:0}
-
-  .backlink{font-size:14px;color:var(--muted);max-width:430px}
-  .backlink a{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
-
-  .done{display:none}
-  body.is-done .done{display:flex;flex-direction:column;align-items:center;width:100%}
-  body.is-done .pre-done{display:none}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090a0a">
+  <meta name="description" content="A branded wholesale ordering portal for coffee roasters. Cafes order in their browser and confirmed orders become draft invoices in Xero. Flat $50 a week.">
+  <link rel="canonical" href="https://cafecarepackage.com/wholesale/">
+  <meta property="og:title" content="Care Pack | Wholesale ordering, packed properly">
+  <meta property="og:description" content="Cafe ordering in your brand, connected to your Xero. Flat $50 a week.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cafecarepackage.com/wholesale/">
+  <title>Care Pack | Wholesale ordering, packed properly</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <style>
+    :root{--ink:#090a0a;--ink2:#141615;--paper:#f4f2eb;--white:#fff;--green:#00a950;--muted:#a7aaa7;--line:rgba(255,255,255,.15);--darkline:rgba(9,10,10,.14);--pad:clamp(20px,5vw,72px);--radius:clamp(20px,3vw,34px);--ease:cubic-bezier(.2,.8,.2,1)}
+    *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;background:var(--ink)}body{background:var(--ink);color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}a{color:inherit}button,input,select,textarea{font:inherit}:focus-visible{outline:3px solid var(--green);outline-offset:3px}.wrap{width:min(1160px,100%);margin:auto;padding-inline:var(--pad)}
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:13px;text-decoration:none}.brand img{width:84px}.brand span{padding-left:13px;border-left:1px solid var(--line);color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.15em;text-transform:uppercase}.nav-links{display:flex;align-items:center;gap:20px}.nav-links>a:not(.button){color:#d9dbd9;text-decoration:none;font-size:13px}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 22px;border:1px solid transparent;border-radius:999px;background:var(--green);color:#fff;text-decoration:none;font-size:14px;font-weight:760;cursor:pointer;transition:transform .2s var(--ease),background .2s}.button:hover{transform:translateY(-2px);background:#00b95a}.button.secondary{background:transparent;border-color:var(--line)}.button.small{min-height:42px;padding-inline:17px;background:var(--white);color:var(--ink)}
+    .hero{position:relative;padding:clamp(64px,9vw,118px) 0 72px;overflow:hidden}.hero:after{content:"";position:absolute;width:700px;height:700px;right:-340px;top:-130px;border-radius:50%;background:radial-gradient(circle,rgba(0,169,80,.30),rgba(0,169,80,.04) 52%,transparent 70%);pointer-events:none}.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:22px;color:#ced1ce;font-size:11px;font-weight:760;letter-spacing:.15em;text-transform:uppercase}.eyebrow:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(0,169,80,.13)}h1{position:relative;z-index:1;max-width:960px;font-size:clamp(50px,8.3vw,108px);font-weight:780;letter-spacing:-.06em;line-height:.91;text-wrap:balance}h1 em{color:var(--green);font-style:normal}.hero-copy{max-width:720px;margin:30px 0 28px;color:#d1d4d1;font-size:clamp(18px,2vw,22px)}.actions{display:flex;flex-wrap:wrap;gap:11px}.price-line{margin-top:22px;color:var(--muted);font-size:13px}.price-line strong{color:#fff}
+    .proof-strip{display:grid;grid-template-columns:repeat(4,1fr);border-block:1px solid var(--line)}.proof{padding:24px 20px;border-left:1px solid var(--line)}.proof:first-child{border-left:0}.proof b{display:block;font-size:17px;letter-spacing:-.02em}.proof span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+    .section{padding:clamp(82px,11vw,142px) 0}.paper{background:var(--paper);color:var(--ink)}.section-head{display:grid;grid-template-columns:minmax(145px,.4fr) 1.6fr;gap:36px;margin-bottom:clamp(40px,6vw,68px)}.kicker{padding-top:8px;color:#717571;font-size:11px;font-weight:760;letter-spacing:.14em;text-transform:uppercase}.section:not(.paper) .kicker{color:var(--muted)}h2{max-width:900px;font-size:clamp(40px,5.8vw,70px);font-weight:750;letter-spacing:-.052em;line-height:.98;text-wrap:balance}.lede{max-width:680px;margin-top:21px;color:#676b67;font-size:17px}.section:not(.paper) .lede{color:var(--muted)}
+    .product-stage{position:relative;display:grid;grid-template-columns:.72fr 70px 1.28fr;align-items:center;min-height:560px;padding:clamp(26px,4vw,50px);border:1px solid var(--line);border-radius:var(--radius);background:radial-gradient(circle at 38% 48%,rgba(0,169,80,.2),transparent 34%),var(--ink2);overflow:hidden}.stage-shot{position:relative;z-index:1;width:100%;object-fit:cover;object-position:top;box-shadow:0 28px 70px rgba(0,0,0,.42)}.stage-shot.phone{justify-self:center;width:min(235px,100%);height:420px;border:8px solid #050505;border-radius:30px}.stage-shot.desktop{height:390px;border:1px solid rgba(255,255,255,.18);border-radius:18px}.stage-arrow{position:relative;z-index:2;display:grid;place-items:center;width:62px;height:62px;margin-inline:auto;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:var(--green);font-size:27px;font-weight:900;box-shadow:0 12px 35px rgba(0,0,0,.35)}.pin{position:absolute;z-index:3;padding:8px 11px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(9,10,10,.88);color:#fff;font-size:11px;font-weight:760;box-shadow:0 8px 30px rgba(0,0,0,.3);backdrop-filter:blur(10px)}.pin.one{left:3%;bottom:7%}.pin.two{left:43%;top:8%}.pin.three{right:3%;bottom:7%}.stage-actions{display:flex;justify-content:center;gap:11px;flex-wrap:wrap;margin-top:24px}
+    .flow{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--darkline);border-radius:var(--radius);overflow:hidden;background:#fff}.flow article{min-height:250px;padding:clamp(25px,3vw,38px);border-left:1px solid var(--darkline);display:flex;flex-direction:column}.flow article:first-child{border-left:0}.flow .num{color:var(--green);font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace}.flow h3{margin-top:auto;font-size:26px;letter-spacing:-.035em}.flow p{margin-top:10px;color:#666a66;font-size:14px}
+    .before-after{display:grid;grid-template-columns:1fr 1fr;gap:14px}.side{padding:clamp(28px,4vw,44px);border:1px solid var(--darkline);border-radius:var(--radius);background:#fff}.side.after{background:var(--ink);color:#fff;border-color:var(--ink)}.side h3{font-size:28px;letter-spacing:-.035em}.side ul{list-style:none;padding:0;margin-top:26px;display:grid;gap:14px}.side li{position:relative;padding-left:24px;color:#646864}.side.after li{color:#d4d6d4}.side li:before{content:"×";position:absolute;left:0;color:#a34b4b;font-weight:900}.side.after li:before{content:"✓";color:var(--green)}
+    .price-card{display:grid;grid-template-columns:.8fr 1.2fr;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.price-main{padding:clamp(30px,5vw,56px);background:var(--green)}.price-main .label,.price-detail .label{font-size:11px;font-weight:780;letter-spacing:.14em;text-transform:uppercase}.price-main h3{margin:30px 0 8px;font-size:clamp(52px,7vw,82px);line-height:.9;letter-spacing:-.06em}.price-main p{color:#eafff1}.price-detail{padding:clamp(30px,5vw,56px)}.price-detail h3{margin:24px 0;font-size:clamp(28px,4vw,42px);line-height:1.05;letter-spacing:-.04em}.fee-list{list-style:none;padding:0}.fee-list li{display:flex;justify-content:space-between;gap:20px;padding:14px 0;border-top:1px solid var(--line);color:#d4d6d4;font-size:14px}.fee-list strong{text-align:right;color:#fff}.fine{margin-top:20px;color:var(--muted);font-size:11px;line-height:1.6}
+    .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.trust{padding:26px;border:1px solid var(--darkline);border-radius:22px;background:#fff}.trust b{display:block;margin-bottom:10px;font-size:17px}.trust p{color:#666a66;font-size:13px}
+    .growth{padding:clamp(28px,5vw,56px);border:1px solid var(--darkline);border-radius:var(--radius);background:#fff}.scenario{display:flex;justify-content:space-between;gap:25px;align-items:end}.scenario h3{max-width:650px;font-size:clamp(28px,4.5vw,48px);line-height:1.02;letter-spacing:-.045em}.scenario p{max-width:360px;color:#666a66;font-size:14px}.growth-chart{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:7px;height:240px;margin-top:48px;padding-top:18px;border-bottom:1px solid var(--darkline)}.growth-chart:after{content:"Care Pack · $216.67 / month";position:absolute;z-index:2;left:0;right:0;bottom:35px;padding:4px 8px;border-top:3px solid var(--green);color:#087a3b;font:760 11px ui-monospace,SFMono-Regular,Menlo,monospace}.month{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;min-width:0}.om-bar{width:100%;height:var(--bar);min-height:32px;border-radius:8px 8px 0 0;background:#b26b4b}.month:nth-child(-n+6) .om-bar{background:#c99d82}.month b{position:absolute;bottom:-25px;font:700 10px ui-monospace,SFMono-Regular,Menlo,monospace;color:#777}.month span{margin-bottom:5px;font:700 9px ui-monospace,SFMono-Regular,Menlo,monospace;color:#74452f}.month .cafes{position:absolute;top:0;color:#777}.growth-totals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:56px}.total{padding:22px;border:1px solid var(--darkline);border-radius:18px}.total.care{background:#e7f7ed;border-color:#b6dfc6}.total.gap{background:var(--ink);color:#fff}.total span{display:block;color:#6b6f6b;font-size:11px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}.total.gap span{color:var(--muted)}.total strong{display:block;margin-top:8px;font-size:clamp(28px,4vw,42px);letter-spacing:-.045em}.method{margin-top:20px;color:#676b67;font-size:11px;line-height:1.6}.method a{font-weight:750}.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.fit{padding:24px;border:1px solid var(--darkline);border-radius:20px}.fit h4{font-size:18px}.fit ul{margin:15px 0 0;padding-left:19px;color:#626662;font-size:13px;display:grid;gap:8px}
+    .year-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:34px}.year-number{padding:22px;border:1px solid var(--darkline);border-radius:18px;background:#fafaf8}.year-number span{display:block;color:#6b6f6b;font-size:11px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}.year-number strong{display:block;margin-top:7px;font:780 clamp(28px,4vw,42px) ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:-.05em}.cost-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}.cost-column{padding:clamp(24px,4vw,38px);border:1px solid var(--darkline);border-radius:22px}.cost-column.care{background:#e7f7ed;border-color:#acdabb}.cost-column h4{font-size:24px;letter-spacing:-.03em}.cost-column>p{margin-top:8px;color:#626662;font-size:13px}.cost-lines{list-style:none;padding:0;margin-top:24px}.cost-lines li{display:flex;justify-content:space-between;gap:15px;padding:13px 0;border-top:1px solid var(--darkline);font-size:13px}.cost-lines strong{text-align:right}.unknown{color:#a85431}.sensitivity{margin-top:28px;padding:clamp(24px,4vw,38px);border-radius:22px;background:var(--ink);color:#fff}.sensitivity h4{font-size:clamp(24px,3vw,34px);letter-spacing:-.035em}.sensitivity>p{max-width:720px;margin-top:9px;color:var(--muted);font-size:13px}.sensitivity-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:23px}.sensitivity-item{padding:18px;border:1px solid var(--line);border-radius:14px}.sensitivity-item span{display:block;color:var(--muted);font-size:11px}.sensitivity-item strong{display:block;margin-top:6px;font:760 24px ui-monospace,SFMono-Regular,Menlo,monospace}.scale-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:26px}.scale-item{padding:18px;border:1px solid var(--darkline);border-radius:14px}.scale-item b{font-size:20px}.scale-item span{display:block;margin-top:5px;color:#696d69;font-size:12px}
+    .compare-chart{margin-top:28px;padding:clamp(24px,4vw,38px);border:1px solid var(--darkline);border-radius:22px;background:#fafaf8}.chart-head{display:flex;justify-content:space-between;gap:20px;align-items:end}.chart-head h4{font-size:clamp(24px,3.5vw,38px);letter-spacing:-.04em;line-height:1.05}.chart-legend{display:flex;gap:16px;flex-wrap:wrap;color:#626662;font-size:11px}.chart-legend span:before{content:"";display:inline-block;width:9px;height:9px;margin-right:6px;border-radius:3px;background:var(--green)}.chart-legend span:last-child:before{background:#b26b4b}.bar-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,4vw,50px);height:300px;margin-top:32px;padding-top:20px;border-bottom:1px solid var(--darkline)}.bar-group{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end;position:relative}.bar{position:relative;height:var(--height);min-height:32px;border-radius:10px 10px 0 0;background:var(--green)}.bar.competitor{background:#b26b4b}.bar strong{position:absolute;left:50%;top:-23px;transform:translateX(-50%);white-space:nowrap;font:760 11px ui-monospace,SFMono-Regular,Menlo,monospace}.bar-group>span{position:absolute;left:0;right:0;bottom:-48px;text-align:center;font-size:12px;font-weight:740}.bar-group>span small{display:block;color:#777;font-weight:500}.chart-note{margin-top:65px;color:#696d69;font-size:11px;line-height:1.55}
+    .faq{max-width:860px;margin-left:auto}.faq details{border-top:1px solid var(--darkline)}.faq details:last-child{border-bottom:1px solid var(--darkline)}.faq summary{padding:22px 38px 22px 0;cursor:pointer;font-size:18px;font-weight:720;list-style:none;position:relative}.faq summary::-webkit-details-marker{display:none}.faq summary:after{content:"+";position:absolute;right:4px;color:var(--green);font-size:26px;line-height:1}.faq details[open] summary:after{content:"−"}.faq details p{max-width:70ch;padding:0 40px 24px 0;color:#626662}
+    .contact-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(45px,7vw,90px);align-items:start}.contact-copy h2{font-size:clamp(42px,6vw,68px)}.contact-copy>p{margin-top:22px;color:var(--muted);font-size:17px}.founder{display:flex;gap:14px;margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}.founder-mark{display:grid;place-items:center;flex:0 0 45px;height:45px;border-radius:50%;background:var(--green);font-weight:850}.founder p{color:#cfd2cf;font-size:13px}.form{padding:clamp(24px,4vw,42px);border-radius:var(--radius);background:var(--white);color:var(--ink)}.field{display:grid;gap:7px;margin-bottom:16px}.field label{font-size:12px;font-weight:740}.field input,.field select,.field textarea{width:100%;min-height:50px;padding:12px 14px;border:1px solid #d7d9d5;border-radius:11px;background:#fafaf8;color:var(--ink)}.field textarea{min-height:90px;resize:vertical}.form .button{width:100%;border:0}.form-note{margin-top:13px;color:#6e726e;font-size:11px;text-align:center}.hp{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+    footer{padding:30px 0 100px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.footer-row{display:flex;justify-content:space-between;gap:25px;align-items:center}.footer-row img{width:75px}.footer-links{display:flex;flex-wrap:wrap;gap:18px}.footer-links a{text-decoration:none}.mobile-cta{display:none}
+    @media(max-width:850px){.nav-links>a:not(.button){display:none}.proof-strip,.trust-grid{grid-template-columns:1fr 1fr}.proof:nth-child(3){border-left:0;border-top:1px solid var(--line)}.proof:nth-child(4){border-top:1px solid var(--line)}.section-head,.contact-grid{grid-template-columns:1fr}.product-stage{grid-template-columns:1fr;gap:25px}.stage-shot.phone{height:360px;width:210px}.stage-shot.desktop{height:320px}.stage-arrow{transform:rotate(90deg)}.pin{display:none}.before-after,.price-card{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.flow article{min-height:190px;border-left:0;border-top:1px solid var(--darkline)}.flow article:first-child{border-top:0}.scenario{align-items:start;flex-direction:column}.sensitivity-grid{grid-template-columns:1fr 1fr}.contact-grid{gap:45px}}
+    @media(max-width:560px){.brand span{display:none}.hero{padding-top:55px}.hero-copy{font-size:17px}.actions .button,.stage-actions .button{width:100%}.proof-strip{grid-template-columns:1fr 1fr}.trust-grid{grid-template-columns:1fr}.proof{padding:17px 14px}.proof:nth-child(2){border-top:0}.proof:nth-child(3){border-left:1px solid var(--line)}.proof b{font-size:14px}.proof span{font-size:10px}.section{padding:70px 0}.product-stage{min-height:0}.stage-shot.phone{height:330px}.stage-shot.desktop{height:245px}.growth{padding:24px 16px}.year-numbers,.cost-compare,.sensitivity-grid,.scale-row,.growth-totals,.fit-grid{grid-template-columns:1fr}.chart-head{align-items:start;flex-direction:column}.bar-groups{gap:12px;height:250px}.bar strong{font-size:9px}.bar-group>span{font-size:10px}.total{padding:17px}.fee-list li{align-items:flex-start}.footer-row{align-items:flex-start;flex-direction:column}.mobile-cta{display:block;position:fixed;z-index:20;left:12px;right:12px;bottom:10px;padding:13px 18px;border-radius:999px;background:var(--green);color:#fff;text-align:center;text-decoration:none;font-size:14px;font-weight:800;box-shadow:0 12px 35px rgba(0,0,0,.35)}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button,.demo-card{transition:none}}
+  .done{display:none}body.is-done .done{display:block}body.is-done .pre-done{display:none}.done-card{width:min(560px,100%);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(26px,4vw,42px);background:rgba(255,255,255,.03)}.done-tag{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:12px}.done-card b{display:block;font-size:26px;letter-spacing:-.035em;margin-bottom:12px}.done-card p{color:var(--muted);font-size:15px;line-height:1.65;margin:0}.done-card a{color:var(--white);font-weight:700}</style>
 </head>
 <body>
-
-<div class="landing">
-
-  <img class="landing-logo" src="../carepack.png" alt="carepack, Wholesale Care Package" />
-  <p class="eyebrow">Wholesale Care Package</p>
-  <h1 class="landing-h1">What if we charged you more every time you won a cafe, then took a slice of every order on top?</h1>
-  <p class="wewont">We won't.</p>
-  <p class="landing-lead">I've worked almost every job in coffee wholesale, and I've never heard anyone in a good mood about the way orders get processed. I'm here to change that.</p>
-
-  <div class="demo-cta">
-    <p class="demo-cta-k">See it working</p>
-    <div class="demo-cta-btns">
-      <a class="btn btn-primary" href="try/customer.html">
-        <span class="demo-btn-txt">Try me as a customer<span class="demo-btn-sub">What your cafes see</span></span>
-        <span class="demo-btn-go" aria-hidden="true">&rarr;</span>
-      </a>
-      <a class="btn btn-ghost" href="try/wholesaler.html">
-        <span class="demo-btn-txt">Try me as a wholesaler<span class="demo-btn-sub">What you see</span></span>
-        <span class="demo-btn-go" aria-hidden="true">&rarr;</span>
-      </a>
-    </div>
-    <p class="demo-cta-note">Working demos, nothing to sign up for. Everything in them is made up.</p>
-    <p class="demo-cta-note" style="margin-top:15px"><a href="/wholesale/compare/" style="color:var(--ink);font-weight:700;text-underline-offset:3px">See how we stack up against the competition &rarr;</a></p>
-  </div>
-
-  <div class="pre-done" style="width:100%;display:flex;flex-direction:column;align-items:center">
-
-    <div class="toolcard">
-      <div class="toolcard-tag">Opening soon</div>
-      <div class="toolcard-name">Wholesale ordering</div>
-      <div class="toolcard-desc">Proven on just under 200 cafes' worth of daily orders. Looking for a few roasters to try it next.</div>
-      <ul class="points">
-        <li><span class="tick">&check;</span><span><b>Each cafe gets one link.</b> It opens with your name and logo on it, they tap what they need, done. Saved to a phone's home screen it opens like an app, so nobody goes digging through old texts to find it.</span></li>
-        <li><span class="tick">&check;</span><span><b>Set up from your Xero.</b> Connect it and we read the products, customers and per-cafe codes you already have in there. You confirm them. You don't retype a catalogue you already own once.</span></li>
-        <li><span class="tick">&check;</span><span><b>Every order lands in your Xero as a draft.</b> You look it over and approve it like any other invoice. We never send anything to your customers.</span></li>
-        <li><span class="tick">&check;</span><span><b>Payments stay wherever they are now.</b> Pinch, Stripe, direct debit through whoever you already use, and we take no cut of those. No tiers either. You worked hard to grow that book, and growing it shouldn't be why your bill went up: a couple hundred cafes on a marketplace is thousands a month in handling fees. If you'd rather we collected payment for you, that is a separate service with its own price, off unless you switch it on. If you want cafes set up on direct debit before they can order, that's a switch you can flick.</span></li>
-        <li><span class="tick">&check;</span><span><b>This isn't a marketplace.</b> Your cafes are never listed next to another roaster.</span></li>
-      </ul>
-    </div>
-
-    <form name="wholesale-waitlist" method="POST" data-netlify="true" netlify-honeypot="company-website" action="/wholesale/?ok=1">
-      <input type="hidden" name="form-name" value="wholesale-waitlist" />
-      <p class="hp"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
-
-      <div class="field">
-        <label for="roaster">Roastery name</label>
-        <input id="roaster" name="roaster" required autocomplete="organization" />
-      </div>
-
-      <div class="row">
-        <div class="field">
-          <label for="name">Your name</label>
-          <input id="name" name="name" required autocomplete="name" />
-        </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required autocomplete="email" />
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="cafes">How many wholesale cafes?</label>
-        <select id="cafes" name="cafes" required>
-          <option value="">Choose one</option>
-          <option>Under 10</option>
-          <option>10 to 30</option>
-          <option>30 to 75</option>
-          <option>75 to 150</option>
-          <option>More than 150</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="accounting">What do you invoice with? <span class="hint">Xero first, others on the way</span></label>
-        <select id="accounting" name="accounting" required>
-          <option value="">Choose one</option>
-          <option>Xero</option>
-          <option>MYOB</option>
-          <option>QuickBooks</option>
-          <option>Something else</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="current">How do your cafes order now? <span class="hint">Optional</span></label>
-        <input id="current" name="current" placeholder="Texts, phone calls, Ordermentum…" />
-      </div>
-
-      <button type="submit" class="btn btn-primary">Join the waitlist</button>
-      <p class="fineprint">No spam. I'll email you when there's a spot, and nothing in between.</p>
-      <p class="fineprint" style="margin-top:14px">Already set up? <a href="/login" style="color:var(--ink);font-weight:700;text-underline-offset:3px">Sign in to your dashboard</a>.</p>
-    </form>
-
-    <div class="note-from">
-      <p>If someone in your office spends their mornings retyping orders, put your name down and I'll be in touch.</p>
-      <p class="sig"><a href="#lukas" style="color:inherit;text-underline-offset:3px">love, Lukas</a></p>
-    </div>
-
-    <div class="meet" id="lukas">
-      <p class="tn-cap">Meet the guy who made this</p>
-      <img src="lukas.jpg" alt="Lukas, on the street, mid conversation" loading="lazy" />
-      <p class="meet-photonote">I don't have any corporate photos.</p>
-      <p>Yo, I'm Lukas. I think cafes and roasters are having a hard enough time getting by, so I've decided to make a bunch of free tools and affordable solutions to the things I see costing too much. I want to help.</p>
-      <p>I've been a salesman, a tech, a picker packer, a barista. I've done it all. I love this industry and I want to help it.</p>
-      <p>Thanks.</p>
-    </div>
-
-  </div>
-
-  <div class="done">
-    <div class="toolcard">
-      <div class="toolcard-tag">You're on the list</div>
-      <div class="toolcard-name">Thanks, got it.</div>
-      <div class="toolcard-desc" style="margin:0">I'll email you when there's a spot. If you want to tell me more about how your wholesale runs, just reply to that email, or reach me any time at <a href="mailto:lukas@kiness.com.au" style="color:var(--ink);font-weight:700">lukas@kiness.com.au</a>.</div>
-    </div>
-  </div>
-
-  <p class="backlink">Run a cafe rather than a roastery? <a href="/">Cafe Care Package</a> has free tools for you.</p>
-
-</div>
-
-<script>
-  if (new URLSearchParams(location.search).get('ok') === '1') {
-    document.body.classList.add('is-done');
-  }
-</script>
-</body>
+  <header class="wrap"><nav class="nav" aria-label="Main navigation"><a class="brand" href="#top" aria-label="Care Pack home"><img src="/carepack-light.png" alt="Care Pack"><span>Wholesale ordering</span></a><div class="nav-links"><a href="#how">How it works</a><a href="#pricing">Pricing</a><a class="button small" href="#contact">Book a walkthrough</a></div></nav></header>
+  <main id="top">
+    <section class="hero"><div class="wrap"><div class="eyebrow">Built for independent coffee roasters</div><h1>Your wholesale ordering, <em>packed properly.</em></h1><p class="hero-copy">Give every cafe a simple ordering page in your brand. Confirmed orders become draft invoices in your Xero, without somebody retyping the whole thing.</p><div class="actions"><a class="button" href="/wholesale/try/customer">Try the cafe ordering demo →</a><a class="button secondary" href="/wholesale/try/wholesaler">See the roaster dashboard</a></div><p class="price-line"><strong>$50 a week.</strong> No extra charge for more cafes or orders.</p></div></section>
+    <div class="wrap"><div class="proof-strip"><div class="proof"><b>No app or password</b><span>Cafes order in their browser</span></div><div class="proof"><b>Customer-specific</b><span>Each cafe sees its own catalogue</span></div><div class="proof"><b>Xero-controlled pricing</b><span>Item codes stay authoritative</span></div><div class="proof"><b>Fair by design</b><span>Sell more, pay the same</span></div></div></div>
+    <section class="section" id="demo"><div class="wrap"><div class="section-head"><div class="kicker">See it working</div><div><h2>One order. Zero retyping.</h2><p class="lede">A cafe orders from its own catalogue. You keep control of the catalogue and Xero item codes behind it.</p></div></div><div class="product-stage"><img class="stage-shot phone" src="/wholesale-cafe-demo.jpg" alt="The live Care Pack cafe ordering portal showing wholesale products and quantity controls"><span class="stage-arrow" aria-hidden="true">→</span><img class="stage-shot desktop" src="/wholesale-roaster-demo.jpg" alt="The live Care Pack roaster dashboard showing catalogue sections and Xero item codes"><span class="pin one">1 · Customer-specific order</span><span class="pin two">2 · Structured and confirmed</span><span class="pin three">3 · Xero codes stay authoritative</span></div><div class="stage-actions"><a class="button" href="/wholesale/try/customer">Place a test order →</a><a class="button secondary" href="/wholesale/try/wholesaler">Explore the roaster dashboard</a></div></div></section>
+    <section class="section paper" id="how"><div class="wrap"><div class="section-head"><div class="kicker">How it works</div><div><h2>From cafe link to Xero draft.</h2><p class="lede">A short path for the cafe, with the control a roaster needs behind it.</p></div></div><div class="flow"><article><span class="num">01 / ORDER</span><h3>The cafe chooses.</h3><p>They open their private link and see the products, minimums and delivery information you assigned to them.</p></article><article><span class="num">02 / CONFIRM</span><h3>They check it properly.</h3><p>The order is reviewed before sending. Empty orders are blocked and sold-out products cannot be ordered.</p></article><article><span class="num">03 / XERO</span><h3>A draft is created.</h3><p>The matched Xero contact and item master determine the draft invoice, including the authoritative item pricing.</p></article></div></div></section>
+    <section class="section paper"><div class="wrap"><div class="section-head"><div class="kicker">The difference</div><div><h2>Stop turning messages into invoices.</h2></div></div><div class="before-after"><article class="side"><h3>Manual ordering</h3><ul><li>Orders scattered across calls, texts and email</li><li>Quantities and changes interpreted by somebody</li><li>Customer and product codes found manually</li><li>The order rebuilt in Xero</li></ul></article><article class="side after"><h3>Care Pack ordering</h3><ul><li>Each cafe sees its current catalogue</li><li>Orders arrive structured and confirmed</li><li>Xero remains authoritative for coded item pricing</li><li>Invoice failures stay visible and actionable</li></ul></article></div></div></section>
+    <section class="section" id="pricing"><div class="wrap"><div class="section-head"><div class="kicker">Fair pricing</div><div><h2>One price. It does not move.</h2><p class="lede">Software should cost less per order as you grow, not more. Ours does not go up when you win a cafe, and we do not earn more because you had a good month.</p></div></div><div class="price-card"><article class="price-main"><span class="label">Care Pack</span><h3>$50<br>a week.</h3><p>$2,600 a year, plus GST if applicable. That is the price at twelve cafes and at a hundred and twenty.</p></article><article class="price-detail"><span class="label">No unnecessary fees</span><h3>The portal, the dashboard and Xero draft invoicing, all at the one price.</h3><ul class="fee-list"><li><span>Every cafe you add</span><strong>Included</strong></li><li><span>Every order and invoice</span><strong>Included</strong></li><li><span>A percentage of what you sell</span><strong>We do not take one</strong></li><li><span>Setting you up</span><strong>Included</strong></li><li><span>Getting your data back out</span><strong>It was always yours</strong></li></ul><p class="fine">Migrating more than 50 existing accounts carries a one-off $500 to cover the work. Collecting payment from your cafes is an optional extra with its own separate price, off unless you switch it on, and your cafes can keep paying you exactly as they do today. GST applies where relevant.</p></article></div></div></section>
+    <section class="section paper"><div class="wrap"><div class="section-head"><div class="kicker">Built for the real workflow</div><div><h2>Your relationships and accounting system stay yours.</h2></div></div><div class="trust-grid"><article class="trust"><b>Not a marketplace</b><p>Care Pack does not advertise competing roasters to your cafes.</p></article><article class="trust"><b>Drafts, not surprises</b><p>Orders create draft invoices so the accounting outcome can be reviewed.</p></article><article class="trust"><b>Visible failures</b><p>See whether Xero created the draft or refused it, rather than losing the problem.</p></article><article class="trust"><b>Your catalogue</b><p>Control product visibility, customer coffee codes, minimums and delivery messages.</p></article></div></div></section>
+    <section class="section paper"><div class="wrap"><div class="section-head"><div class="kicker">Questions</div><div><h2>The things you should ask before connecting anything.</h2></div></div><div class="faq"><details><summary>Do cafes need an app or account?</summary><p>No. Each cafe receives its own private ordering link and orders in the browser. There is no app to install or customer password to remember.</p></details><details><summary>Does Care Pack replace Xero?</summary><p>No. Care Pack structures the cafe order and creates a draft against the matched Xero contact. Coded products use the Xero item master for pricing.</p></details><details><summary>Can different cafes see different products?</summary><p>Yes. You can manage customer-specific catalogue visibility, coffee item codes, minimum quantities and delivery information.</p></details><details><summary>What happens if Xero refuses an invoice?</summary><p>The order and invoice outcome remain visible in the dashboard so the problem can be investigated rather than silently disappearing.</p></details><details><summary>Is the 50-account number a product limit?</summary><p>No. It only determines whether the initial customer migration is included. Customers added after onboarding do not change the weekly price.</p></details><details><summary>Does Care Pack take a cut of my sales?</summary><p>No. Your orders and invoices carry no Care Pack percentage, however many you do. Collecting payment from your cafes is a separate optional service with its own price, and we tell you exactly what it costs before you switch it on. Your payment provider bills you directly for processing; we take no part of that and do not mark it up.</p></details></div></div></section>
+    <section class="section" id="contact"><div class="wrap contact-grid"><div class="contact-copy"><div class="eyebrow">Book a walkthrough</div><h2>Show us how your wholesale week works.</h2><p>We will show you where Care Pack fits, what connects to Xero and what your cafes would actually see.</p><div class="founder"><div class="founder-mark" aria-hidden="true">L</div><p><strong>Built and supported by Lukas.</strong><br>Prefer to talk? <a href="tel:0414292358">Call 0414 292 358</a>.</p></div></div><div class="pre-done"><form class="form" name="wholesale-waitlist" method="post" action="/wholesale/?ok=1" data-netlify="true" netlify-honeypot="company-website"><input type="hidden" name="form-name" value="wholesale-waitlist"><p class="hp"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off"></label></p><div class="field"><label for="roaster">Roastery name</label><input id="roaster" name="roaster" autocomplete="organization" required></div><div class="field"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" required></div><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div><div class="field"><label for="cafes">Wholesale cafes <span>(optional)</span></label><select id="cafes" name="cafes"><option value="">Choose one</option><option>Under 10</option><option>10 to 30</option><option>30 to 75</option><option>75 to 150</option><option>More than 150</option></select></div><div class="field"><label for="current">How do cafes order now? <span>(optional)</span></label><textarea id="current" name="current" placeholder="Texts, calls, email, another platform..."></textarea></div><button class="button" type="submit">Show me what this could look like →</button><p class="form-note">No spam. Just a conversation about whether it fits.</p></form></div><div class="done"><div class="done-card"><div class="done-tag">Got it</div><b>Thanks, I'll be in touch.</b><p>I'll email you to find a time that suits. If you want to tell me more about how your wholesale week runs in the meantime, just reply to that email, or reach me any time at <a href="mailto:lukas@kiness.com.au">lukas@kiness.com.au</a>.</p></div></div></div></section>
+  </main>
+  <footer><div class="wrap footer-row"><img src="/carepack-light.png" alt="Care Pack"><div class="footer-links"><a href="#demo">Live demos</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div><span>© 2026 Care Pack</span></div></footer>
+  <a class="mobile-cta" href="#contact">Book a walkthrough</a>
+<script>if(new URLSearchParams(location.search).get('ok')==='1')document.body.classList.add('is-done');</script></body>
 </html>
