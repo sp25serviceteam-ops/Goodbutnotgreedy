@@ -19,7 +19,7 @@
 
   .try-bar{background:#0b0b0c;color:#fff;font-size:12.5px;font-weight:600;padding:10px 16px calc(10px + env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:40}
   .try-bar a{color:#fff;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-  .try-bar span{opacity:.82;font-weight:400}
+  .try-bar span{opacity:.82;font-weight:400}.try-nav{display:flex;align-items:center;gap:15px;flex-wrap:wrap}.try-nav a[aria-current="page"]{opacity:.5;text-decoration:none;cursor:default}.try-exit{font-weight:700;text-decoration:none!important;padding-left:15px;border-left:1px solid rgba(255,255,255,.22)}
 
   .wrap{max-width:520px;margin:0 auto;padding:26px 20px calc(56px + env(safe-area-inset-bottom))}
 
@@ -57,7 +57,7 @@
 
 <div class="try-bar">
   <span>Demo &middot; nothing here is real</span>
-  <a href="wholesaler.html">&larr; Back</a>
+  <nav class="try-nav" aria-label="Demos"><a href="customer.html">What your cafes see</a><a href="wholesaler.html">What you see</a><a href="join.html" aria-current="page">How cafes join</a><a class="try-exit" href="/wholesale/">Exit demo &rarr;</a></nav>
 </div>
 
 <div class="wrap">

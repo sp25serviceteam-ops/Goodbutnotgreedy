@@ -43,7 +43,7 @@
     position:sticky;top:0;z-index:300;
   }
   .try-bar a{color:#fff;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-  .try-bar span{opacity:.82;font-weight:400}
+  .try-bar span{opacity:.82;font-weight:400}.try-nav{display:flex;align-items:center;gap:15px;flex-wrap:wrap}.try-nav a[aria-current="page"]{opacity:.5;text-decoration:none;cursor:default}.try-exit{font-weight:700;text-decoration:none!important;padding-left:15px;border-left:1px solid rgba(255,255,255,.22)}
 
   .ph-logo{
     width:200px;max-width:74%;height:76px;margin:0 auto;
@@ -88,7 +88,7 @@
 
 <div class="try-bar">
   <span>Demo &middot; nothing here is real</span>
-  <a href="/wholesale/">&larr; Back</a>
+  <nav class="try-nav" aria-label="Demos"><a href="customer.html" aria-current="page">What your cafes see</a><a href="wholesaler.html">What you see</a><a href="join.html">How cafes join</a><a class="try-exit" href="/wholesale/">Exit demo &rarr;</a></nav>
 </div>
 
 <header>
