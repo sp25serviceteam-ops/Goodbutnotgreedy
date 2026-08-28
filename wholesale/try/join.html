@@ -51,7 +51,12 @@
   .real .k{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
   .real p{font-size:13.5px;color:var(--soft);margin:0}
   .cta{display:inline-block;font-size:15px;font-weight:700;color:#fff;background:var(--ink);border-radius:13px;padding:13px 20px;text-decoration:none;margin-top:20px}
+
+  /* Embedded in the marketing page inside a device frame: the demo chrome
+     belongs to the standalone page, not to the frame. Body untouched. */
+  html.embed .try-bar{display:none}
 </style>
+<script>if(new URLSearchParams(location.search).has("embed"))document.documentElement.classList.add("embed")</script>
 </head>
 <body>
 

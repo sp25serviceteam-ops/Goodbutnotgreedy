@@ -11,7 +11,7 @@
   :root{
     --ink:#0b0b0c; --soft:#4a4a52; --muted:#6b6b72; --faint:#9a9aa2;
     --line:#e6e6e9; --line-2:#f0f0f2; --bg:#ffffff; --wash:#f7f7f8;
-    --accent:#16a34a; --accent-wash:#e8f5ec;
+    --accent:#00a950; --accent-wash:#e6f5ec;
     --amber:#8a6116; --amber-wash:#f5eddc;
     --face:'Helvetica Neue',Helvetica,Arial,sans-serif;
     --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
@@ -124,7 +124,12 @@
     .colhead .b{width:110px}
     .addrow input.code{width:110px}
   }
+
+  /* Embedded in the marketing page inside a device frame: the demo chrome
+     belongs to the standalone page, not to the frame. Body untouched. */
+  html.embed .try-bar{display:none}
 </style>
+<script>if(new URLSearchParams(location.search).has("embed"))document.documentElement.classList.add("embed")</script>
 </head>
 <body>
 

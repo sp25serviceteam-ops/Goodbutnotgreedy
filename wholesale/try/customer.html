@@ -82,7 +82,12 @@
     .product-name{font-size:13px}
     .fmt-wrap{padding-left:47px}
   }
+
+  /* Embedded in the marketing page inside a device frame: the demo chrome
+     belongs to the standalone page, not to the frame. Body untouched. */
+  html.embed .try-bar{display:none}
 </style>
+<script>if(new URLSearchParams(location.search).has("embed"))document.documentElement.classList.add("embed")</script>
 </head>
 <body>
 
