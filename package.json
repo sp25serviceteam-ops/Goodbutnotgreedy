@@ -4,10 +4,16 @@
   "private": true,
   "description": "Free cafe surplus tool with optional Stripe Connect online payments.",
   "scripts": {
-    "check": "node scripts/check-js.js"
+    "check": "node scripts/check-js.js && node --test \"test/**/*.test.js\"",
+    "check:js": "node scripts/check-js.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "dev": "netlify dev"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
     "stripe": "^16.12.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^27.4.1"
   }
 }
