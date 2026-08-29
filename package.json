@@ -1,0 +1,13 @@
+{
+  "name": "goodbutnotgreedy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Free cafe surplus tool with optional Stripe Connect online payments.",
+  "scripts": {
+    "check": "node scripts/check-js.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "stripe": "^16.12.0"
+  }
+}

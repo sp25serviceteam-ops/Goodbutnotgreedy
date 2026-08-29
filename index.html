@@ -132,6 +132,7 @@
   .paychoice button:hover{border-color:var(--leaf)}.paychoice .t{font-weight:600;font-size:15px}.paychoice .s{font-size:13px;color:var(--muted);margin-top:2px}
   .paybox{background:#f4f6f2;border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 14px;font-size:14px}
   .paybox .k{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}.paybox .v{font-size:16px;font-weight:600;margin:1px 0 10px;word-break:break-word}
+  .payhint{font-size:13px;color:var(--muted);line-height:1.5;margin:8px 0 12px}.paystatus{border:1px solid var(--line);border-radius:12px;padding:13px 14px;background:#fdfcf9;margin:0 0 12px}.paystatus b{display:block;color:var(--ink);margin-bottom:3px}.paystatus span{font-size:13px;color:var(--muted)}
   .conf{text-align:center;padding:6px 0}.conf .tick{width:60px;height:60px;border-radius:50%;background:#e4f2e9;color:#1f6b43;display:flex;align-items:center;justify-content:center;font-size:32px;margin:6px auto 12px}
   .conf .code{font-family:ui-monospace,Menlo,monospace;font-size:30px;font-weight:700;letter-spacing:.12em;margin:4px 0}
   .stepnote{font-size:13px;color:var(--muted);margin:8px 0 0}
@@ -392,8 +393,8 @@
         <button class="btn btn-ghost" id="openStore">Open my customer page ↗</button>
       </div>
       <div class="card panel">
-        <h2 class="section-title">WhatsApp group</h2>
-        <p style="margin:0 0 12px;color:var(--muted);font-size:14px">Add your group's invite link in Settings. Customers who tap it join your group, then you drop the day's link in there when bags land.</p>
+        <h2 class="section-title">Drop channel</h2>
+        <p style="margin:0 0 12px;color:var(--muted);font-size:14px">Add your Instagram broadcast channel or WhatsApp group in Settings. Customers who tap it can join and switch notifications on for the next drop.</p>
         <div id="waState"></div>
       </div>
     </div>
@@ -450,8 +451,15 @@
         <div class="field"><label for="sPickup">Default pickup window</label><input type="text" id="sPickup" placeholder="3-4pm today" /></div>
         <div class="field"><label for="sPayid">PayID (email or phone)</label><input type="text" id="sPayid" placeholder="pay@littlefern.com.au" /></div>
         <div class="field"><label for="sBank">Bank transfer details</label><textarea id="sBank" placeholder="Little Fern Cafe&#10;BSB 000-000  Acct 12345678"></textarea></div>
-        <div class="field"><label for="sWa">WhatsApp group link (optional)</label><input type="text" id="sWa" placeholder="https://chat.whatsapp.com/..." /></div>
+        <div class="field"><label for="sWa">Instagram or WhatsApp channel link (optional)</label><input type="text" id="sWa" placeholder="https://ig.me/j/... or https://chat.whatsapp.com/..." /></div>
         <button class="btn btn-primary" id="saveSettings">Save settings</button>
+      </div>
+      <div class="card panel">
+        <h2 class="section-title">Online payments</h2>
+        <p class="payhint">Free to use. If you turn on online payments, customers can pay by Apple Pay, card or Google Pay where available. Care Pack keeps 0.5% from online payments only.</p>
+        <div class="paystatus" id="stripeStatus"><b>Not connected yet</b><span>Connect Stripe when you are ready to take online payments.</span></div>
+        <button class="btn btn-primary" id="connectStripe">Connect Stripe payouts</button>
+        <p class="payhint">PayID and pay in store stay available. Stripe is opt-in per cafe.</p>
       </div>
     </div>
   </div>
@@ -462,6 +470,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <script>
 const SUPABASE_URL = "https://hmihttoygvhhrjyudetn.supabase.co";
 const SUPABASE_KEY = "sb_publishable_bYwuFbrR_zO-RKW6hIJRFw_55qbGc1h";
@@ -477,6 +486,7 @@ const IC={
 
 let CAFE=null;   // owner's cafe (when signed in)
 let STORE=null;  // cafe currently shown on the storefront
+let reserveInFlight=false; // stops fast double taps making duplicate reservations
 
 /* ---------- utils ---------- */
 let toastT;
@@ -486,6 +496,17 @@ function money(v){return v==null?"":"$"+Number(v).toFixed(2);}
 function baseUrl(){return location.origin+location.pathname;}
 function storeUrlFor(slug){return baseUrl()+"?c="+encodeURIComponent(slug);}
 function slugify(s){return (s||"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40)||"cafe";}
+function safeExternalUrl(u){
+  if(!u)return"";
+  try{const x=new URL(u);return /^https?:$/.test(x.protocol)?x.href:"";}catch{return"";}
+}
+function onlinePaymentsReady(c){return !!(c&&c.stripe_payments_enabled&&c.stripe_charges_enabled&&c.stripe_account_id);}
+async function authedFetch(url,opts={}){
+  const {data:{session}}=await sb.auth.getSession();
+  const headers=Object.assign({"Content-Type":"application/json"},opts.headers||{});
+  if(session&&session.access_token)headers.Authorization=`Bearer ${session.access_token}`;
+  return fetch(url,Object.assign({},opts,{headers}));
+}
 function toLocalInput(iso){if(!iso)return"";const d=new Date(iso),p=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;}
 function fromLocalInput(v){return v?new Date(v).toISOString():null;}
 function inWindow(it){const now=Date.now();return (!it.available_from||new Date(it.available_from).getTime()<=now)&&(!it.available_until||new Date(it.available_until).getTime()>=now);}
@@ -593,7 +614,7 @@ $("signOut").onclick=async()=>{ await sb.auth.signOut(); CAFE=null; showLanding(
 /* ================= DASHBOARD ================= */
 function showAdmin(){
   showOnly("adminView"); $("previewBar").classList.add("hidden");
-  fillSettings(); loadLibrary(); fillShare(); loadStats();
+  fillSettings(); loadLibrary(); fillShare(); loadStats(); loadStripeStatus();
 }
 async function loadStats(){
   const {data}=await sb.from("rescue_reservations").select("price,status,created_at").eq("cafe_id",CAFE.id);
@@ -628,9 +649,10 @@ function fillShare(){
   const box=$("qrbox"); box.innerHTML=""; qrDrawn=false;
   try{ new QRCode(box,{text:url,width:168,height:168,colorDark:getComputedStyle(document.documentElement).getPropertyValue('--green').trim()||"#0b0b0c",colorLight:"#ffffff"}); qrDrawn=true; }
   catch(e){ box.innerHTML='<span style="color:var(--muted);font-size:13px">QR unavailable offline</span>'; }
-  $("waState").innerHTML=CAFE.whatsapp_url
-    ? `<a href="${esc(CAFE.whatsapp_url)}" target="_blank" class="btn btn-ghost" style="text-decoration:none">Open your WhatsApp group ↗</a>`
-    : `<p style="color:var(--muted);font-size:14px;margin:0">No group link yet. Add one in <b>Settings</b>.</p>`;
+  const waUrl=safeExternalUrl(CAFE.whatsapp_url);
+  $("waState").innerHTML=waUrl
+    ? `<a href="${esc(waUrl)}" target="_blank" rel="noopener" class="btn btn-ghost" style="text-decoration:none">Open your drop channel ↗</a>`
+    : `<p style="color:var(--muted);font-size:14px;margin:0">No Instagram or WhatsApp link yet. Add one in <b>Settings</b>.</p>`;
 }
 $("copyLink").onclick=()=>{navigator.clipboard.writeText($("shareUrl").value).then(()=>toast("Link copied"),()=>toast("Copy failed"));};
 
@@ -652,9 +674,11 @@ $("saveSettings").onclick=async()=>{
   try{
     let logo_url=currentLogoUrl;
     if(pendingLogoBlob) logo_url=await uploadPhoto(pendingLogoBlob,"logos/");
+    const waInput=$("sWa").value.trim();
+    if(waInput&&!safeExternalUrl(waInput)){toast("Use a normal https Instagram or WhatsApp link");return;}
     const newSlug=slugify($("sSlug").value)||CAFE.slug;
     const row={shop_name:$("sShop").value.trim()||"Our cafe",pickup_window:$("sPickup").value.trim()||null,payid:$("sPayid").value.trim()||null,
-      bank_details:$("sBank").value.trim()||null,whatsapp_url:$("sWa").value.trim()||null,brand_color:$("sColor").value||"#0b0b0c",
+      bank_details:$("sBank").value.trim()||null,whatsapp_url:waInput||null,brand_color:$("sColor").value||"#0b0b0c",
       logo_url:logo_url,slug:newSlug,updated_at:new Date().toISOString()};
     const {data,error}=await sb.from("cafes").update(row).eq("id",CAFE.id).select().maybeSingle();
     if(error){ if((error.message||"").toLowerCase().includes("duplicate")){toast("That link name is taken, try another");} else {toast("Couldn't save: "+error.message);} return; }
@@ -662,6 +686,33 @@ $("saveSettings").onclick=async()=>{
   }catch(err){console.error(err);toast("Couldn't save settings");}
   finally{b.disabled=false;b.textContent="Save settings";}
 };
+
+async function loadStripeStatus(){
+  const box=$("stripeStatus"), btn=$("connectStripe");
+  if(!box||!btn||!CAFE)return;
+  try{
+    const res=await authedFetch('/.netlify/functions/stripe-connect-status');
+    if(res.ok){const fresh=await res.json();Object.assign(CAFE,{stripe_account_id:fresh.stripe_account_id,stripe_charges_enabled:fresh.charges_enabled,stripe_payouts_enabled:fresh.payouts_enabled,stripe_payments_enabled:fresh.payments_enabled});}
+  }catch(_err){}
+  const ready=onlinePaymentsReady(CAFE);
+  box.innerHTML=ready
+    ? `<b>Online payments are on</b><span>Customers can pay by Apple Pay, card or Google Pay where available. Care Pack keeps 0.5% from online payments only.</span>`
+    : CAFE.stripe_account_id
+      ? `<b>Stripe connected, finishing setup</b><span>Stripe still needs charges and payouts enabled before customers see online payments.</span>`
+      : `<b>Not connected yet</b><span>Connect Stripe Express to get paid automatically. PayID and in-store stay available.</span>`;
+  btn.textContent=CAFE.stripe_account_id?"Continue Stripe setup":"Connect Stripe payouts";
+  btn.onclick=connectStripe;
+}
+async function connectStripe(){
+  const btn=$("connectStripe");
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Opening Stripe';
+  try{
+    const res=await authedFetch('/.netlify/functions/stripe-connect-onboard',{method:'POST',body:JSON.stringify({return_url:location.href})});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data.error||'Stripe setup is not ready yet');
+    location.href=data.url;
+  }catch(err){toast(err.message||"Couldn't open Stripe setup");btn.disabled=false;btn.textContent="Connect Stripe payouts";}
+}
 
 /* ---------- items ---------- */
 let pendingPhotoBlob=null,currentPhotoUrl=null,editingId=null;
@@ -758,6 +809,8 @@ async function loadSales(){
 /* ================= CUSTOMER STOREFRONT ================= */
 async function showStoreBySlug(slug){
   showOnly("bootView");
+  const publicStore=await sb.rpc("get_public_store",{p_slug:slug});
+  if(!publicStore.error&&publicStore.data&&publicStore.data.cafe){STORE=publicStore.data.cafe;return renderStore(false,publicStore.data.items||[]);}
   const {data,error}=await sb.from("cafes").select("*").eq("slug",slug).maybeSingle();
   if(error||!data){ showOnly("customerView"); $("storeShop").textContent=""; $("storeList").innerHTML=`<div class="card"><div class="empty">This cafe page wasn't found.</div></div>`; return; }
   STORE=data; renderStore(false);
@@ -771,13 +824,14 @@ function ensureStorePoll(){
     renderStore(!$("previewBar").classList.contains("hidden"));
   },30000);
 }
-async function renderStore(preview){
+async function renderStore(preview,providedItems=null){
   applyBrand(STORE);
   showOnly("customerView");
   $("previewBar").classList.toggle("hidden",!preview);
   $("storeShop").textContent=(STORE.shop_name||"Our cafe").toUpperCase();
   ensureStorePoll();
-  const {data:items}=await sb.from("rescue_items").select("*").eq("cafe_id",STORE.id).eq("available",true).eq("archived",false).order("created_at",{ascending:false});
+  let items=providedItems;
+  if(!items){const res=await sb.from("rescue_items").select("*").eq("cafe_id",STORE.id).eq("available",true).eq("archived",false).order("created_at",{ascending:false});items=res.data||[];}
   const list=$("storeList");const live=(items||[]).filter(inWindow);
   if(!live.length){list.innerHTML=`<div class="card"><div class="empty">Nothing available right now.<br>Check back when today's bags drop.</div></div>`;return;}
   list.innerHTML=live.map(it=>{
@@ -799,8 +853,9 @@ async function renderStore(preview){
 /* ---------- reserve flow ---------- */
 function closeModal(){$("modalMount").innerHTML="";}
 function openReserve(item){
+  reserveInFlight=false;
   $("modalMount").innerHTML=`<div class="overlay"><div class="sheet"><div class="sheet-in">
-    <button class="x" id="mX">×</button><h3>Reserve ${esc(item.name)}</h3><p class="lead">${money(item.price)} · pay by PayID or in store</p>
+    <button class="x" id="mX">×</button><h3>Reserve ${esc(item.name)}</h3><p class="lead">${money(item.price)} · choose how you pay next</p>
     <div class="field"><label for="rName">Your name</label><input type="text" id="rName" autocomplete="name"></div>
     <div class="field"><label for="rPhone">Mobile</label><input type="tel" id="rPhone" inputmode="tel" autocomplete="tel" placeholder="04..."></div>
     <button class="btn btn-primary" id="rNext">Continue</button></div></div></div>`;
@@ -809,19 +864,52 @@ function openReserve(item){
 }
 function stepPayment(item,name,phone){
   const hasPayid=STORE.payid||STORE.bank_details;
+  const hasOnline=onlinePaymentsReady(STORE);
   $("modalMount").innerHTML=`<div class="overlay"><div class="sheet"><div class="sheet-in">
     <button class="x" id="mX">×</button><h3>How do you want to pay?</h3><p class="lead">${esc(item.name)} · ${money(item.price)}</p>
-    <div class="paychoice">${hasPayid?`<button id="payPayid"><div class="t">PayID / bank transfer</div><div class="s">Pay now, drop in a screenshot to confirm</div></button>`:""}
+    <div class="paychoice">${hasOnline?`<button id="payOnline"><div class="t">Apple Pay or card</div><div class="s">Fastest way to lock in your bag</div></button>`:""}${hasPayid?`<button id="payPayid"><div class="t">PayID / bank transfer</div><div class="s">Pay now, drop in a screenshot to confirm</div></button>`:""}
     <button id="payStore"><div class="t">Pay in store</div><div class="s">Reserve now, pay when you collect</div></button></div></div></div></div>`;
   $("mX").onclick=closeModal;
+  if(hasOnline)$("payOnline").onclick=()=>doReserve(item,name,phone,"stripe");
   if(hasPayid)$("payPayid").onclick=()=>doReserve(item,name,phone,"payid");
   $("payStore").onclick=()=>doReserve(item,name,phone,"instore");
 }
 async function doReserve(item,name,phone,method){
+  if(reserveInFlight) return;
+  reserveInFlight=true;
+  const buttons=[...document.querySelectorAll('#modalMount button')];
+  buttons.forEach(b=>b.disabled=true);
+  const active=document.activeElement;
+  if(active&&active.tagName==='BUTTON') active.innerHTML='<span class="spinner"></span> Reserving';
   const {data,error}=await sb.rpc("reserve_bag",{p_item:item.id,p_name:name,p_phone:phone||null,p_method:method});
-  if(error){const m=(error.message||"");const msg=m.includes("sold out")?"Just sold out, sorry!":m.includes("unavailable")?"That bag isn't available anymore.":"Couldn't reserve, try again.";toast(msg);closeModal();renderStore(!$("previewBar").classList.contains("hidden"));return;}
+  if(error){const m=(error.message||"");const msg=m.includes("sold out")?"Just sold out, sorry!":m.includes("unavailable")?"That bag isn't available anymore.":"Couldn't reserve, try again.";reserveInFlight=false;toast(msg);closeModal();renderStore(!$("previewBar").classList.contains("hidden"));return;}
   const r=Array.isArray(data)?data[0]:data;
-  if(method==="payid")stepPayid(item,r);else stepDone(item,r,"instore");
+  if(method==="stripe")stepStripePayment(item,r);else if(method==="payid")stepPayid(item,r);else stepDone(item,r,"instore");
+}
+async function stepStripePayment(item,r){
+  $("modalMount").innerHTML=`<div class="overlay"><div class="sheet"><div class="sheet-in">
+    <button class="x" id="mX">×</button><h3>Pay ${money(item.price)}</h3><p class="lead">Apple Pay, Google Pay and cards appear here when available.</p>
+    <div id="stripeElement" class="paybox"><span class="spinner"></span> Loading secure payment</div>
+    <button class="btn btn-primary" id="stripePay" disabled>Pay now</button>
+    <p class="stepnote">Care Pack keeps 0.5% from online payments to keep this free for cafes.</p></div></div></div>`;
+  $("mX").onclick=closeModal;
+  try{
+    const res=await fetch('/.netlify/functions/stripe-create-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reservation_id:r.id,pickup_code:r.pickup_code})});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data.error||'Online payment is not ready for this cafe yet');
+    const stripe=Stripe(data.publishable_key,{stripeAccount:data.stripe_account_id});
+    const elements=stripe.elements({clientSecret:data.client_secret});
+    const paymentElement=elements.create('payment');
+    $("stripeElement").innerHTML="";
+    paymentElement.mount('#stripeElement');
+    const payBtn=$("stripePay");payBtn.disabled=false;
+    payBtn.onclick=async()=>{
+      payBtn.disabled=true;payBtn.innerHTML='<span class="spinner"></span> Paying';
+      const result=await stripe.confirmPayment({elements,redirect:'if_required',confirmParams:{return_url:location.href}});
+      if(result.error){toast(result.error.message||'Payment failed');payBtn.disabled=false;payBtn.textContent='Pay now';return;}
+      stepDone(item,r,"paid");
+    };
+  }catch(err){toast(err.message||"Online payment is not ready yet");stepDone(item,r,"instore");}
 }
 function stepPayid(item,r){
   const pay=[];
@@ -851,7 +939,8 @@ function stepPayid(item,r){
 function stepDone(item,r,mode){
   const line=mode==="paid"?"Paid and reserved. See you at pickup!":"Reserved! Pay when you collect.";
   const pw=item.pickup_window||STORE.pickup_window;
-  const wa=STORE.whatsapp_url?`<p class="stepnote"><a href="${esc(STORE.whatsapp_url)}" target="_blank">Join our WhatsApp for the next drop ↗</a></p>`:"";
+  const waUrl=safeExternalUrl(STORE.whatsapp_url);
+  const wa=waUrl?`<p class="stepnote"><a href="${esc(waUrl)}" target="_blank" rel="noopener">Join our drop channel and turn notifications on ↗</a></p>`:"";
   const rel=mode!=="paid"?`<p class="stepnote">Can't make it after all? <a href="${baseUrl()}?c=${encodeURIComponent(STORE.slug)}&release=${r.id}">Release my bag for someone else</a></p>`:"";
   $("modalMount").innerHTML=`<div class="overlay"><div class="sheet"><div class="sheet-in"><div class="conf">
     <div class="tick">${IC.check}</div><h3>${line}</h3>
