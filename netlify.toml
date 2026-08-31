@@ -10,6 +10,16 @@
   status = 302
   force = true
 
+# A cafe's own way in. Their roaster's ordering portal links here from the
+# Rescue bags tab, and that cafe is not a roaster: /login and /signin below go
+# to the wholesale dashboard, and the bare domain opens the front door whose
+# first words are about wholesale ordering. /rescue is the cafe door.
+[[redirects]]
+  from = "/rescue"
+  to = "/?signin=cafe"
+  status = 302
+  force = true
+
 # Roasters sign in on the platform, not here. These are the addresses a roaster
 # would guess after losing the link we emailed them.
 [[redirects]]

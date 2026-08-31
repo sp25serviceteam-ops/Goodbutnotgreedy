@@ -501,12 +501,18 @@ function showOnly(id){["bootView","chooserView","landingView","loginView","onboa
 const params=new URLSearchParams(location.search);
 const custSlug=params.get("c");
 const releaseId=params.get("release");
+/* A cafe sent here from their roaster's ordering portal came for the rescue
+   tool, not for the front door that opens with wholesale ordering. ?signin=cafe
+   (what /rescue redirects to) lands them on the cafe sign-in instead. Anyone
+   already signed in still goes to their own app: showing a login form to
+   somebody who is logged in is the worse answer. */
+const wantsCafeSignin=params.get("signin")==="cafe";
 
 async function boot(){
   if(releaseId){ return showRelease(releaseId); }
   if(custSlug){ return showStoreBySlug(custSlug); }
   const {data:{session}}=await sb.auth.getSession();
-  if(session) enterOwner(); else showChooser();
+  if(session) enterOwner(); else if(wantsCafeSignin) showLogin(); else showChooser();
 }
 
 async function showRelease(id){
@@ -528,7 +534,10 @@ async function showRelease(id){
 }
 sb.auth.onAuthStateChange((_e,session)=>{
   if(custSlug) return;
-  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; showChooser(); }
+  /* This fires INITIAL_SESSION on load, so the no-session branch runs on every
+     cold open and would paint the chooser straight over the view boot just
+     chose. It has to honour ?signin=cafe for the same reason boot does. */
+  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; if(wantsCafeSignin) showLogin(); else showChooser(); }
 });
 
 /* ---------- login (Google + email/password) ---------- */
