@@ -501,12 +501,20 @@ function showOnly(id){["bootView","chooserView","landingView","loginView","onboa
 const params=new URLSearchParams(location.search);
 const custSlug=params.get("c");
 const releaseId=params.get("release");
+// Which front door this visitor came in by. The bare domain is the roaster
+// pitch now, so a cafe arriving from the ordering portal's "Free tools for
+// cafes" tab (?cafe=1) has to land on the white cafe page instead, and has to
+// come BACK to it when they sign out, rather than being handed a black page
+// selling wholesale software to their own supplier. Choosing the cafe side or
+// signing in as a cafe sets it too, so the door is remembered for the session.
+let cafeDoor = params.get("cafe") !== null;
+function showFrontDoor(){ cafeDoor ? showLanding() : showChooser(); }
 
 async function boot(){
   if(releaseId){ return showRelease(releaseId); }
   if(custSlug){ return showStoreBySlug(custSlug); }
   const {data:{session}}=await sb.auth.getSession();
-  if(session) enterOwner(); else showChooser();
+  if(session) enterOwner(); else showFrontDoor();
 }
 
 async function showRelease(id){
@@ -528,15 +536,15 @@ async function showRelease(id){
 }
 sb.auth.onAuthStateChange((_e,session)=>{
   if(custSlug) return;
-  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; showChooser(); }
+  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; showFrontDoor(); }
 });
 
 /* ---------- login (Google + email/password) ---------- */
 function showLogin(){ showOnly("loginView"); }
 function showChooser(){ showOnly("chooserView"); }
 function showLanding(){ showOnly("landingView"); }
-$("chooseCafe").onclick=()=>showLanding();
-$("backToChooser").onclick=()=>showChooser();
+$("chooseCafe").onclick=()=>{ cafeDoor=true; showLanding(); };
+$("backToChooser").onclick=()=>{ cafeDoor=false; showChooser(); };
 $("landingLogin").onclick=()=>showLogin();
 $("openWaste").onclick=()=>{ showLogin(); setTimeout(()=>$("email")&&$("email").focus(),60); };
 $("authBack").onclick=()=>showLanding();
@@ -588,7 +596,7 @@ $("obBtn").onclick=async()=>{
   if(!row){toast("Couldn't pick a unique link, try a different name");return;}
   CAFE=row; applyBrand(CAFE); showAdmin();
 };
-$("signOut").onclick=async()=>{ await sb.auth.signOut(); CAFE=null; showLanding(); };
+$("signOut").onclick=async()=>{ cafeDoor=true; await sb.auth.signOut(); CAFE=null; showLanding(); };
 
 /* ================= DASHBOARD ================= */
 function showAdmin(){
