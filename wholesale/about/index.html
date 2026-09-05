@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Who's behind Care Pack: Lukas, who has worked every job in coffee wholesale, and Mike, who keeps the platform solid. And why it costs $50 a week, flat.">
+<title>Care Pack | Who's behind it</title>
+<link rel="canonical" href="https://cafecarepackage.com/wholesale/about/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Care Pack | Who's behind it">
+<meta property="og:description" content="A roaster's mate and a proper engineer, building fair software for coffee wholesale.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cafecarepackage.com/wholesale/about/">
+<style>
+  :root{
+    --bg:#fafaf8;
+    --panel:#ffffff;
+    --ink:#0b0c0b;
+    --mut:#63665f;
+    --faint:#9a9d95;
+    --line:#e2e4de;
+    --line-dark:#c9ccc4;
+    --green:#00A04D;
+    --green-soft:#e9f6ee;
+    --red:#c33f33;
+    --mono:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:'Helvetica Neue',Helvetica,-apple-system,'Segoe UI',Arial,sans-serif;
+    --maxw:880px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--sans);background:var(--bg);color:var(--ink);
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+    font-variant-numeric:tabular-nums;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative}
+  a{color:inherit}
+  ::selection{background:var(--green-soft)}
+  .mono{font-family:var(--mono)}
+  .kicker{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.02em;margin-bottom:14px;display:block}
+  .kicker b{color:var(--green);font-weight:700}
+
+  /* nav (matches /wholesale/) */
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0;border-bottom:1px solid var(--line)}
+  .nav-links{display:flex;align-items:center;gap:26px;font-size:14px}
+  .nav-links a{text-decoration:none;color:var(--mut)}
+  .nav-links a:hover{color:var(--ink)}
+  .btn{
+    display:inline-block;padding:10px 17px;font-size:13.5px;font-weight:700;
+    text-decoration:none;border:1px solid var(--green);background:var(--green);color:#fff;
+  }
+  .btn:hover{background:#008a42;border-color:#008a42}
+  @media(max-width:700px){.nav-links a:not(.btn){display:none}}
+
+  /* header */
+  .page-head{padding:clamp(44px,6vw,72px) 0 clamp(24px,3vw,36px)}
+  .page-head h1{font-size:clamp(36px,5.5vw,58px);font-weight:800;letter-spacing:-.045em;line-height:1;max-width:640px}
+  .page-head h1 em{font-style:normal;color:var(--green)}
+  .page-head p{margin-top:14px;color:var(--mut);max-width:58ch}
+
+  /* tabs */
+  .tabs{display:flex;gap:0;border:1px solid var(--line);background:var(--panel);position:relative;margin-top:clamp(24px,4vw,40px)}
+  .tabs::before,.tabs::after{
+    content:"+";position:absolute;font-family:var(--mono);font-size:11px;line-height:1;
+    color:var(--line-dark);pointer-events:none;
+  }
+  .tabs::before{top:-5px;left:-4px}
+  .tabs::after{bottom:-6px;right:-4px}
+  .tab{
+    flex:1;text-align:center;padding:14px 10px;font-size:14px;font-weight:700;
+    color:var(--mut);text-decoration:none;border-left:1px solid var(--line);
+    cursor:pointer;background:none;font-family:var(--sans);
+  }
+  .tab:first-child{border-left:0}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--ink);box-shadow:inset 0 -3px 0 var(--green);background:var(--bg)}
+  .tab small{display:block;font-family:var(--mono);font-size:10px;font-weight:400;color:var(--faint);margin-top:2px}
+
+  /* panels */
+  .panel{display:none;padding:clamp(28px,4vw,44px) 0 clamp(56px,7vw,88px)}
+  .panel.on{display:block}
+  .panel h2{font-size:clamp(24px,3.4vw,34px);font-weight:750;letter-spacing:-.03em;line-height:1.1;margin-bottom:16px;max-width:560px}
+  .panel p{color:var(--mut);max-width:62ch;margin-bottom:14px}
+  .panel p b{color:var(--ink)}
+  .card{background:var(--panel);border:1px solid var(--line);padding:clamp(22px,3.5vw,34px);margin-top:22px;position:relative}
+  .card::before{content:"+";position:absolute;top:-5px;left:-4px;font-family:var(--mono);font-size:11px;color:var(--line-dark)}
+  .facts{list-style:none;border-top:1px solid var(--line);margin-top:8px}
+  .facts li{padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--mut);display:flex;gap:14px;align-items:baseline}
+  .facts .t{font-family:var(--mono);font-size:10.5px;color:var(--faint);white-space:nowrap;min-width:92px}
+  .facts b{color:var(--ink)}
+  .call-line{margin-top:20px;font-size:15px}
+  .call-line a{font-weight:700}
+  .call-line small{display:block;margin-top:3px;font-family:var(--mono);font-size:10.5px;color:var(--faint)}
+  .sig{margin-top:22px;font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .sig b{color:var(--green)}
+
+  /* mission ticks */
+  .promise{list-style:none;border-top:1px solid var(--line);margin-top:10px}
+  .promise li{padding:12px 0 12px 26px;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--mut);position:relative}
+  .promise li::before{content:"\2713";position:absolute;left:0;color:var(--green);font-weight:700}
+  .promise li b{color:var(--ink)}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:26px 0 40px}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--mut)}
+  .foot-row a{text-decoration:none}
+  .foot-row a:hover{color:var(--ink)}
+  .foot-links{display:flex;gap:18px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <nav class="nav" aria-label="Main navigation">
+    <a href="/wholesale/" aria-label="Care Pack"><img src="/carepack.png" alt="care pack" style="height:40px;width:auto;display:block"></a>
+    <div class="nav-links">
+      <a href="/wholesale/#how">How it works</a>
+      <a href="/wholesale/#pricing">Pricing</a>
+      <a href="/signin">Sign in</a>
+      <a href="/wholesale/#contact" class="btn">Start free 30 days</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <div class="page-head">
+    <span class="kicker"><b>//</b> who's behind it</span>
+    <h1>Two blokes and a <em>promise.</em></h1>
+    <p>Care Pack isn't a startup with a floor of account managers. It's the two of us, and we like it that way. Pick a tab.</p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="About Care Pack">
+    <button class="tab" role="tab" id="tab-lukas" aria-selected="true" aria-controls="panel-lukas" data-hash="lukas">Lukas<small>founder / the coffee half</small></button>
+    <button class="tab" role="tab" id="tab-mike" aria-selected="false" aria-controls="panel-mike" data-hash="mike">Mike<small>the engineering half</small></button>
+    <button class="tab" role="tab" id="tab-mission" aria-selected="false" aria-controls="panel-mission" data-hash="mission">Our mission<small>why $50, flat</small></button>
+  </div>
+
+  <!-- LUKAS -->
+  <section class="panel on" id="panel-lukas" role="tabpanel" aria-labelledby="tab-lukas">
+    <div class="card">
+      <h2>I've done every job in coffee wholesale. That's the whole qualification.</h2>
+      <p>Sales, tech support, picker packer, barista. I've stood at the bench at 5am decoding a text that says "same as last week but more", and I've been the sales rep apologising for an invoice that didn't match the order. I've never met a single person, on either side of the counter, who was happy with how wholesale orders get processed.</p>
+      <p>So I'm fixing it. Not with a platform that wants to own your customers, just with the tool I kept wishing existed: your cafes order in their browser, the invoice lands in Xero, and nobody types anything twice.</p>
+      <p><b>You deal with me directly.</b> I do the set-ups, I answer the phone, and when something's not right I'm the one who hears about it first. That's not a support tier, it's just how a business this size should work.</p>
+      <ul class="facts">
+        <li><span class="t">jobs held</span>sales rep, tech, picker packer, barista</li>
+        <li><span class="t">based</span>Australia, works around roast days</li>
+        <li><span class="t">set-ups</span>afternoons and evenings, done personally</li>
+      </ul>
+      <p class="call-line">Prefer to talk? <a href="tel:0414292358">Call 0414 292 358</a><small>+ yes, it really is my mobile +</small></p>
+      <p class="sig"><b>//</b> lukas, care pack</p>
+    </div>
+  </section>
+
+  <!-- MIKE -->
+  <section class="panel" id="panel-mike" role="tabpanel" aria-labelledby="tab-mike">
+    <div class="card">
+      <h2>The reason it doesn't fall over.</h2>
+      <p>Mike is the engineering half of Care Pack. He's a professional software developer who's been building and running production systems for years, and he's the one who makes sure the thing that handles your orders and invoices behaves like infrastructure, not like a side project.</p>
+      <p>The split is simple. Lukas knows what roasters need because he's lived it. Mike makes sure it's built properly: reviewed, tested, and boring in the best possible way. Every change to Care Pack goes through him before it goes near your orders.</p>
+      <p><b>Why that matters to you:</b> plenty of small tools are one person and a laptop. Care Pack isn't. The half of the product you never see, the part that talks to Xero and Stripe and keeps every order accounted for, has a professional engineer standing behind it.</p>
+      <ul class="facts">
+        <li><span class="t">role</span>lead developer, platform and integrations</li>
+        <li><span class="t">focus</span>reliability, Xero and Stripe plumbing, review of every release</li>
+        <li><span class="t">style</span>if it's not tested, it doesn't ship</li>
+      </ul>
+      <p class="sig"><b>//</b> the quiet half of care pack</p>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="panel" id="panel-mission" role="tabpanel" aria-labelledby="tab-mission">
+    <div class="card">
+      <h2>Fair tools for people who make good coffee.</h2>
+      <p>The big platforms price on usage, so the better your month, the bigger their cut. We think that's backwards. Software should feel lighter as you grow, not heavier, and winning a new cafe should never raise your bill.</p>
+      <p>So Care Pack is <b>$50 a week, flat, forever</b>. It's enough to run the thing properly and keep improving it, and it means we only grow when roasters stay because it's genuinely useful, not because leaving is hard.</p>
+      <p>The rest of the mission fits in a short list, and we'd rather be held to it than have it sound impressive:</p>
+      <ul class="promise">
+        <li><b>Your cafes stay your cafes.</b> We will never put another roaster in front of them. Not a marketplace, never will be.</li>
+        <li><b>One price, no growth tax.</b> $50 a week on day one and at a hundred cafes.</li>
+        <li><b>No contracts, ever.</b> Week to week, and your data leaves with you as a CSV.</li>
+        <li><b>Nothing goes quiet.</b> If an invoice fails, you'll know the same day, not at reconciliation.</li>
+        <li><b>Your money never sits with us.</b> Payments run on Stripe, straight to your bank.</li>
+      </ul>
+      <p style="margin-top:20px">If that sounds like software you'd actually keep, <a href="/wholesale/#contact" style="font-weight:700">try it free for 30 days</a>.</p>
+      <p class="sig"><b>//</b> the whole plan, honestly</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <a href="/wholesale/" aria-label="Care Pack"><img src="/carepack.png" alt="care pack" style="height:30px;width:auto;display:block"></a>
+    <div class="foot-links">
+      <a href="/wholesale/">Wholesale</a>
+      <a href="/wholesale/#pricing">Pricing</a>
+      <a href="tel:0414292358">0414 292 358</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+    <span>&copy; 2026 care pack</span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var tabs=document.querySelectorAll('.tab');
+    function show(hash){
+      var found=false;
+      tabs.forEach(function(t){
+        var on=t.getAttribute('data-hash')===hash;
+        if(on)found=true;
+        t.setAttribute('aria-selected',on?'true':'false');
+        document.getElementById(t.getAttribute('aria-controls')).classList.toggle('on',on);
+      });
+      if(!found){
+        tabs[0].setAttribute('aria-selected','true');
+        document.getElementById(tabs[0].getAttribute('aria-controls')).classList.add('on');
+      }
+    }
+    tabs.forEach(function(t){
+      t.addEventListener('click',function(){
+        history.replaceState(null,'','#'+t.getAttribute('data-hash'));
+        show(t.getAttribute('data-hash'));
+      });
+    });
+    if(location.hash)show(location.hash.slice(1));
+  })();
+</script>
+
+</body>
+</html>
