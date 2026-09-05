@@ -1,30 +1,29 @@
-/* site.css — the one shell every Care Pack marketing and legal page uses.
+/* site.css - the one shell every Care Pack marketing and legal page uses.
    Page-specific layout (the wholesale hero, the pricing card, the demo
    chrome) stays with its page. Anything that decides what the SITE looks
-   like — colour, type, nav, buttons, sections, footer — lives here, so it
+   like - colour, type, nav, buttons, sections, footer - lives here, so it
    is changed once rather than in five files that drift apart.
-   Extracted from wholesale/index.html Aug 2026; that page was the design. */
+   Restyled Sep 2026 to match the relaunched /wholesale/ page: near-white,
+   hairline borders, black type, #00A04D as the one green. */
 
 :root{
-  --ink:#090a0a;--ink2:#141615;--paper:#f4f2eb;--white:#fff;--green:#00a950;
-  --muted:#a7aaa7;--line:rgba(255,255,255,.15);--darkline:rgba(9,10,10,.14);
-  --pad:clamp(20px,5vw,72px);--radius:clamp(20px,3vw,34px);--ease:cubic-bezier(.2,.8,.2,1);
-  /* One distance between two sections, one distance inside a coloured band.
-     Was padding on BOTH sides of every .section, so two neighbours each
-     contributed 92px and the trench between them was 184 — worst where two
-     .paper sections met and the join was invisible. One margin per section
-     means every gap is the same number by construction. */
+  --bg:#fafaf8;--panel:#ffffff;--ink:#0b0c0b;--white:#fff;--green:#00A04D;
+  --muted:#63665f;--faint:#9a9d95;--line:#e2e4de;--darkline:#c9ccc4;
+  --mono:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,monospace;
+  --pad:clamp(20px,5vw,72px);--ease:cubic-bezier(.2,.8,.2,1);
+  /* One distance between two sections. One margin per section means every
+     gap is the same number by construction. */
   --gap:clamp(46px,5.4vw,74px);--band:clamp(38px,4.2vw,58px)
 }
 
 /* base */
 *{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;background:var(--ink)}
-body{background:var(--ink);color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:'Helvetica Neue',Helvetica,-apple-system,BlinkMacSystemFont,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-variant-numeric:tabular-nums}
 a{color:inherit}
 button,input,select,textarea{font:inherit}
 :focus-visible{outline:3px solid var(--green);outline-offset:3px}
-.wrap{width:min(1160px,100%);margin:auto;padding-inline:var(--pad)}
+.wrap{width:min(1120px,100%);margin:auto;padding-inline:var(--pad)}
 
 /* nav */
 .nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
@@ -32,58 +31,57 @@ button,input,select,textarea{font:inherit}
 .brand img{width:84px}
 .brand span{padding-left:13px;border-left:1px solid var(--line);color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.15em;text-transform:uppercase}
 .nav-links{display:flex;align-items:center;gap:20px}
-.nav-links>a:not(.button){color:#d9dbd9;text-decoration:none;font-size:13px}
+.nav-links>a:not(.button){color:var(--muted);text-decoration:none;font-size:13px}
+.nav-links>a:not(.button):hover{color:var(--ink)}
 
 /* buttons */
-.button{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 22px;border:1px solid transparent;border-radius:999px;background:var(--green);color:#fff;text-decoration:none;font-size:14px;font-weight:760;cursor:pointer;transition:transform .2s var(--ease),background .2s}
-.button:hover{transform:translateY(-2px);background:#00b95a}
-.button.secondary{background:transparent;border-color:var(--line)}
-.button.small{min-height:42px;padding-inline:17px;background:var(--white);color:var(--ink)}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border:1px solid var(--green);border-radius:0;background:var(--green);color:#fff;text-decoration:none;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s ease,color .15s ease}
+.button:hover{background:#008a42;border-color:#008a42}
+.button.secondary{background:transparent;border-color:var(--ink);color:var(--ink)}
+.button.secondary:hover{background:var(--ink);color:#fff}
+.button.small{min-height:40px;padding-inline:17px}
 
 /* sections */
 .section{padding:0;margin-top:var(--gap)}
-.paper{background:var(--paper);color:var(--ink);padding-block:var(--band)}
+.paper{background:var(--panel);border-block:1px solid var(--line);padding-block:var(--band)}
 .paper+.paper{margin-top:0;padding-top:0}
 main>.section:last-child{padding-bottom:var(--gap)}
-/* privacy.html and terms.html are <main class="section"> — the page IS the
+/* privacy.html and terms.html are <main class="section"> - the page IS the
    section, so it has no sibling to space against and needs its own padding. */
 main.section{margin-top:0;padding-block:var(--gap)}
 .section-head{display:grid;gap:13px;margin-bottom:clamp(26px,3.5vw,44px)}
-.kicker{color:#717571;font-size:11px;font-weight:760;letter-spacing:.14em;text-transform:uppercase}
-.section:not(.paper) .kicker{color:var(--muted)}
-h2{max-width:900px;font-size:clamp(40px,5.8vw,70px);font-weight:750;letter-spacing:-.052em;line-height:.98;text-wrap:balance}
-.lede{max-width:680px;margin-top:21px;color:#676b67;font-size:17px}
-.section:not(.paper) .lede{color:var(--muted)}
+.kicker{color:var(--faint);font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.02em}
+h2{max-width:900px;font-size:clamp(36px,5vw,58px);font-weight:750;letter-spacing:-.045em;line-height:1.02;text-wrap:balance}
+.lede{max-width:680px;margin-top:21px;color:var(--muted);font-size:17px}
 
 /* long-form copy: privacy, terms, anything that is mostly words */
 .prose{max-width:74ch}
 .prose h2{max-width:none;margin-top:44px;font-size:clamp(22px,2.6vw,28px);font-weight:740;letter-spacing:-.025em;line-height:1.2}
-.prose p,.prose li{margin-top:14px;color:#d1d4d1;font-size:16px;line-height:1.7}
-.paper .prose p,.paper .prose li{color:#3f433f}
+.prose p,.prose li{margin-top:14px;color:var(--muted);font-size:16px;line-height:1.7}
 .prose ul{margin-top:6px;padding-left:20px;display:grid;gap:2px}
 .prose a{color:var(--green);font-weight:700}
-.prose b{color:#fff}
-.paper .prose b{color:var(--ink)}
-.prose .updated{margin-top:10px;color:var(--muted);font-size:13px}
+.prose b{color:var(--ink)}
+.prose .updated{margin-top:10px;color:var(--faint);font-size:13px;font-family:var(--mono)}
 
 /* faq */
 .faq{max-width:860px;margin-left:auto}
-.faq details{border-top:1px solid var(--darkline)}
-.faq details:last-child{border-bottom:1px solid var(--darkline)}
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
 .faq summary{padding:22px 38px 22px 0;cursor:pointer;font-size:18px;font-weight:720;list-style:none;position:relative}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary:after{content:"+";position:absolute;right:4px;color:var(--green);font-size:26px;line-height:1}
-.faq details[open] summary:after{content:"−"}
-.faq details p{max-width:70ch;padding:0 40px 24px 0;color:#626662}
+.faq details[open] summary:after{content:"\2212"}
+.faq details p{max-width:70ch;padding:0 40px 24px 0;color:var(--muted)}
 
 /* forms */
-.form{padding:clamp(24px,4vw,42px);border-radius:var(--radius);background:var(--white);color:var(--ink)}
+.form{padding:clamp(24px,4vw,42px);border:1px solid var(--line);background:var(--panel);color:var(--ink)}
 .field{display:grid;gap:7px;margin-bottom:16px}
 .field label{font-size:12px;font-weight:740}
-.field input,.field select,.field textarea{width:100%;min-height:50px;padding:12px 14px;border:1px solid #d7d9d5;border-radius:11px;background:#fafaf8;color:var(--ink)}
+.field input,.field select,.field textarea{width:100%;min-height:48px;padding:12px 14px;border:1px solid var(--darkline);border-radius:0;background:var(--bg);color:var(--ink)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green)}
 .field textarea{min-height:90px;resize:vertical}
-.form .button{width:100%;border:0}
-.form-note{margin-top:13px;color:#6e726e;font-size:11px;text-align:center}
+.form .button{width:100%}
+.form-note{margin-top:13px;color:var(--muted);font-size:11px;text-align:center}
 .hp{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
 
 /* footer */
@@ -92,6 +90,7 @@ footer{padding:30px 0 100px;border-top:1px solid var(--line);color:var(--muted);
 .footer-row img{width:75px}
 .footer-links{display:flex;flex-wrap:wrap;gap:18px}
 .footer-links a{text-decoration:none}
+.footer-links a:hover{color:var(--ink)}
 
 @media(max-width:850px){
   .nav-links>a:not(.button){display:none}

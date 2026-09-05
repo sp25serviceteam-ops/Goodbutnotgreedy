@@ -12,12 +12,28 @@
 
 # A cafe's own way in. Their roaster's ordering portal links here from the
 # Rescue bags tab, and that cafe is not a roaster: /login and /signin below go
-# to the wholesale dashboard, and the bare domain opens the front door whose
-# first words are about wholesale ordering. /rescue is the cafe door.
+# to the wholesale dashboard, and the bare domain now goes straight to the
+# wholesale pitch. /rescue is the cafe door.
 [[redirects]]
   from = "/rescue"
   to = "/?signin=cafe"
   status = 302
+  force = true
+
+# The free cafe tools front page. The bare domain belongs to wholesale now, so
+# the tools get their own address. Rewrite (200) keeps the URL clean; index.html
+# reads ?cafe=1 and opens the tools landing instead of bouncing to /wholesale/.
+[[redirects]]
+  from = "/cafe"
+  to = "/?cafe=1"
+  status = 200
+
+# The repo readme is not a page. Without this, Netlify serves it raw at
+# /README.md because the publish dir is the repo root.
+[[redirects]]
+  from = "/README.md"
+  to = "/wholesale/"
+  status = 301
   force = true
 
 # Roasters sign in on the platform, not here. These are the addresses a roaster

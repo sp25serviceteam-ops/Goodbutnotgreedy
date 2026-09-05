@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0b0b0c" />
+<meta name="theme-color" content="#fafaf8" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<title>Care Pack: free tools for cafes and coffee roasters</title>
-<meta name="description" content="Free tools for hospo. Cafes sell their daily surplus and keep every cent. Roasters get their own wholesale ordering portal with orders landing straight in Xero." />
+<title>Care Pack | Wholesale ordering for coffee roasters, free tools for cafes</title>
+<meta name="description" content="Wholesale ordering for independent coffee roasters: cafes order in their browser, invoices land in Xero, $50 a week flat. Plus free tools for cafes." />
 <meta property="og:title" content="Care Pack" />
-<meta property="og:description" content="Free tools for cafes and coffee roasters. Built by someone who works in hospo." />
+<meta property="og:description" content="Wholesale ordering for coffee roasters, packed properly. Plus free tools for cafes." />
 <meta property="og:image" content="https://cafecarepackage.com/carepack.png" />
 <meta property="og:url" content="https://cafecarepackage.com/" />
 <meta property="og:type" content="website" />
@@ -209,29 +209,6 @@
   .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* Front door, in the site's own colours (site.css is the source of these
-     values; this page cannot link it without the app inheriting a dark body).
-     Every rule is scoped to #chooserView, so the cafe tool's views below are
-     unaffected. */
-  #chooserView{--cp-ink:#090a0a;--cp-green:#00a950;--cp-muted:#a7aaa7;--cp-line:rgba(255,255,255,.15)}
-  #chooserView{background:var(--cp-ink);min-height:100vh;min-height:100dvh}
-  #chooserView .landing{background:transparent;color:#fff}
-  #chooserView .landing-h1{color:#fff;font-weight:780;letter-spacing:-.05em;font-size:clamp(34px,7.5vw,52px);line-height:.98}
-  #chooserView .landing-lead{color:#d1d4d1;font-size:17px;max-width:460px}
-  #chooserView .eyebrow{color:var(--cp-muted)}
-  #chooserView .landing-logo{width:150px}
-  #chooserView .door{border-color:var(--cp-line);background:transparent;color:#fff;border-radius:20px}
-  #chooserView .door:hover{background:rgba(255,255,255,.05)}
-  #chooserView .door-lead{background:var(--cp-green);border-color:var(--cp-green);color:#fff}
-  #chooserView .door-d{color:rgba(255,255,255,.82)}
-  #chooserView .landing-login{background:transparent;border:1px solid var(--cp-line);color:#fff;border-radius:999px}
-  #chooserView .aside-door{color:var(--cp-muted)}
-  #chooserView .linkish{color:#fff}
-  #chooserView .note-from{color:var(--cp-muted)}
-  #chooserView .note-from p{color:var(--cp-muted)}
-  #chooserView .door-foot{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;width:100%;max-width:430px;padding-top:22px;border-top:1px solid var(--cp-line);color:var(--cp-muted);font-size:12px}
-  #chooserView .door-foot a{color:var(--cp-muted);text-decoration:none}
-  #chooserView .door-foot a:hover{color:#fff}
   .loading{min-height:60vh;display:flex;align-items:center;justify-content:center;color:var(--muted)}
 </style>
 </head>
@@ -239,49 +216,15 @@
 
 <div id="bootView" class="loading">Loading…</div>
 
-<!-- ===== CHOOSER (front door) ===== -->
-<div id="chooserView" class="hidden">
-  <div class="landing">
-    <img class="landing-logo" src="carepack-light.png" alt="carepack" />
-    <p class="eyebrow">Care Pack</p>
-    <h1 class="landing-h1">Your cafes order.<br />It lands in your Xero.</h1>
-    <p class="landing-lead">A wholesale ordering page with your name on it. Every order arrives in your accounts as a draft invoice, priced from your own item codes. No app for your cafes to download, and no per-order price that grows with you.</p>
-
-    <a class="door door-lead" href="/wholesale/">
-      <span class="door-body">
-        <span class="door-k" style="display:block">For roasters</span>
-        <span class="door-n" style="display:block">Wholesale ordering</span>
-        <span class="door-d" style="display:block">See it working, then set yours up. About fifteen minutes.</span>
-      </span>
-      <span class="door-go" aria-hidden="true">&rarr;</span>
-    </a>
-
-    <!-- Roasters who already have a portal shouldn't have to go through a door
-         built for people who don't. Straight to the dashboard sign-in. -->
-    <a class="btn landing-login" href="/login" style="display:inline-block;margin-top:16px">Already set up? Sign in to your dashboard</a>
-
-    <!-- The cafe surplus tool is real and still free, it just isn't what this
-         page is for any more. Kept a click away rather than at equal weight. -->
-    <p class="aside-door">Run a cafe? <button type="button" id="chooseCafe" class="linkish">Free cafe tools</button>, including selling your daily surplus food.</p>
-
-    <div class="note-from" style="margin-top:24px">
-      <p>Hi. Hospo is tough at the moment. I'm making tools to make it easier for cafes and wholesalers, and I hope you enjoy them.</p>
-      <p class="sig">love, Lukas</p>
-    </div>
-
-    <div class="door-foot">
-      <a href="/wholesale/">Wholesale ordering</a>
-      <a href="/login">Sign in</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-    </div>
-  </div>
-</div>
+<!-- ===== FRONT DOOR =====
+     The bare domain IS the wholesale pitch now. boot() sends anonymous
+     visitors straight to /wholesale/; /cafe (netlify rewrite) opens the
+     cafe tools landing below. No chooser page in between any more. -->
 
 <!-- ===== LANDING ===== -->
 <div id="landingView" class="hidden">
   <div class="landing">
-    <button class="chooser-back" id="backToChooser">&larr; All tools</button>
+    <button class="chooser-back" id="backToChooser">&larr; care pack wholesale</button>
     <img class="landing-logo" src="carepack.png" alt="carepack, Cafe Care Package" />
     <p class="eyebrow">Cafe Care Package</p>
     <h1 class="landing-h1">Free tools for cafes.</h1>
@@ -318,7 +261,8 @@
     <button class="authback" id="authBack">&larr; Back</button>
     <div class="brand"><img class="brandlogo" src="carepack.png" alt="carepack" style="width:150px;margin:0 auto 4px" /></div>
     <h2>Cafe sign in</h2>
-    <p>Sell your day's surplus without the middleman. No commission, keep your own customers.</p>
+    <p>This is the free cafe tools account, for selling your day's surplus. No commission, keep your own customers.</p>
+    <p style="font-size:12.5px;color:#6b6b72;margin-top:2px">Coffee roaster looking for your ordering dashboard? <a href="/login" style="font-weight:700">Sign in here instead</a>.</p>
     <button class="btn" id="googleBtn"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.02-3.7H.96v2.34A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.98 10.72a5.4 5.4 0 0 1 0-3.44V4.94H.96a9 9 0 0 0 0 8.12l3.02-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A9 9 0 0 0 .96 4.94l3.02 2.34C4.68 5.16 6.66 3.58 9 3.58z"/></svg> Continue with Google</button>
     <div class="authdiv">or with email</div>
     <div class="field"><label for="email">Email</label><input type="email" id="email" inputmode="email" autocomplete="email" placeholder="you@yourcafe.com.au" /></div>
@@ -360,7 +304,7 @@
     <p id="storeSub">Today's surplus, saved from waste. Grab what's left before it's gone.</p>
   </div>
   <div class="wrap"><div class="store-list" id="storeList"></div>
-    <div class="store-foot">Powered by Cafe Care Package</div>
+    <div class="store-foot">Powered by Cafe Care Package · <a href="/privacy" style="color:inherit">Privacy</a> · <a href="/terms" style="color:inherit">Terms</a></div>
   </div>
 </div>
 
@@ -495,7 +439,7 @@ async function uploadPhoto(blob,prefix){const path=`${prefix||""}${Date.now()}-$
 function lighten(hex,p){hex=(hex||"#0b0b0c").replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const n=parseInt(hex,16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;r=Math.round(r+(255-r)*p);g=Math.round(g+(255-g)*p);b=Math.round(b+(255-b)*p);return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function applyBrand(c){const col=(c&&c.brand_color)||"#0b0b0c";const rs=document.documentElement.style;rs.setProperty('--green',col);rs.setProperty('--leaf',lighten(col,0.16));const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content',col);const tt=$("topTitle");if(tt)tt.textContent=(c&&c.shop_name)||"Cafe Care Package";const lg=$("topLogo");if(lg)lg.innerHTML=(c&&c.logo_url)?`<img src="${esc(c.logo_url)}" alt="" style="width:28px;height:28px;border-radius:7px;object-fit:cover;display:block">`:`<svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M4 20C4 12 10 4 20 4C20 14 14 20 4 20Z" fill="#ffffff"/><path d="M4 20C8 14 13 9 18 6" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round"/></svg>`;}
 
-function showOnly(id){["bootView","chooserView","landingView","loginView","onboardView","releaseView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id));window.scrollTo(0,0);}
+function showOnly(id){["bootView","landingView","loginView","onboardView","releaseView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id));window.scrollTo(0,0);}
 
 /* ================= ROUTING ================= */
 const params=new URLSearchParams(location.search);
@@ -507,12 +451,14 @@ const releaseId=params.get("release");
    already signed in still goes to their own app: showing a login form to
    somebody who is logged in is the worse answer. */
 const wantsCafeSignin=params.get("signin")==="cafe";
+/* /cafe (netlify rewrite -> /?cafe=1) opens the tools landing. */
+const wantsCafeTools=params.get("cafe")==="1";
 
 async function boot(){
   if(releaseId){ return showRelease(releaseId); }
   if(custSlug){ return showStoreBySlug(custSlug); }
   const {data:{session}}=await sb.auth.getSession();
-  if(session) enterOwner(); else if(wantsCafeSignin) showLogin(); else showChooser();
+  if(session) enterOwner(); else if(wantsCafeSignin) showLogin(); else if(wantsCafeTools) showLanding(); else location.replace("/wholesale/");
 }
 
 async function showRelease(id){
@@ -537,15 +483,13 @@ sb.auth.onAuthStateChange((_e,session)=>{
   /* This fires INITIAL_SESSION on load, so the no-session branch runs on every
      cold open and would paint the chooser straight over the view boot just
      chose. It has to honour ?signin=cafe for the same reason boot does. */
-  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; if(wantsCafeSignin) showLogin(); else showChooser(); }
+  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; if(wantsCafeSignin) showLogin(); else if(wantsCafeTools) showLanding(); else location.replace("/wholesale/"); }
 });
 
 /* ---------- login (Google + email/password) ---------- */
 function showLogin(){ showOnly("loginView"); }
-function showChooser(){ showOnly("chooserView"); }
 function showLanding(){ showOnly("landingView"); }
-$("chooseCafe").onclick=()=>showLanding();
-$("backToChooser").onclick=()=>showChooser();
+$("backToChooser").onclick=()=>location.href="/wholesale/";
 $("landingLogin").onclick=()=>showLogin();
 $("openWaste").onclick=()=>{ showLogin(); setTimeout(()=>$("email")&&$("email").focus(),60); };
 $("authBack").onclick=()=>showLanding();
