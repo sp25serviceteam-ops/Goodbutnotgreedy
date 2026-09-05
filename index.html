@@ -452,7 +452,7 @@ const releaseId=params.get("release");
    somebody who is logged in is the worse answer. */
 const wantsCafeSignin=params.get("signin")==="cafe";
 /* /cafe (netlify rewrite -> /?cafe=1) opens the tools landing. */
-const wantsCafeTools=params.get("cafe")==="1";
+const wantsCafeTools=params.get("cafe")==="1"||location.pathname.replace(/\/+$/,"")==="/cafe";
 
 async function boot(){
   if(releaseId){ return showRelease(releaseId); }
