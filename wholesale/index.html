@@ -114,6 +114,16 @@
     background:var(--panel);padding:6px 12px;
   }
   .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+  .hero-proof{
+    margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    border:1px solid var(--line);background:var(--panel);max-width:880px;
+  }
+  .hero-proof-card{padding:18px 20px;border-left:1px solid var(--line)}
+  .hero-proof-card:first-child{border-left:0}
+  .hero-proof-card .mini-label{font-family:var(--mono);font-size:10.5px;color:var(--green);margin-bottom:8px;text-transform:lowercase}
+  .hero-proof-card b{display:block;font-size:16px;letter-spacing:-.02em;margin-bottom:5px}
+  .hero-proof-card p{font-size:13px;color:var(--mut);margin:0;line-height:1.45}
+  @media(max-width:760px){.hero-proof{grid-template-columns:1fr}.hero-proof-card{border-left:0;border-top:1px solid var(--line)}.hero-proof-card:first-child{border-top:0}}
 
   /* ---------- proof strip: dashboard tiles ---------- */
   .stat-strip{
@@ -426,10 +436,27 @@
       <span class="marginalia" style="bottom:30px;left:-160px" aria-hidden="true"><span class="tick">+</span> built for AU roasters</span>
       <div class="hero-eyebrow"><span class="dot"></span>built for independent coffee roasters</div>
       <h1>Your wholesale ordering, <em>packed properly.</em></h1>
-      <p class="hero-sub">Cafes order in their browser, in your brand. No logins, no apps, and confirmed orders become Xero invoices on their own.</p>
+      <p class="hero-sub">Cafes order in their browser, in your brand. Confirmed orders become Xero invoices on their own, and optional direct debit runs through Stripe.</p>
       <div class="hero-actions">
         <a class="btn green" href="#demo">Try the cafe demo</a>
         <a class="btn ghost" href="#demo-dash">Peek at your dashboard</a>
+      </div>
+      <div class="hero-proof" aria-label="Care Pack integrations and setup">
+        <article class="hero-proof-card">
+          <div class="mini-label">xero connected</div>
+          <b>Invoices, contacts and item codes stay in Xero.</b>
+          <p>No second price list to maintain. Your Xero stays the source of truth.</p>
+        </article>
+        <article class="hero-proof-card">
+          <div class="mini-label">powered by stripe</div>
+          <b>Direct debit without holding your money.</b>
+          <p>Payments go through Stripe and land with you, not in a marketplace wallet.</p>
+        </article>
+        <article class="hero-proof-card">
+          <div class="mini-label">setup wizard</div>
+          <b>We load the hard stuff with you.</b>
+          <p>Products, cafes, pricing, terms and first orders get set up before you pay.</p>
+        </article>
       </div>
       <p class="hero-price"><b>$50 a week flat.</b> Free for 30 days, no card.</p>
     </div>
@@ -693,9 +720,11 @@
       <div>
         <span class="kicker"><b>//</b> get started</span>
         <h2>Try it free for 30 days.</h2>
-        <p class="lede">Book a set-up and we'll load your own products in, so you're trying it on real orders before you pay anything. Set-ups run afternoons and evenings so they fit around your roast days.</p>
+        <p class="lede">Book a set-up and we'll walk through the wizard with you: Xero connection, item codes, cafe list, payment terms, branded order page and your first real order. You're trying it on real orders before you pay anything.</p>
         <ul class="risk-list">
           <li>Free for 30 days on your real products and real orders</li>
+          <li>We help load your products, cafes, pricing and terms</li>
+          <li>Xero and Stripe connected before you ask cafes to use it</li>
           <li>No card until you decide to stay</li>
           <li>No contract after that, it's week to week</li>
           <li>Cancel anytime and your data leaves with you as CSV</li>

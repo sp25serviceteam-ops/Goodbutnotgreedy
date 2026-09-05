@@ -147,57 +147,22 @@
   .authbox{position:relative}
   .authback{position:absolute;top:12px;left:12px;background:none;border:none;color:var(--muted);font:inherit;font-weight:600;cursor:pointer;padding:6px}
   .authback:hover{color:var(--green)}
-  .landing{min-height:100vh;min-height:100dvh;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 22px calc(48px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto}
-  .wordmark{display:inline-flex;flex-direction:column;line-height:.8;font-family:'Archivo',sans-serif;font-weight:900;letter-spacing:-.045em;color:var(--ink);text-transform:lowercase}
-  .wordmark .wm-e{color:var(--accent)}
-  .landing-logo{width:230px;max-width:64%;height:auto;margin-bottom:24px}
-  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}
-  .landing-h1{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:clamp(30px,7vw,42px);line-height:1.04;letter-spacing:-.03em;margin:0 0 16px;color:var(--ink)}
-  .landing-lead{font-size:16.5px;color:var(--muted);line-height:1.6;margin:0 0 26px;max-width:420px}
-  .door{width:100%;max-width:430px;text-align:left;border:1.5px solid var(--ink);border-radius:18px;padding:20px;margin:0 0 14px;background:var(--bg);text-decoration:none;color:inherit;display:flex;align-items:center;gap:16px;cursor:pointer;font:inherit;transition:background .15s}
-  .door:hover{background:#f7f7f8}
-  .door:active{transform:scale(.995)}
-  .door-body{flex:1;min-width:0}
-  .door-k{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
-  .door-n{font-weight:700;font-size:21px;letter-spacing:-.02em;margin:0 0 5px;color:var(--ink)}
-  .door-d{font-size:14px;color:var(--muted);line-height:1.5;margin:0}
-  .door-go{font-size:20px;color:var(--muted);flex:none;line-height:1}
-  /* The one door that matters now: filled, so it reads as the action rather
-     than one of two equal options. */
-  .door-lead{background:var(--ink);border-color:var(--ink);color:#fff;padding:22px 20px}
-  .door-lead:hover{background:#2A2A2E}
-  .door-lead .door-n{color:#fff;font-size:22px}
-  .door-lead .door-k{color:var(--accent)}
-  .door-lead .door-d{color:rgba(255,255,255,.72)}
-  .door-lead .door-go{color:#fff}
-  /* Cafe tools, still here, just no longer half the page. */
-  .aside-door{max-width:430px;width:100%;font-size:14.5px;line-height:1.6;color:var(--muted);margin:22px 0 0;text-align:center}
-  .linkish{background:none;border:0;padding:0;font:inherit;color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-  .linkish:hover{color:var(--accent)}
-  .chooser-back{background:none;border:none;font:inherit;color:var(--muted);font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:12px;margin-bottom:18px}
-  .chooser-back:hover{color:var(--ink)}
-  .toolcard{width:100%;max-width:430px;text-align:left;border:1.5px solid var(--ink);border-radius:18px;padding:22px 20px;margin:0 0 22px;background:var(--bg)}
-  .toolcard-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 11px}
-  .toolcard-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.18)}
-  .toolcard-name{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:22px;letter-spacing:-.02em;margin:0 0 8px;color:var(--ink)}
-  .toolcard-desc{font-size:14.5px;color:var(--muted);line-height:1.55;margin:0 0 16px}
-  .soon{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;color:var(--muted);margin:0 0 40px}
-  .soon-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(22,163,74,.16)}
-  .idea{width:100%;max-width:430px;border-radius:18px;padding:26px 22px;background:var(--ink);color:#fff;text-align:left}
-  .idea-h{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:20px;letter-spacing:-.02em;margin:0 0 8px;color:#fff}
-  .idea-p{font-size:14.5px;line-height:1.55;color:rgba(255,255,255,.72);margin:0 0 18px}
-  .idea .btn-primary{background:#fff;color:var(--ink)}
-  .idea .btn-primary:hover{background:#ededed}
-  .idea-mail{font-size:13px;color:rgba(255,255,255,.62);margin:14px 0 0;text-align:center}
-  .idea-mail a{color:#fff;font-weight:600}
-  .landing-login{background:none;color:var(--muted);width:auto;min-height:auto;padding:12px;margin-top:34px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
-  .landing-login:hover{color:var(--ink)}
-  .note-from{max-width:430px;width:100%;text-align:center;padding:2px 6px;margin:0 0 34px}
-  .note-from p{font-size:15px;line-height:1.6;color:var(--muted);margin:0}
-  .note-from .sig{margin-top:9px;font-weight:700;color:var(--ink)}
-  .protip{margin-top:16px;text-align:left;background:#f4f7f4;border:1px solid var(--line);border-radius:12px;padding:14px 15px}
-  .protip-k{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin:0 0 5px}
-  .protip p{font-size:13.5px;line-height:1.55;color:var(--ink);margin:0}
+  .landing{min-height:100vh;min-height:100dvh;background:#fafaf8;color:var(--ink);padding:24px 22px 64px;max-width:1180px;margin:0 auto;text-align:left;position:relative;overflow:hidden}
+  .landing:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(#e7e2d6 1px,transparent 1px),linear-gradient(90deg,#e7e2d6 1px,transparent 1px);background-size:96px 96px;opacity:.28;mask-image:linear-gradient(180deg,#000,transparent 72%)}
+  .landing-shell{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr);gap:clamp(28px,5vw,72px);align-items:center;min-height:calc(100vh - 88px)}
+  .landing-top{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:6px 0 34px}
+  .landing-logo{width:180px;max-width:48vw;height:auto;display:block;margin:0}
+  .chooser-back{background:none;border:0;font:inherit;color:#6b6b72;font-size:13px;font-weight:650;text-decoration:none;padding:10px 0;cursor:pointer}.chooser-back:hover{color:var(--ink)}
+  .eyebrow{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;letter-spacing:.08em;text-transform:lowercase;color:#8a867c;margin:0 0 18px}.eyebrow b{color:#00A04D}
+  .landing-h1{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800;font-size:clamp(48px,7vw,96px);line-height:.92;letter-spacing:-.075em;margin:0 0 22px;color:#090909;max-width:760px}
+  .landing-lead{font-size:clamp(18px,2.2vw,23px);color:#595959;line-height:1.42;margin:0 0 30px;max-width:600px}
+  .landing-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 26px}.landing-actions .btn{width:auto;border-radius:999px;padding:14px 20px;min-height:0}.landing-actions .btn-primary{background:#00A04D;color:#fff}.landing-actions .btn-primary:hover{background:#008e43}.landing-login{background:#fff;color:#111;border:1px solid #dcd6ca;width:auto;min-height:0;padding:14px 18px;border-radius:999px;font-weight:700;text-decoration:none;margin:0}.landing-login:hover{background:#f4f1ea;color:#111}
+  .landing-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:620px}.mini-proof{border:1px solid #ded8cb;background:rgba(255,255,255,.72);padding:14px}.mini-proof b{display:block;font-size:22px;letter-spacing:-.04em}.mini-proof span{display:block;color:#6b6b72;font-size:12.5px;margin-top:3px}
+  .toolcard{border:1px solid #dcd6ca;background:#fff;border-radius:0;padding:clamp(24px,4vw,38px);box-shadow:none;position:relative}.toolcard:before{content:"surplus tool";position:absolute;right:18px;top:16px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#aaa39a}.toolcard-tag{display:inline-flex;align-items:center;gap:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:lowercase;color:#00A04D;margin:0 0 18px}.toolcard-tag:before{content:"";width:8px;height:8px;border-radius:50%;background:#00A04D}.toolcard-name{font-weight:800;font-size:clamp(30px,4vw,46px);letter-spacing:-.055em;line-height:.98;margin:0 0 14px;color:#090909}.toolcard-desc{font-size:17px;color:#5f5f5f;line-height:1.5;margin:0 0 22px;max-width:460px}.toolcard .btn{border-radius:0;background:#090909;color:#fff;width:100%;justify-content:space-between;padding:16px 18px}.toolcard .btn:hover{background:#2a2a2e}.toolcard .btn:after{content:"→"}
+  .soon{display:inline-flex;align-items:center;gap:9px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#7d786f;margin:16px 0 0}.soon-dot{width:7px;height:7px;border-radius:50%;background:#00A04D}
+  .note-from{border:1px solid #dcd6ca;background:#fafaf8;padding:18px 20px;margin:16px 0 0}.note-from p{font-size:14.5px;line-height:1.55;color:#616161;margin:0}.note-from .sig{margin-top:8px;font-weight:750;color:#111}
+  .idea{border:1px solid #dcd6ca;background:#090909;color:#fff;padding:24px;margin-top:16px}.idea-h{font-weight:800;font-size:22px;letter-spacing:-.03em;margin:0 0 8px;color:#fff}.idea-p{font-size:14.5px;line-height:1.55;color:rgba(255,255,255,.72);margin:0 0 18px}.idea .btn-primary{background:#00A04D;color:#fff;border-radius:0}.idea-mail{font-size:13px;color:rgba(255,255,255,.62);margin:14px 0 0;text-align:left}.idea-mail a{color:#fff;font-weight:650}
+  @media(max-width:840px){.landing{padding:18px 18px 48px}.landing-shell{grid-template-columns:1fr;min-height:0;gap:28px}.landing-h1{font-size:clamp(44px,16vw,70px)}.landing-proof{grid-template-columns:1fr 1fr}.landing-proof .mini-proof:last-child{grid-column:1/-1}.landing-actions{align-items:stretch}.landing-actions .btn,.landing-login{width:100%;justify-content:center}}
   .authdiv{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:16px 0}
   .authdiv:before,.authdiv:after{content:"";flex:1;height:1px;background:var(--line)}
   #googleBtn{width:100%;gap:9px;background:#fff;border:1px solid var(--line);color:var(--ink)}#googleBtn:hover{background:#faf8f2}
@@ -224,34 +189,45 @@
 <!-- ===== LANDING ===== -->
 <div id="landingView" class="hidden">
   <div class="landing">
-    <button class="chooser-back" id="backToChooser">&larr; care pack wholesale</button>
-    <img class="landing-logo" src="carepack.png" alt="carepack, Cafe Care Package" />
-    <p class="eyebrow">Cafe Care Package</p>
-    <h1 class="landing-h1">Free tools for cafes.</h1>
-    <p class="landing-lead">Running a cafe right now is tough. We build simple tools that actually help, no cost and no catch. Think of it as a care package for your cafe, and more are on the way.</p>
-
-    <div class="toolcard">
-      <div class="toolcard-tag">Live now</div>
-      <div class="toolcard-name">Sell your surplus</div>
-      <div class="toolcard-desc">Put your day's leftover food up before you close. Customers reserve it, you keep every cent. No middleman, no commission.</div>
-      <button class="btn btn-primary" id="openWaste">Start making money on your daily surplus</button>
+    <div class="landing-top">
+      <img class="landing-logo" src="carepack.png" alt="carepack, Cafe Care Package" />
+      <button class="chooser-back" id="backToChooser">care pack wholesale</button>
     </div>
-
-    <div class="soon"><span class="soon-dot"></span> More tools dropping soon</div>
-
-    <div class="note-from">
-      <p>Hi. Hospo is tough at the moment. I'm making tools to make it easier for cafes and wholesalers, and I hope you enjoy them.</p>
-      <p class="sig">love, Lukas</p>
+    <div class="landing-shell">
+      <div>
+        <p class="eyebrow"><b>//</b> free cafe tools</p>
+        <h1 class="landing-h1">A tiny tool for the food you nearly throw out.</h1>
+        <p class="landing-lead">Put your leftover food up before you close. Customers reserve it, you keep every cent, and tomorrow's regulars see you doing something useful.</p>
+        <div class="landing-actions">
+          <button class="btn btn-primary open-waste" id="openWaste">Start with the surplus tool</button>
+          <button class="btn landing-login" id="landingLogin">Cafe owner? Log in</button>
+        </div>
+        <div class="landing-proof">
+          <div class="mini-proof"><b>$0</b><span>free for cafes</span></div>
+          <div class="mini-proof"><b>0%</b><span>commission taken</span></div>
+          <div class="mini-proof"><b>1 link</b><span>send to customers</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="toolcard">
+          <div class="toolcard-tag">live now</div>
+          <div class="toolcard-name">Sell your surplus</div>
+          <div class="toolcard-desc">Add a bag, set a pickup time, share your link. It is not a marketplace and it does not sit between you and your customers.</div>
+          <button class="btn btn-primary open-waste">Open the tool</button>
+        </div>
+        <div class="soon"><span class="soon-dot"></span> more small cafe tools coming soon</div>
+        <div class="note-from">
+          <p>Hi. Hospo is tight at the moment, so this corner of Care Pack is for useful little cafe tools. Start with surplus, tell me what should come next.</p>
+          <p class="sig">Lukas</p>
+        </div>
+        <div class="idea">
+          <h3 class="idea-h">Need a tool that does not exist yet?</h3>
+          <p class="idea-p">Tell me what would make your day easier. If it is small and useful, I will have a crack.</p>
+          <a class="btn btn-primary" href="mailto:lukas@kiness.com.au?subject=Cafe%20Care%20Package%20tool%20idea&body=Hi%20Lukas%2C%20a%20tool%20that%20would%20help%20my%20cafe%3A%0A%0A">Email me an idea</a>
+          <p class="idea-mail">or reach me at <a href="mailto:lukas@kiness.com.au">lukas@kiness.com.au</a></p>
+        </div>
+      </div>
     </div>
-
-    <div class="idea">
-      <h3 class="idea-h">Need a tool that doesn't exist yet?</h3>
-      <p class="idea-p">Tell me what would make your days easier and I'll build it. No idea too small.</p>
-      <a class="btn btn-primary" href="mailto:lukas@kiness.com.au?subject=Cafe%20Care%20Package%20tool%20idea&body=Hi%20Lukas%2C%20a%20tool%20that%20would%20help%20my%20cafe%3A%0A%0A">Email me an idea</a>
-      <p class="idea-mail">or reach me at <a href="mailto:lukas@kiness.com.au">lukas@kiness.com.au</a></p>
-    </div>
-
-    <button class="btn landing-login" id="landingLogin">Cafe owner? Log in</button>
   </div>
 </div>
 
@@ -491,7 +467,7 @@ function showLogin(){ showOnly("loginView"); }
 function showLanding(){ showOnly("landingView"); }
 $("backToChooser").onclick=()=>location.href="/wholesale/";
 $("landingLogin").onclick=()=>showLogin();
-$("openWaste").onclick=()=>{ showLogin(); setTimeout(()=>$("email")&&$("email").focus(),60); };
+document.querySelectorAll('.open-waste').forEach(btn=>btn.onclick=()=>{ showLogin(); setTimeout(()=>$("email")&&$("email").focus(),60); });
 $("authBack").onclick=()=>showLanding();
 $("googleBtn").onclick=async()=>{
   const {error}=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:baseUrl()}});
