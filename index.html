@@ -209,33 +209,6 @@
   .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* Front door, restyled to match /wholesale/: near-white, hairline borders,
-     one green. Every rule is scoped to #chooserView, so the cafe tool's views
-     below are unaffected. */
-  #chooserView{--cp-bg:#fafaf8;--cp-ink:#0b0c0b;--cp-green:#00A04D;--cp-muted:#63665f;--cp-faint:#9a9d95;--cp-line:#e2e4de}
-  #chooserView{background:var(--cp-bg);min-height:100vh;min-height:100dvh}
-  #chooserView .landing{background:transparent;color:var(--cp-ink)}
-  #chooserView .landing-h1{color:var(--cp-ink);font-weight:800;letter-spacing:-.05em;font-size:clamp(34px,7.5vw,52px);line-height:.98}
-  #chooserView .landing-lead{color:var(--cp-muted);font-size:17px;max-width:460px}
-  #chooserView .eyebrow{color:var(--cp-faint);font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.02em;text-transform:lowercase}
-  #chooserView .landing-logo{width:150px}
-  #chooserView .door{border:1px solid var(--cp-line);background:#fff;color:var(--cp-ink);border-radius:0}
-  #chooserView .door:hover{border-color:var(--cp-ink)}
-  #chooserView .door-lead{background:var(--cp-green);border-color:var(--cp-green);color:#fff}
-  #chooserView .door-lead .door-k{color:rgba(255,255,255,.8)}
-  #chooserView .door:not(.door-lead) .door-k{color:var(--cp-green)}
-  #chooserView .door-lead:hover{background:#008a42;border-color:#008a42}
-  #chooserView .door-d{color:rgba(255,255,255,.85)}
-  #chooserView .door:not(.door-lead) .door-d{color:var(--cp-muted)}
-  #chooserView .landing-login{background:transparent;border:1px solid var(--cp-ink);color:var(--cp-ink);border-radius:0;font-weight:700}
-  #chooserView .landing-login:hover{background:var(--cp-ink);color:#fff}
-  #chooserView .aside-door{color:var(--cp-muted)}
-  #chooserView .linkish{color:var(--cp-ink);font-weight:700}
-  #chooserView .note-from{color:var(--cp-muted)}
-  #chooserView .note-from p{color:var(--cp-muted)}
-  #chooserView .door-foot{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;width:100%;max-width:430px;padding-top:22px;border-top:1px solid var(--cp-line);color:var(--cp-faint);font-size:12px}
-  #chooserView .door-foot a{color:var(--cp-muted);text-decoration:none}
-  #chooserView .door-foot a:hover{color:var(--cp-ink)}
   .loading{min-height:60vh;display:flex;align-items:center;justify-content:center;color:var(--muted)}
 </style>
 </head>
@@ -243,54 +216,15 @@
 
 <div id="bootView" class="loading">Loading…</div>
 
-<!-- ===== CHOOSER (front door) ===== -->
-<div id="chooserView" class="hidden">
-  <div class="landing">
-    <img class="landing-logo" src="carepack.png" alt="carepack" />
-    <p class="eyebrow">// wholesale ordering and cafe tools</p>
-    <h1 class="landing-h1">Your cafes order.<br />It lands in your Xero.</h1>
-    <p class="landing-lead">Wholesale ordering with your name on it. Cafes order in their browser, invoices land in Xero priced from your item codes, and the price is $50 a week flat.</p>
-
-    <a class="door door-lead" href="/wholesale/">
-      <span class="door-body">
-        <span class="door-k" style="display:block">For roasters</span>
-        <span class="door-n" style="display:block">Wholesale ordering</span>
-        <span class="door-d" style="display:block">See it working live, then set yours up. Free for 30 days.</span>
-      </span>
-      <span class="door-go" aria-hidden="true">&rarr;</span>
-    </a>
-
-    <a class="door" href="/?signin=cafe" id="cafeDoor">
-      <span class="door-body">
-        <span class="door-k" style="display:block">Run a cafe?</span>
-        <span class="door-n" style="display:block">Free cafe tools</span>
-        <span class="door-d" style="display:block">Sell your daily surplus and keep every cent. No cost, no catch.</span>
-      </span>
-      <span class="door-go" aria-hidden="true">&rarr;</span>
-    </a>
-
-    <!-- Roasters who already have a portal shouldn't have to go through a door
-         built for people who don't. Straight to the dashboard sign-in. -->
-    <a class="btn landing-login" href="/login" style="display:inline-block;margin-top:16px">Already set up? Sign in to your dashboard</a>
-
-    <div class="note-from" style="margin-top:24px">
-      <p>Hi. Hospo is tough at the moment. I'm making tools to make it easier for cafes and wholesalers, and I hope you enjoy them.</p>
-      <p class="sig">love, Lukas</p>
-    </div>
-
-    <div class="door-foot">
-      <a href="/wholesale/">Wholesale ordering</a>
-      <a href="/login">Sign in</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-    </div>
-  </div>
-</div>
+<!-- ===== FRONT DOOR =====
+     The bare domain IS the wholesale pitch now. boot() sends anonymous
+     visitors straight to /wholesale/; /cafe (netlify rewrite) opens the
+     cafe tools landing below. No chooser page in between any more. -->
 
 <!-- ===== LANDING ===== -->
 <div id="landingView" class="hidden">
   <div class="landing">
-    <button class="chooser-back" id="backToChooser">&larr; All tools</button>
+    <button class="chooser-back" id="backToChooser">&larr; care pack wholesale</button>
     <img class="landing-logo" src="carepack.png" alt="carepack, Cafe Care Package" />
     <p class="eyebrow">Cafe Care Package</p>
     <h1 class="landing-h1">Free tools for cafes.</h1>
@@ -327,7 +261,8 @@
     <button class="authback" id="authBack">&larr; Back</button>
     <div class="brand"><img class="brandlogo" src="carepack.png" alt="carepack" style="width:150px;margin:0 auto 4px" /></div>
     <h2>Cafe sign in</h2>
-    <p>Sell your day's surplus without the middleman. No commission, keep your own customers.</p>
+    <p>This is the free cafe tools account, for selling your day's surplus. No commission, keep your own customers.</p>
+    <p style="font-size:12.5px;color:#6b6b72;margin-top:2px">Coffee roaster looking for your ordering dashboard? <a href="/login" style="font-weight:700">Sign in here instead</a>.</p>
     <button class="btn" id="googleBtn"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.02-3.7H.96v2.34A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.98 10.72a5.4 5.4 0 0 1 0-3.44V4.94H.96a9 9 0 0 0 0 8.12l3.02-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A9 9 0 0 0 .96 4.94l3.02 2.34C4.68 5.16 6.66 3.58 9 3.58z"/></svg> Continue with Google</button>
     <div class="authdiv">or with email</div>
     <div class="field"><label for="email">Email</label><input type="email" id="email" inputmode="email" autocomplete="email" placeholder="you@yourcafe.com.au" /></div>
@@ -369,7 +304,7 @@
     <p id="storeSub">Today's surplus, saved from waste. Grab what's left before it's gone.</p>
   </div>
   <div class="wrap"><div class="store-list" id="storeList"></div>
-    <div class="store-foot">Powered by Cafe Care Package</div>
+    <div class="store-foot">Powered by Cafe Care Package · <a href="/privacy" style="color:inherit">Privacy</a> · <a href="/terms" style="color:inherit">Terms</a></div>
   </div>
 </div>
 
@@ -504,7 +439,7 @@ async function uploadPhoto(blob,prefix){const path=`${prefix||""}${Date.now()}-$
 function lighten(hex,p){hex=(hex||"#0b0b0c").replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');const n=parseInt(hex,16);let r=(n>>16)&255,g=(n>>8)&255,b=n&255;r=Math.round(r+(255-r)*p);g=Math.round(g+(255-g)*p);b=Math.round(b+(255-b)*p);return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function applyBrand(c){const col=(c&&c.brand_color)||"#0b0b0c";const rs=document.documentElement.style;rs.setProperty('--green',col);rs.setProperty('--leaf',lighten(col,0.16));const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content',col);const tt=$("topTitle");if(tt)tt.textContent=(c&&c.shop_name)||"Cafe Care Package";const lg=$("topLogo");if(lg)lg.innerHTML=(c&&c.logo_url)?`<img src="${esc(c.logo_url)}" alt="" style="width:28px;height:28px;border-radius:7px;object-fit:cover;display:block">`:`<svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M4 20C4 12 10 4 20 4C20 14 14 20 4 20Z" fill="#ffffff"/><path d="M4 20C8 14 13 9 18 6" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round"/></svg>`;}
 
-function showOnly(id){["bootView","chooserView","landingView","loginView","onboardView","releaseView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id));window.scrollTo(0,0);}
+function showOnly(id){["bootView","landingView","loginView","onboardView","releaseView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id));window.scrollTo(0,0);}
 
 /* ================= ROUTING ================= */
 const params=new URLSearchParams(location.search);
@@ -516,12 +451,14 @@ const releaseId=params.get("release");
    already signed in still goes to their own app: showing a login form to
    somebody who is logged in is the worse answer. */
 const wantsCafeSignin=params.get("signin")==="cafe";
+/* /cafe (netlify rewrite -> /?cafe=1) opens the tools landing. */
+const wantsCafeTools=params.get("cafe")==="1";
 
 async function boot(){
   if(releaseId){ return showRelease(releaseId); }
   if(custSlug){ return showStoreBySlug(custSlug); }
   const {data:{session}}=await sb.auth.getSession();
-  if(session) enterOwner(); else if(wantsCafeSignin) showLogin(); else showChooser();
+  if(session) enterOwner(); else if(wantsCafeSignin) showLogin(); else if(wantsCafeTools) showLanding(); else location.replace("/wholesale/");
 }
 
 async function showRelease(id){
@@ -546,15 +483,13 @@ sb.auth.onAuthStateChange((_e,session)=>{
   /* This fires INITIAL_SESSION on load, so the no-session branch runs on every
      cold open and would paint the chooser straight over the view boot just
      chose. It has to honour ?signin=cafe for the same reason boot does. */
-  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; if(wantsCafeSignin) showLogin(); else showChooser(); }
+  if(session){ if(!CAFE) enterOwner(); } else { CAFE=null; if(wantsCafeSignin) showLogin(); else if(wantsCafeTools) showLanding(); else location.replace("/wholesale/"); }
 });
 
 /* ---------- login (Google + email/password) ---------- */
 function showLogin(){ showOnly("loginView"); }
-function showChooser(){ showOnly("chooserView"); }
 function showLanding(){ showOnly("landingView"); }
-$("cafeDoor").onclick=(e)=>{e.preventDefault();showLanding();};
-$("backToChooser").onclick=()=>showChooser();
+$("backToChooser").onclick=()=>location.href="/wholesale/";
 $("landingLogin").onclick=()=>showLogin();
 $("openWaste").onclick=()=>{ showLogin(); setTimeout(()=>$("email")&&$("email").focus(),60); };
 $("authBack").onclick=()=>showLanding();
