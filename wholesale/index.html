@@ -114,26 +114,16 @@
     background:var(--panel);padding:6px 12px;
   }
   .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
-  .integration-strip{
-    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
-    font-size:15px;font-weight:760;letter-spacing:-.02em;
-  }
-  .integration-pill{
-    display:inline-flex;align-items:center;gap:8px;background:#0b0b0c;color:#fff;
-    border:1px solid #0b0b0c;padding:10px 13px;
-  }
-  .integration-pill:first-child{background:var(--green);border-color:var(--green)}
-  .integration-pill span{font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(255,255,255,.68);letter-spacing:.02em}
   .hero-proof{
-    margin-top:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-    border:1px solid var(--line-dark);background:var(--panel);max-width:980px;
+    margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    border:1px solid var(--line);background:var(--panel);max-width:880px;
   }
-  .hero-proof-card{padding:24px 24px 22px;border-left:1px solid var(--line);min-height:142px}
+  .hero-proof-card{padding:18px 20px;border-left:1px solid var(--line)}
   .hero-proof-card:first-child{border-left:0}
-  .hero-proof-card .mini-label{font-family:var(--mono);font-size:11px;color:var(--green);margin-bottom:10px;text-transform:lowercase}
-  .hero-proof-card b{display:block;font-size:19px;line-height:1.12;letter-spacing:-.035em;margin-bottom:8px}
-  .hero-proof-card p{font-size:14px;color:var(--mut);margin:0;line-height:1.45}
-  @media(max-width:760px){.hero-proof{grid-template-columns:1fr}.hero-proof-card{border-left:0;border-top:1px solid var(--line);min-height:0}.hero-proof-card:first-child{border-top:0}.integration-strip{align-items:stretch}.integration-pill{width:100%;justify-content:space-between}}
+  .hero-proof-card .mini-label{font-family:var(--mono);font-size:10.5px;color:var(--green);margin-bottom:8px;text-transform:lowercase}
+  .hero-proof-card b{display:block;font-size:16px;letter-spacing:-.02em;margin-bottom:5px}
+  .hero-proof-card p{font-size:13px;color:var(--mut);margin:0;line-height:1.45}
+  @media(max-width:760px){.hero-proof{grid-template-columns:1fr}.hero-proof-card{border-left:0;border-top:1px solid var(--line)}.hero-proof-card:first-child{border-top:0}}
 
   /* ---------- proof strip: dashboard tiles ---------- */
   .stat-strip{
@@ -447,11 +437,6 @@
       <div class="hero-eyebrow"><span class="dot"></span>built for independent coffee roasters</div>
       <h1>Your wholesale ordering, <em>packed properly.</em></h1>
       <p class="hero-sub">Cafes order in their browser, in your brand. Confirmed orders become Xero invoices on their own, and optional direct debit runs through Stripe.</p>
-      <div class="integration-strip" aria-label="Key integrations">
-        <div class="integration-pill">Xero invoices <span>connected</span></div>
-        <div class="integration-pill">Stripe payments <span>powered by Stripe</span></div>
-        <div class="integration-pill">Setup wizard <span>done with you</span></div>
-      </div>
       <div class="hero-actions">
         <a class="btn green" href="#demo">Try the cafe demo</a>
         <a class="btn ghost" href="#demo-dash">Peek at your dashboard</a>
