@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0b0b0c" />
+<meta name="theme-color" content="#fafaf8" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<title>Care Pack: free tools for cafes and coffee roasters</title>
-<meta name="description" content="Free tools for hospo. Cafes sell their daily surplus and keep every cent. Roasters get their own wholesale ordering portal with orders landing straight in Xero." />
+<title>Care Pack | Wholesale ordering for coffee roasters, free tools for cafes</title>
+<meta name="description" content="Wholesale ordering for independent coffee roasters: cafes order in their browser, invoices land in Xero, $50 a week flat. Plus free tools for cafes." />
 <meta property="og:title" content="Care Pack" />
-<meta property="og:description" content="Free tools for cafes and coffee roasters. Built by someone who works in hospo." />
+<meta property="og:description" content="Wholesale ordering for coffee roasters, packed properly. Plus free tools for cafes." />
 <meta property="og:image" content="https://cafecarepackage.com/carepack.png" />
 <meta property="og:url" content="https://cafecarepackage.com/" />
 <meta property="og:type" content="website" />
@@ -209,29 +209,33 @@
   .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* Front door, in the site's own colours (site.css is the source of these
-     values; this page cannot link it without the app inheriting a dark body).
-     Every rule is scoped to #chooserView, so the cafe tool's views below are
-     unaffected. */
-  #chooserView{--cp-ink:#090a0a;--cp-green:#00a950;--cp-muted:#a7aaa7;--cp-line:rgba(255,255,255,.15)}
-  #chooserView{background:var(--cp-ink);min-height:100vh;min-height:100dvh}
-  #chooserView .landing{background:transparent;color:#fff}
-  #chooserView .landing-h1{color:#fff;font-weight:780;letter-spacing:-.05em;font-size:clamp(34px,7.5vw,52px);line-height:.98}
-  #chooserView .landing-lead{color:#d1d4d1;font-size:17px;max-width:460px}
-  #chooserView .eyebrow{color:var(--cp-muted)}
+  /* Front door, restyled to match /wholesale/: near-white, hairline borders,
+     one green. Every rule is scoped to #chooserView, so the cafe tool's views
+     below are unaffected. */
+  #chooserView{--cp-bg:#fafaf8;--cp-ink:#0b0c0b;--cp-green:#00A04D;--cp-muted:#63665f;--cp-faint:#9a9d95;--cp-line:#e2e4de}
+  #chooserView{background:var(--cp-bg);min-height:100vh;min-height:100dvh}
+  #chooserView .landing{background:transparent;color:var(--cp-ink)}
+  #chooserView .landing-h1{color:var(--cp-ink);font-weight:800;letter-spacing:-.05em;font-size:clamp(34px,7.5vw,52px);line-height:.98}
+  #chooserView .landing-lead{color:var(--cp-muted);font-size:17px;max-width:460px}
+  #chooserView .eyebrow{color:var(--cp-faint);font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.02em;text-transform:lowercase}
   #chooserView .landing-logo{width:150px}
-  #chooserView .door{border-color:var(--cp-line);background:transparent;color:#fff;border-radius:20px}
-  #chooserView .door:hover{background:rgba(255,255,255,.05)}
+  #chooserView .door{border:1px solid var(--cp-line);background:#fff;color:var(--cp-ink);border-radius:0}
+  #chooserView .door:hover{border-color:var(--cp-ink)}
   #chooserView .door-lead{background:var(--cp-green);border-color:var(--cp-green);color:#fff}
-  #chooserView .door-d{color:rgba(255,255,255,.82)}
-  #chooserView .landing-login{background:transparent;border:1px solid var(--cp-line);color:#fff;border-radius:999px}
+  #chooserView .door-lead .door-k{color:rgba(255,255,255,.8)}
+  #chooserView .door:not(.door-lead) .door-k{color:var(--cp-green)}
+  #chooserView .door-lead:hover{background:#008a42;border-color:#008a42}
+  #chooserView .door-d{color:rgba(255,255,255,.85)}
+  #chooserView .door:not(.door-lead) .door-d{color:var(--cp-muted)}
+  #chooserView .landing-login{background:transparent;border:1px solid var(--cp-ink);color:var(--cp-ink);border-radius:0;font-weight:700}
+  #chooserView .landing-login:hover{background:var(--cp-ink);color:#fff}
   #chooserView .aside-door{color:var(--cp-muted)}
-  #chooserView .linkish{color:#fff}
+  #chooserView .linkish{color:var(--cp-ink);font-weight:700}
   #chooserView .note-from{color:var(--cp-muted)}
   #chooserView .note-from p{color:var(--cp-muted)}
-  #chooserView .door-foot{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;width:100%;max-width:430px;padding-top:22px;border-top:1px solid var(--cp-line);color:var(--cp-muted);font-size:12px}
+  #chooserView .door-foot{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;width:100%;max-width:430px;padding-top:22px;border-top:1px solid var(--cp-line);color:var(--cp-faint);font-size:12px}
   #chooserView .door-foot a{color:var(--cp-muted);text-decoration:none}
-  #chooserView .door-foot a:hover{color:#fff}
+  #chooserView .door-foot a:hover{color:var(--cp-ink)}
   .loading{min-height:60vh;display:flex;align-items:center;justify-content:center;color:var(--muted)}
 </style>
 </head>
@@ -242,16 +246,25 @@
 <!-- ===== CHOOSER (front door) ===== -->
 <div id="chooserView" class="hidden">
   <div class="landing">
-    <img class="landing-logo" src="carepack-light.png" alt="carepack" />
-    <p class="eyebrow">Care Pack</p>
+    <img class="landing-logo" src="carepack.png" alt="carepack" />
+    <p class="eyebrow">// wholesale ordering and cafe tools</p>
     <h1 class="landing-h1">Your cafes order.<br />It lands in your Xero.</h1>
-    <p class="landing-lead">A wholesale ordering page with your name on it. Every order arrives in your accounts as a draft invoice, priced from your own item codes. No app for your cafes to download, and no per-order price that grows with you.</p>
+    <p class="landing-lead">Wholesale ordering with your name on it. Cafes order in their browser, invoices land in Xero priced from your item codes, and the price is $50 a week flat.</p>
 
     <a class="door door-lead" href="/wholesale/">
       <span class="door-body">
         <span class="door-k" style="display:block">For roasters</span>
         <span class="door-n" style="display:block">Wholesale ordering</span>
-        <span class="door-d" style="display:block">See it working, then set yours up. About fifteen minutes.</span>
+        <span class="door-d" style="display:block">See it working live, then set yours up. Free for 30 days.</span>
+      </span>
+      <span class="door-go" aria-hidden="true">&rarr;</span>
+    </a>
+
+    <a class="door" href="/?signin=cafe" id="cafeDoor">
+      <span class="door-body">
+        <span class="door-k" style="display:block">Run a cafe?</span>
+        <span class="door-n" style="display:block">Free cafe tools</span>
+        <span class="door-d" style="display:block">Sell your daily surplus and keep every cent. No cost, no catch.</span>
       </span>
       <span class="door-go" aria-hidden="true">&rarr;</span>
     </a>
@@ -259,10 +272,6 @@
     <!-- Roasters who already have a portal shouldn't have to go through a door
          built for people who don't. Straight to the dashboard sign-in. -->
     <a class="btn landing-login" href="/login" style="display:inline-block;margin-top:16px">Already set up? Sign in to your dashboard</a>
-
-    <!-- The cafe surplus tool is real and still free, it just isn't what this
-         page is for any more. Kept a click away rather than at equal weight. -->
-    <p class="aside-door">Run a cafe? <button type="button" id="chooseCafe" class="linkish">Free cafe tools</button>, including selling your daily surplus food.</p>
 
     <div class="note-from" style="margin-top:24px">
       <p>Hi. Hospo is tough at the moment. I'm making tools to make it easier for cafes and wholesalers, and I hope you enjoy them.</p>
@@ -544,7 +553,7 @@ sb.auth.onAuthStateChange((_e,session)=>{
 function showLogin(){ showOnly("loginView"); }
 function showChooser(){ showOnly("chooserView"); }
 function showLanding(){ showOnly("landingView"); }
-$("chooseCafe").onclick=()=>showLanding();
+$("cafeDoor").onclick=(e)=>{e.preventDefault();showLanding();};
 $("backToChooser").onclick=()=>showChooser();
 $("landingLogin").onclick=()=>showLogin();
 $("openWaste").onclick=()=>{ showLogin(); setTimeout(()=>$("email")&&$("email").focus(),60); };
