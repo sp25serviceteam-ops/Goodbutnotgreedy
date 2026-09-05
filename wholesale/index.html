@@ -115,20 +115,15 @@
   }
   .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
   .integration-strip{
-    margin-top:26px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
     font-size:15px;font-weight:760;letter-spacing:-.02em;
   }
   .integration-pill{
-    min-height:58px;display:inline-flex;align-items:center;gap:12px;background:#fff;color:#0b0b0c;
-    border:1px solid var(--line-dark);padding:10px 14px;
+    display:inline-flex;align-items:center;gap:8px;background:#0b0b0c;color:#fff;
+    border:1px solid #0b0b0c;padding:10px 13px;
   }
-  .integration-pill strong{display:block;font-size:14px;line-height:1.05}
-  .integration-pill span{display:block;margin-top:3px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--faint);letter-spacing:.02em}
-  .integration-pill span strong{font-family:'Inter',system-ui,sans-serif;color:#0b0b0c;font-size:15px;font-weight:800;letter-spacing:-.02em}
-  .brand-logo{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
-  .brand-logo svg{display:block;height:28px;width:auto}
-  .wizard-logo{width:34px;height:34px;border:1px solid var(--green);display:grid;grid-template-columns:repeat(2,1fr);gap:3px;padding:6px;background:#f1fff7}
-  .wizard-logo i{display:block;background:var(--green)}
+  .integration-pill:first-child{background:var(--green);border-color:var(--green)}
+  .integration-pill span{font-family:var(--mono);font-size:10px;font-weight:500;color:rgba(255,255,255,.68);letter-spacing:.02em}
   .hero-proof{
     margin-top:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
     border:1px solid var(--line-dark);background:var(--panel);max-width:980px;
@@ -453,18 +448,9 @@
       <h1>Your wholesale ordering, <em>packed properly.</em></h1>
       <p class="hero-sub">Cafes order in their browser, in your brand. Confirmed orders become Xero invoices on their own, and optional direct debit runs through Stripe.</p>
       <div class="integration-strip" aria-label="Key integrations">
-        <div class="integration-pill">
-          <span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 90 32" role="img"><circle cx="16" cy="16" r="16" fill="#13B5EA"/><text x="16" y="20.5" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#fff">xero</text><text x="40" y="21" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#13B5EA">Xero</text></svg></span>
-          <span><strong>Invoices straight to Xero</strong>contacts, item codes and pricing stay there</span>
-        </div>
-        <div class="integration-pill">
-          <span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 92 32" role="img"><text x="0" y="23" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#635BFF">stripe</text></svg></span>
-          <span><strong>Powered by Stripe</strong>direct debit without a platform wallet</span>
-        </div>
-        <div class="integration-pill">
-          <span class="wizard-logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <span><strong>Setup wizard</strong>live in under 30 minutes</span>
-        </div>
+        <div class="integration-pill">Xero invoices <span>connected</span></div>
+        <div class="integration-pill">Stripe payments <span>powered by Stripe</span></div>
+        <div class="integration-pill">Setup wizard <span>done with you</span></div>
       </div>
       <div class="hero-actions">
         <a class="btn green" href="#demo">Try the cafe demo</a>
@@ -483,8 +469,8 @@
         </article>
         <article class="hero-proof-card">
           <div class="mini-label">setup wizard</div>
-          <b>Set up and selling in under half an hour.</b>
-          <p>The wizard sorts shelves, products, prices, terms and cafe access so you are not building it from scratch.</p>
+          <b>We load the hard stuff with you.</b>
+          <p>Products, cafes, pricing, terms and first orders get set up before you pay.</p>
         </article>
       </div>
       <p class="hero-price"><b>$50 a week flat.</b> Free for 30 days, no card.</p>
@@ -749,10 +735,10 @@
       <div>
         <span class="kicker"><b>//</b> get started</span>
         <h2>Try it free for 30 days.</h2>
-        <p class="lede">Start with the set-up wizard. It connects Xero, pulls item codes into shelves, lets you check products and prices, then turns the first real cafe order into an invoice. Most roasters can be live in under half an hour.</p>
+        <p class="lede">Book a set-up and we'll walk through the wizard with you: Xero connection, item codes, cafe list, payment terms, branded order page and your first real order. You're trying it on real orders before you pay anything.</p>
         <ul class="risk-list">
           <li>Free for 30 days on your real products and real orders</li>
-          <li>The wizard sorts shelves, products, prices and terms</li>
+          <li>We help load your products, cafes, pricing and terms</li>
           <li>Xero and Stripe connected before you ask cafes to use it</li>
           <li>No card until you decide to stay</li>
           <li>No contract after that, it's week to week</li>
