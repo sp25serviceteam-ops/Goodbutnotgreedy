@@ -334,8 +334,8 @@
   /* ---------- lukas ---------- */
   .lukas{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;border:1px solid var(--line);background:var(--panel);padding:clamp(24px,4vw,40px)}
   .lukas-mark{
-    width:72px;height:72px;border-radius:50%;background:var(--green);
-    display:grid;place-items:center;color:#fff;font-weight:800;font-size:26px;letter-spacing:-.04em;
+    width:96px;height:96px;border-radius:50%;object-fit:cover;
+    border:1px solid var(--line-dark);display:block;
   }
   .lukas h3{font-size:20px;font-weight:750;letter-spacing:-.02em;margin-bottom:8px}
   .lukas p{color:var(--mut);font-size:15px;max-width:64ch}
@@ -677,7 +677,7 @@
     <div class="wrap">
       <span class="kicker"><b>//</b> who's behind it</span>
       <div class="lukas crossed">
-        <div class="lukas-mark" aria-hidden="true">L</div>
+        <img class="lukas-mark" src="/wholesale/lukas.jpg" alt="Lukas, who built Care Pack">
         <div>
           <h3>Built and supported by Lukas.</h3>
           <p>I've worked nearly every job in coffee wholesale: sales, tech, picker packer, barista. I've never met anyone happy about the way orders get processed, so I'm fixing it. When you call, you get the person who wrote the code, usually the same day.</p>
