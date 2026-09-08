@@ -93,9 +93,11 @@
   .nav-links a{text-decoration:none;color:var(--mut)}
   .nav-links a:hover{color:var(--ink)}
   .nav-links .btn{padding:9px 16px;font-size:13.5px;color:#fff}
+  .nav-links a.demo-link{color:var(--ink);font-weight:700}
+  @media(max-width:760px){.nav-links{gap:14px}.nav-links a.demo-link{font-size:13px}}
   .nav-status{font-family:var(--mono);font-size:10.5px;color:var(--faint);display:flex;align-items:center;gap:7px}
   .nav-status .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block}
-  @media(max-width:760px){.nav-links a:not(.btn){display:none}.nav-status{display:none}}
+  @media(max-width:760px){.nav-links a:not(.btn):not(.demo-link){display:none}.nav-status{display:none}}
 
   /* ---------- hero ---------- */
   .hero{padding:clamp(48px,6.5vw,84px) 0 clamp(36px,4.5vw,56px)}
@@ -420,6 +422,7 @@
     <div class="nav-links">
       <a href="#how">How it works</a>
       <a href="#pricing">Pricing</a>
+      <a href="https://orders.cafecarepackage.com/demo.html" class="demo-link">Try the demo</a>
       <a href="/cafe">Cafe tools</a>
       <a href="/signin">Sign in</a>
       <a href="#contact" class="btn green">Start free 30 days</a>
