@@ -660,6 +660,7 @@
       <div class="fine-print">
         <p>Roasters with 50+ cafes sometimes need a hand migrating their catalogue and contacts across. That's the only thing we ever quote separately, and we'll tell you the number before you start your trial.</p>
         <p>Collecting payment from your cafes is optional and off unless you switch it on. It's charged separately from the $50, the rate is set out in our <a href="/terms">terms</a>, and we'll walk you through it before you flip the switch. Leave it off and your cafes pay you exactly the way they do now.</p>
+        <p data-payment-pricing="summary">Current payment fees are available in our terms.</p>
       </div>
     </div>
   </section>
@@ -824,5 +825,7 @@
     }
   })();
 </script>
+<script>window.CARE_PACK_PRICING_URL = "https://orders.cafecarepackage.com/.netlify/functions/payment-pricing";</script>
+<script src="/payment-pricing.js"></script>
 </body>
 </html>
