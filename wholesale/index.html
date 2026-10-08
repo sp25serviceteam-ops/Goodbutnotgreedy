@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Wholesale ordering for independent coffee roasters. Cafes order in their browser, confirmed orders become Xero invoices on their own. $50 a week flat.">
+<meta name="description" content="Wholesale ordering for independent coffee roasters. Cafes order in their browser, confirmed orders become Xero invoices on their own. Free for up to 55 orders a month.">
 <title>Care Pack | Wholesale ordering, packed properly</title>
 <link rel="canonical" href="https://cafecarepackage.com/wholesale/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:title" content="Care Pack | Wholesale ordering, packed properly">
-<meta property="og:description" content="Cafe ordering in your brand, connected to your Xero. Flat $50 a week.">
+<meta property="og:description" content="Cafe ordering in your brand, connected to your Xero. Free for up to 55 orders a month.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cafecarepackage.com/wholesale/">
 <style>
@@ -29,7 +29,7 @@
     --maxw:1120px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;overflow-x:clip}
   body{
     font-family:var(--sans);
     background:var(--bg);
@@ -327,6 +327,15 @@
   .fine-print{margin-top:22px;font-size:12.5px;color:var(--mut);line-height:1.65;max-width:78ch}
   .fine-print p + p{margin-top:10px}
 
+  .payment-fees{margin-block:26px;color:var(--ink)}
+  .payment-fees h3{font-size:19px;letter-spacing:-.02em;margin-bottom:14px}
+  .payment-fees dl{border-top:1px solid var(--line)}
+  .payment-fees dl>div{display:grid;grid-template-columns:1fr 1.3fr;gap:18px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .payment-fees dt{font-weight:600;font-size:14px}
+  .payment-fees dd{margin:0;font-family:var(--mono);font-size:13px}
+  .payment-fees>p{margin-top:12px;color:var(--mut)}
+  @media(max-width:560px){.payment-fees dl>div{grid-template-columns:1fr;gap:5px}}
+
   /* ---------- trust ---------- */
   .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);background:var(--panel)}
   .trust{padding:24px;border-left:1px solid var(--line);border-top:1px solid var(--line)}
@@ -425,7 +434,7 @@
       <a href="https://orders.cafecarepackage.com/demo.html" class="demo-link">Try the demo</a>
       <a href="/cafe">Cafe tools</a>
       <a href="/signin">Sign in</a>
-      <a href="#contact" class="btn green">Start free 30 days</a>
+      <a href="#contact" class="btn green">Get started</a>
     </div>
   </nav>
 </header>
@@ -458,10 +467,10 @@
         <article class="hero-proof-card">
           <div class="mini-label">setup wizard</div>
           <b>We load the hard stuff with you.</b>
-          <p>Products, cafes, pricing, terms and first orders get set up before you pay.</p>
+          <p>We help set up your items, customers and first order.</p>
         </article>
       </div>
-      <p class="hero-price"><b>$50 a week flat.</b> Free for 30 days, card added at setup.</p>
+      <p class="hero-price"><b>Free for up to 55 orders a month.</b> Payment collection fees are separate.</p>
     </div>
   </section>
 
@@ -474,9 +483,9 @@
         <div class="stat-note"><span class="up">right now</span> · every one itemised</div>
       </div>
       <div class="stat">
-        <div class="stat-label">your price, day one and year five</div>
-        <div class="stat-value">$50<small>/wk</small></div>
-        <div class="stat-note">flat · it never moves</div>
+        <div class="stat-label">core subscription</div>
+        <div class="stat-value">$0<small>/month</small></div>
+        <div class="stat-note">up to 55 orders a month</div>
       </div>
       <div class="stat">
         <div class="stat-label">setup fee</div>
@@ -484,9 +493,9 @@
         <div class="stat-note">no contract · week to week</div>
       </div>
       <div class="stat">
-        <div class="stat-label">free trial</div>
-        <div class="stat-value">30<small> days</small></div>
-        <div class="stat-note">card added · your products loaded in</div>
+        <div class="stat-label">free monthly orders</div>
+        <div class="stat-value">55<small> orders</small></div>
+        <div class="stat-note">ordering, invoicing and your customer portal</div>
       </div>
     </div>
   </div>
@@ -526,7 +535,7 @@
         </figure>
       </div>
 
-      <p class="demo-bridge">That order you just sent? It'd be a draft invoice in Xero by now. Want one with your products in it? <a href="#contact">Free for 30 days →</a></p>
+      <p class="demo-bridge">That order you just sent? It'd be a draft invoice in Xero by now. Want one with your products in it? <a href="#contact">Start with Core →</a></p>
     </div>
   </section>
 
@@ -605,18 +614,18 @@
   <!-- ================= GROWTH TAX ================= -->
   <section class="section" style="padding-top:0">
     <div class="wrap">
-      <span class="marginalia" style="top:80px;left:-170px" aria-hidden="true"><span class="tick">+</span> their words, quoted straight</span>
-      <span class="kicker"><b>//</b> the growth tax</span>
-      <h2>Win a cafe, have a big month. Still $50.</h2>
+
+      <span class="kicker"><b>//</b> fair pricing</span>
+      <h2>Start small. Keep your customers.</h2>
 
       <div class="tax-grid crossed" style="margin-top:30px">
         <div class="tax-copy">
-          <p>The big platforms price on usage. Their own pricing page says the number is <q>approximate, based on direct usage, monthly revenue, active customers, and number of orders</q>. So every cafe you win, every big month you have, the bill creeps.</p>
-          <p>Care Pack is $50 a week whether you've got twelve cafes or a hundred and twelve. We'd rather you grow than pay us more for growing.</p>
+          <p>Core is free for up to 55 orders a month, with your ordering portal, Xero invoicing and customer management included.</p>
+          <p>Payment collection is optional, with clear fees and a cap on each Care Pack payment fee. Above 55 orders a month, talk to us about a plan that fits.</p>
         </div>
         <div class="tax-facts">
           <ul>
-            <li><b>Setup: <span class="cp">$0</span></b><span class="vs">elsewhere: $399 to $2,000</span></li>
+            <li><b>Setup: <span class="cp">$0</span></b><span class="vs">migration work is quoted before you start</span></li>
             <li><b>Per-invoice charge: <span class="cp">none</span></b><span class="vs">not now, not at scale</span></li>
             <li><b>Your cafes stay your cafes.</b><span class="vs">we never put another roaster in front of them</span></li>
           </ul>
@@ -630,18 +639,18 @@
     <div class="wrap">
       <span class="marginalia" style="top:80px;right:-155px" aria-hidden="true"><span class="tick">+</span> no asterisks on the green card</span>
       <span class="kicker"><b>//</b> pricing</span>
-      <h2>One price. It doesn't move.</h2>
-      <p class="lede">$50 a week. That's the price on day one and the price when you're twice the size. More cafes, more orders, more products: still $50. We'd rather you grow than pay us more for growing.</p>
+      <h2>Free to get started. Clear fees as you grow.</h2>
+      <p class="lede">Core has no subscription fee for up to 55 orders a month. Collect payments through Care Pack when it suits you, with Stripe processing and Care Pack fees shown separately.</p>
 
       <div class="price-grid crossed" style="margin-top:30px">
         <article class="price-main">
-          <span class="label">care pack, all of it</span>
-          <div class="price-fig">$50 <small>a week</small></div>
-          <p>Flat. It doesn't scale with your cafes, your orders or your revenue.</p>
+          <span class="label">care pack core</span>
+          <div class="price-fig">$0 <small>a month</small></div>
+          <p>For up to 55 orders a month.</p>
           <ul class="tick-list">
-            <li>No contract, week to week</li>
+            <li>Your branded ordering portal</li>
             <li>Stop whenever you like, your data leaves with you</li>
-            <li>Card added at setup, billing starts after the trial</li>
+            <li>Payment collection fees are separate</li>
           </ul>
         </article>
         <article class="price-detail">
@@ -658,9 +667,18 @@
       </div>
 
       <div class="fine-print">
-        <p>Roasters with 50+ cafes sometimes need a hand migrating their catalogue and contacts across. That's the only thing we ever quote separately, and we'll tell you the number before you start your trial.</p>
-        <p>Collecting payment from your cafes is optional and off unless you switch it on. It's charged separately from the $50, the rate is set out in our <a href="/terms">terms</a>, and we'll walk you through it before you flip the switch. Leave it off and your cafes pay you exactly the way they do now.</p>
-        <p data-payment-pricing="summary">Current payment fees are available in our terms.</p>
+        <p><b>Above 55 orders a month?</b> <a href="#contact">Talk to us about pricing.</a> Any paid plan is agreed with you before billing starts. Migration work is quoted before you start.</p>
+        <p>Collecting payment from your cafes is optional and off unless you switch it on. The payment fees are set out in our <a href="/terms">terms</a>, and we'll walk you through it before you flip the switch. Leave it off and your cafes pay you exactly the way they do now.</p>
+        <div class="payment-fees">
+          <h3>Care Pack payment fees</h3>
+          <dl>
+            <div><dt>Domestic cards</dt><dd data-payment-pricing="card">See current fees in our terms</dd></div>
+            <div><dt>Australian bank direct debit</dt><dd data-payment-pricing="debit">See current fees in our terms</dd></div>
+            <div><dt>Other cards</dt><dd data-payment-pricing="other">See current fees in our terms</dd></div>
+          </dl>
+          <p>Paid by you on successfully collected payments. Stripe processing fees are separate.</p>
+        </div>
+        <p><a href="#contact">Talk to us about Stripe card pricing.</a> Depending on your annual turnover and card payment volume, custom rates may be available.</p>
       </div>
     </div>
   </section>
@@ -723,14 +741,14 @@
     <div class="wrap contact-grid">
       <div>
         <span class="kicker"><b>//</b> get started</span>
-        <h2>Try it free for 30 days.</h2>
-        <p class="lede">Book a set-up and we'll walk through the wizard with you: Xero connection, item codes, cafe list, payment terms, branded order page and your first real order. You're trying it on real orders before you pay anything.</p>
+        <h2>Start with your first 55 monthly orders free.</h2>
+        <p class="lede">Book a set-up and we'll walk through the wizard with you: Xero connection, item codes, cafe list, payment terms, branded order page and your first real order. Core has no subscription fee for up to 55 orders a month; optional payment collection carries separate fees.</p>
         <ul class="risk-list">
-          <li>Free for 30 days on your real products and real orders</li>
+          <li>Core is free for up to 55 orders a month</li>
           <li>We help load your products, cafes, pricing and terms</li>
           <li>Xero and Stripe connected before you ask cafes to use it</li>
-          <li>Card added at setup, billing starts after the trial</li>
-          <li>No contract after that, it's week to week</li>
+          <li>Payment collection fees are separate</li>
+          <li>Any paid plan is agreed with you first</li>
           <li>Cancel anytime and your data leaves with you as CSV</li>
           <li>Payments held by Stripe, never by us</li>
         </ul>
@@ -774,8 +792,8 @@
               <option>Whatever suits you, just call me</option>
             </select>
           </div>
-          <button class="btn green" type="submit">Start my 30 days →</button>
-          <p class="form-note">Card added at setup, billing starts after the free trial.</p>
+          <button class="btn green" type="submit">Get started →</button>
+          <p class="form-note">Core is free for up to 55 orders a month. Payment collection fees are separate.</p>
         </div>
         <div class="form-success" role="status">Thanks, I'll be in touch within a day.<small>+ request logged · lukas calls or emails within a day +</small></div>
       </form>
@@ -798,7 +816,7 @@
     </div>
     <div class="foot-meta">
       <span>© 2026 care pack · made in Australia</span>
-      <span>+ 500 orders/wk · flat $50 · no contract +</span>
+      <span>Core: $0 subscription · up to 55 orders/month</span>
     </div>
   </div>
 </footer>
