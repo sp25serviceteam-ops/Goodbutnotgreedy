@@ -1,5 +1,6 @@
 /* Podcast landing and registration share the site's established tokens. */
-.cp-page{--cp-width:1320px;--cp-space:clamp(24px,5vw,76px);--cp-section:clamp(64px,8vw,112px);line-height:1.45}
+.cp-html{overscroll-behavior-y:none;background:var(--ink)}
+.cp-page{--cp-width:1320px;--cp-space:clamp(24px,5vw,76px);--cp-section:clamp(64px,8vw,112px);line-height:1.45;overscroll-behavior-y:none}
 .cp-page [hidden]{display:none!important}
 .cp-page section[id],.cp-page main[id]{scroll-margin-top:110px}
 .cp-page a,.cp-page button,.cp-page input,.cp-page select{touch-action:manipulation}
