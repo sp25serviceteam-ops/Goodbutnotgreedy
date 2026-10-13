@@ -29,7 +29,7 @@
 - [x] Final screenshots and click pass at 1440px and 375px; no sideways overflow; 16px form inputs; photo loads when scrolled into view.
 - [x] Actual labelled test registration saved and confirmation reached on hosted preview.
 - [x] Lukas approves the concrete preview for live publication.
-- [ ] Publish only this marketing change and verify public registration end to end.
+- [x] Publish only this marketing change and verify public registration end to end.
 
 ## Hosting and email
 
@@ -50,6 +50,10 @@ No Postmark/Gmail credentials, custom mail functions or account changes are requ
 ## Actual end-to-end proof, 13 October
 
 One clearly labelled TEST ONLY submission was entered through the hosted form, including a zero customer count. The browser reached /register-interest/thanks/ and Netlify reported one saved submission. Gmail showed "New Care Pack registration (1)" in lukas@cafecarepackage.com's Inbox. Its body contained name, business name, business type, email, accounting software, customer count 0, interest All and the full message. Reply-To matched the submitted email. This is an actual delivery check, not a mocked mail-provider test.
+
+Publication: PR #6 merged as 49dd2236ce15ce64a34b46f540f6a40cea95d270. Netlify production deploy 6ace0411ad409298311024a2 is ready and was published on 13 October at 21:12 Sydney time. Opening https://cafecarepackage.com reached the approved page at /wholesale/. The previous page was opened at /wholesale/previous/.
+
+A second labelled LIVE WEBSITE TEST was submitted on the real domain at phone width. It reached the confirmation page and increased the form's saved count to two. Gmail received "New Care Pack registration (2)" with General consumer, Customers Not Applicable: Yes, Stock management and the full message; blank optional answers stayed blank. The live page had no sideways overflow at 375px and the black header remained visible. The test record is clearly labelled; no real prospect data or ordering-platform state was changed.
 
 The local preview refuses to claim a registration was saved, because it has no form backend. Hosted registration uses Netlify's form processing and goes to confirmation only after an accepted response. Forms are stored independently of notification delivery. No email is sent to the visitor.
 
