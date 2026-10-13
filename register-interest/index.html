@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c0b">
+  <meta name="description" content="Register your interest in Care Pack ordering automation, stock management and integrations.">
+  <title>Register interest | Care Pack</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="/podcast.css">
+</head>
+<body class="cp-page cp-register-page">
+  <a class="cp-skip" href="#registration">Skip to form</a>
+  <header class="cp-header">
+    <nav class="cp-container cp-nav" aria-label="Main navigation">
+      <a class="cp-brand" href="/wholesale/" aria-label="Care Pack home"><img src="/carepack-light.png" width="72" height="44" alt="Care Pack"></a>
+      <div class="cp-nav-links"><a class="cp-sign-in" href="/wholesale/">Back to Care Pack</a></div>
+    </nav>
+  </header>
+  <main class="cp-register-layout" id="registration">
+    <div class="cp-register-intro">
+      <h1 class="cp-title">Want a demo?</h1>
+      <p class="cp-body">Tell us a little about yourself. We'll reach out to show you Care Pack and talk about what you need.</p>
+      <p class="cp-email">Or email me:<br><a href="mailto:lukas@cafecarepackage.com">lukas@cafecarepackage.com</a></p>
+    </div>
+    <div class="cp-register-form-wrap">
+      <form class="cp-form" name="care-pack-interest" method="post" action="/register-interest/thanks/" data-netlify="true" netlify-honeypot="company-website">
+        <input type="hidden" name="form-name" value="care-pack-interest">
+        <input type="hidden" name="subject" value="New Care Pack registration (%{submissionId})">
+        <p class="cp-honeypot" aria-hidden="true"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off"></label></p>
+        <div class="cp-fields">
+          <div class="cp-field"><label for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" maxlength="120" required></div>
+          <div class="cp-field"><label for="business-name">Business name <span class="cp-optional">(optional)</span></label><input id="business-name" name="business-name" type="text" autocomplete="organization" maxlength="180"></div>
+          <div class="cp-field cp-field-full"><label for="business-type">Business type</label><select id="business-type" name="business-type" required><option value="" disabled selected>Choose one</option><option>Wholesaler</option><option>Distributor</option><option>Cafe</option><option>General consumer</option><option>Other</option></select></div>
+          <div class="cp-field cp-field-full"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" maxlength="254" required></div>
+          <div class="cp-field"><label for="accounting">Accounting software <span class="cp-optional">(optional)</span></label><input id="accounting" name="accounting-software" type="text" maxlength="120" autocomplete="off"></div>
+          <div class="cp-field"><label for="customers">Number of customers <span class="cp-optional">(optional)</span></label><input id="customers" name="customer-count" type="number" inputmode="numeric" min="0" step="1" max="100000000" autocomplete="off"><label class="cp-check"><input id="not-applicable" type="checkbox" name="customers-not-applicable" value="Yes">Not applicable</label></div>
+          <fieldset class="cp-field cp-field-full"><legend>Interested in</legend><div class="cp-radio-grid"><label class="cp-radio"><input name="interest" type="radio" value="Ordering automation" required>Ordering automation</label><label class="cp-radio"><input name="interest" type="radio" value="Stock management">Stock management</label><label class="cp-radio"><input name="interest" type="radio" value="Integrations">Integrations</label><label class="cp-radio"><input name="interest" type="radio" value="All">All</label></div></fieldset>
+          <div class="cp-field cp-field-full"><label for="message">Anything else? <span class="cp-optional">(optional)</span></label><textarea id="message" name="message" maxlength="3000"></textarea></div>
+        </div>
+        <button class="cp-button cp-form-submit" type="submit"><span>Register interest</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.7"></path></svg></button>
+        <p class="cp-form-note">We'll use these details to contact you about Care Pack.</p>
+        <p class="cp-form-error" role="status" tabindex="-1" hidden></p>
+      </form>
+    </div>
+  </main>
+  <footer class="cp-footer"><div class="cp-container cp-footer-row"><span>Care Pack</span><div class="cp-footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div></footer>
+  <script src="/register-interest/form.js" defer></script>
+</body>
+</html>
