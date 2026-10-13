@@ -1,5 +1,6 @@
 [build]
-  publish = "."
+  command = "node scripts/build-site.mjs"
+  publish = "dist"
 
 # HQ lives on the portal site (it needs Supabase and the operator login, which
 # this static site has no access to). This just makes the URL Lukas remembers
