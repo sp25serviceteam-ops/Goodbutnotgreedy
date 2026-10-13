@@ -12,6 +12,7 @@
 - Every form answer is emailed to Lukas, with the registrant as Reply-to. His latest direction allows the easier email route: "if theres a easier way to set up emails just use my own email to email myse;f". Native Netlify form notifications deliver to his existing mailbox.
 - Restore the original Lukas photo/bio under Want a demo; link Lukas and head developer Mike Palmer to the exact supplied LinkedIn profiles.
 - The top navigation/header is black, retaining the original white/green logo.
+- Live publication approved: "cool do that, lets finish this site". The page is the main public website; cafe tools and existing customer links remain available.
 
 ## Checklist
 
@@ -27,7 +28,7 @@
 - [x] Current root cafe routing, customer links, sign-in routes, privacy and terms retained.
 - [x] Final screenshots and click pass at 1440px and 375px; no sideways overflow; 16px form inputs; photo loads when scrolled into view.
 - [x] Actual labelled test registration saved and confirmation reached on hosted preview.
-- [ ] Lukas approves the concrete preview for live publication.
+- [x] Lukas approves the concrete preview for live publication.
 - [ ] Publish only this marketing change and verify public registration end to end.
 
 ## Hosting and email
