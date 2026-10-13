@@ -2,7 +2,8 @@
   "name": "care-pack-website",
   "private": true,
   "scripts": {
-    "build": "node scripts/build-site.mjs"
+    "build": "node scripts/build-site.mjs",
+    "test": "node scripts/build-site.mjs && node --test test/share-preview.test.mjs"
   },
   "engines": { "node": ">=22" }
 }
