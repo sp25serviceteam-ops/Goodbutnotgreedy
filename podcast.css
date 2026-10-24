@@ -29,6 +29,16 @@
 .cp-capabilities{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.35);padding-block:23px;margin:0;list-style:none;font-size:14px}
 .cp-capabilities li{flex:1}
 .cp-capabilities li:not(:first-child){border-left:1px solid rgba(255,255,255,.35);padding-left:28px}
+.cp-proof{display:grid;grid-template-columns:auto minmax(0,1fr);gap:56px;align-items:center;border-top:1px solid rgba(255,255,255,.35);padding-block:30px}
+.cp-proof-stat{margin:0;font-size:16px;line-height:1.3}.cp-proof-stat span{display:block}
+.cp-proof-stat strong{display:block;font-size:clamp(40px,4.4vw,56px);font-weight:750;line-height:1;letter-spacing:-.05em;margin-bottom:6px}
+.cp-logos{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+.cp-logos-track{display:flex;align-items:center;gap:72px;width:max-content;margin:0;padding:0 0 0 72px;list-style:none;animation:cp-logos 36s linear infinite}
+.cp-logos:hover .cp-logos-track{animation-play-state:paused}
+.cp-logos-track li{flex:none;display:flex;align-items:center}
+.cp-logos-track img{display:block;width:auto;height:var(--logo-h,56px)}
+.cp-logo-san-pedro{--logo-h:54px}.cp-logo-kaltiva{--logo-h:36px}.cp-logo-diggy-doos{--logo-h:56px}.cp-logo-timor{--logo-h:70px}
+@keyframes cp-logos{to{transform:translateX(-50%)}}
 .cp-stock{padding-block:var(--cp-section)}
 .cp-stock-top{display:grid;grid-template-columns:1.1fr .9fr;gap:72px;align-items:end}
 .cp-title{font-size:clamp(44px,5.5vw,78px);font-weight:750;line-height:1.02;letter-spacing:-.055em;margin:0;text-wrap:balance}
@@ -123,6 +133,7 @@
  .cp-team{grid-template-columns:1fr;gap:30px}.cp-person-mike{padding:28px 0 0;border-left:0;border-top:1px solid var(--line)}
 }
 @media(max-width:600px){
+ .cp-proof{grid-template-columns:1fr;gap:22px;padding-block:26px}.cp-logos{margin-inline:calc(var(--cp-space) * -1)}.cp-logos-track{gap:52px;padding-left:52px}.cp-logo-san-pedro{--logo-h:44px}.cp-logo-kaltiva{--logo-h:28px}.cp-logo-diggy-doos{--logo-h:46px}.cp-logo-timor{--logo-h:56px}
  .cp-nav{gap:14px;min-height:72px}.cp-brand img{width:59px;height:36px}.cp-nav-links{gap:0}.cp-nav-links>a.cp-sign-in{display:none}.cp-nav .cp-button{min-height:44px;padding:12px 15px;font-size:14px;gap:20px}.cp-nav .cp-button svg{width:19px;height:19px}
  .cp-hero{padding-top:43px}.cp-hero h1{font-size:clamp(56px,16vw,90px);line-height:.97;letter-spacing:-.06em}.cp-hero h1 span{display:inline}
  .cp-hero-copy{font-size:20px;line-height:1.45}.cp-hero-actions .cp-button{width:100%}.cp-hero-bottom{margin-top:29px;padding-bottom:32px}
@@ -136,4 +147,4 @@
  .cp-team{margin-top:36px;padding-block:27px}.cp-person{grid-template-columns:76px 1fr;gap:19px}.cp-person img{width:76px;height:76px}.cp-person h3{font-size:22px}.cp-person p{font-size:15px}.cp-person-mike{display:block}
  .cp-register-intro{padding-block:34px}.cp-register-intro .cp-title{font-size:62px;margin-bottom:23px}.cp-register-intro .cp-body{font-size:18px}.cp-register-intro .cp-email{font-size:15px}.cp-register-form-wrap{padding-block:34px}.cp-fields{grid-template-columns:1fr;gap:23px}.cp-radio-grid{grid-template-columns:1fr 1fr}.cp-radio{font-size:13px!important;padding:12px 10px}.cp-register-page .cp-nav-links>a.cp-sign-in{display:flex}.cp-register-page .cp-nav-links>a{font-size:13px}.cp-thanks .cp-title{font-size:59px}
 }
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cp-button{transition:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cp-button{transition:none}.cp-logos{-webkit-mask-image:none;mask-image:none}.cp-logos-track{animation:none;flex-wrap:wrap;width:auto;padding-left:0;gap:28px 56px}.cp-logos-track li[aria-hidden]{display:none}}
