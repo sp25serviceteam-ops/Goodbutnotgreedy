@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 
 test('public share previews reference a packaged, opaque landscape card', async () => {
   const root = new URL('../', import.meta.url);
-  for (const page of ['index.html', 'wholesale/index.html', 'register-interest/index.html']) {
+  for (const page of ['index.html', 'wholesale/index.html', 'register-interest/index.html', 'roast/index.html']) {
     const html = await readFile(new URL(page, root), 'utf8');
     const tags = [...html.matchAll(/<meta\s+[^>]*>/g)].map(match => match[0]);
     const imageTags = tags.filter(tag => /property="og:image"/.test(tag));

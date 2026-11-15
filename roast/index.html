@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en-AU" class="cp-html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c0b">
+  <meta name="description" content="First Crack is a drum roaster you can roast on in your browser. Three beans, real heat physics and an autopilot to beat. Made by Care Pack.">
+  <title>First Crack | Roast a batch in your browser | Care Pack</title>
+  <link rel="canonical" href="https://cafecarepackage.com/roast/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:title" content="First Crack | Roast a batch in your browser">
+  <meta property="og:description" content="A drum roaster you can actually roast on. Three beans, real heat physics and an autopilot to beat.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cafecarepackage.com/roast/">
+  <meta property="og:image" content="https://cafecarepackage.com/assets/care-pack-share-v1.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Care Pack. Way more than an ordering platform. Orders, stock management, payments and packing.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="First Crack | Roast a batch in your browser">
+  <meta name="twitter:description" content="A drum roaster you can actually roast on. Three beans, real heat physics and an autopilot to beat.">
+  <meta name="twitter:image" content="https://cafecarepackage.com/assets/care-pack-share-v1.png">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="/podcast.css">
+  <link rel="stylesheet" href="/roast/roast.css">
+</head>
+<body class="cp-page fc-page" id="top">
+  <a class="cp-skip" href="#main">Skip to content</a>
+  <header class="cp-header">
+    <nav class="cp-container cp-nav" aria-label="Main navigation">
+      <a class="cp-brand" href="/wholesale/" aria-label="Care Pack home"><img src="/carepack-light.png" width="72" height="44" alt="Care Pack"></a>
+      <div class="cp-nav-links">
+        <a class="cp-nav-section" href="/wholesale/">What is Care Pack?</a>
+        <a class="cp-sign-in" href="https://orders.cafecarepackage.com/admin.html">Sign in</a>
+        <a class="cp-button cp-button-white" href="/register-interest/">Register interest <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.7"/></svg></a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="fc">
+    <section class="fc-hero" aria-labelledby="fc-heading">
+      <div class="cp-container fc-hero-row">
+        <div>
+          <h1 id="fc-heading">First Crack.</h1>
+          <p>A drum roaster you can actually roast on. Pick a bean, run the gas and the air, and try to beat the autopilot.</p>
+        </div>
+        <div class="beans" id="beans" aria-label="Choose a bean"></div>
+      </div>
+    </section>
+
+    <div class="cp-container fc-stage">
+      <div class="fc-grid">
+        <section class="panel drum-panel" aria-label="Roaster">
+          <canvas id="drum" aria-label="Roaster drum with tumbling beans"></canvas>
+          <div class="toast" id="toast" aria-live="polite"></div>
+          <div class="readouts">
+            <div class="ro bt"><label>Bean &deg;C</label><b id="roBT">0</b></div>
+            <div class="ro"><label>Air &deg;C</label><b id="roET">0</b></div>
+            <div class="ro"><label>Rise /min</label><b id="roRoR">0</b></div>
+            <div class="ro"><label>Time</label><b id="roTime">0:00</b></div>
+            <div class="ro dev"><label>Develop</label><b id="roDev">0</b></div>
+          </div>
+        </section>
+
+        <section class="panel chart-panel" aria-label="Roast curve">
+          <div class="brief" id="brief"></div>
+          <div class="coach" id="coach" aria-live="polite"></div>
+          <canvas id="chart" aria-label="Roast curve chart"></canvas>
+          <div class="legend">
+            <span style="--c:#00A04D">Bean temp</span>
+            <span style="--c:#0b0c0b">Air temp</span>
+            <span style="--c:#9a9d95">Rate of rise</span>
+            <span class="ref">Reference curve</span>
+          </div>
+          <ol id="log"></ol>
+        </section>
+      </div>
+
+      <section class="panel controls" aria-label="Roaster controls">
+        <div class="ctl">
+          <label for="gas">Gas <b id="gasV">40%</b></label>
+          <input type="range" id="gas" min="0" max="100" step="1" value="40">
+          <small>up / down arrows</small>
+        </div>
+        <div class="ctl">
+          <label for="air">Airflow <b id="airV">25%</b></label>
+          <input type="range" id="air" min="0" max="100" step="1" value="25">
+          <small>left / right arrows</small>
+        </div>
+        <div class="ctl">
+          <label>Charge temp</label>
+          <div class="stepper"><button id="ctDown" aria-label="Lower charge temperature">-</button><b id="ctV">200</b><button id="ctUp" aria-label="Raise charge temperature">+</button></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="btnMain">Charge beans</button>
+          <button class="btn" id="btnAuto">Watch the autopilot</button>
+          <button class="btn" id="btnReset">Reset</button>
+        </div>
+      </section>
+
+      <div class="tools">
+        <span>Roast speed</span>
+        <span class="seg" id="speed"><button data-v="1">1x</button><button data-v="4">4x</button><button data-v="8">8x</button><button data-v="16">16x</button></span>
+        <button class="mini on" id="btnSound">Sound on</button>
+        <span class="keys"><kbd>space</kbd> charge and drop &nbsp; <kbd>A</kbd> autopilot &nbsp; <kbd>R</kbd> reset &nbsp; <kbd>M</kbd> mute</span>
+      </div>
+    </div>
+
+    <section class="cp-connect fc-cta" aria-labelledby="fc-cta-heading">
+      <div class="cp-container">
+        <h2 class="cp-title" id="fc-cta-heading">You roast. We'll handle the orders.</h2>
+        <div class="fc-cta-row">
+          <p class="cp-body">Care Pack is ordering, stock management, payments and packing for coffee roasters. Connected to the tools you already use.</p>
+          <div class="fc-cta-links">
+            <a href="/wholesale/">See Care Pack</a>
+            <a class="cp-button cp-button-white" href="/register-interest/">Register interest <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.7"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="result" id="result" role="dialog" aria-label="Roast result"></div>
+  </main>
+
+  <footer class="cp-footer"><div class="cp-container cp-footer-row"><a href="/wholesale/" aria-label="Care Pack home"><img class="cp-footer-logo" src="/carepack.png" width="62" height="38" alt="Care Pack" loading="lazy"></a><div class="cp-footer-links"><a href="https://orders.cafecarepackage.com/admin.html">Sign in</a><a href="/cafe">Cafe tools</a><a href="/roast/">First Crack</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div></footer>
+
+  <script src="/roast/model.js"></script>
+  <script src="/roast/app.js"></script>
+</body>
+</html>

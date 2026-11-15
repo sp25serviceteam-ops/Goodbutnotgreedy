@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-site.mjs",
-    "test": "node scripts/build-site.mjs && node --test test/share-preview.test.mjs"
+    "test": "node scripts/build-site.mjs && node --test test/share-preview.test.mjs test/roast-model.test.mjs"
   },
   "engines": { "node": ">=22" }
 }

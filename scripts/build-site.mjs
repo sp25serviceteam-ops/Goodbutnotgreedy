@@ -11,7 +11,8 @@ await mkdir(output);
 for (const path of [
   'index.html', 'privacy.html', 'terms.html', 'site.css', 'podcast.css',
   'payment-pricing.js', 'carepack.png', 'carepack-light.png',
-  'apple-touch-icon.png', 'favicon.svg', 'wholesale', 'register-interest', 'assets'
+  'apple-touch-icon.png', 'favicon.svg', 'wholesale', 'register-interest', 'assets',
+  'roast'
 ]) {
   await cp(join(root, path), join(output, path), { recursive: true });
 }
